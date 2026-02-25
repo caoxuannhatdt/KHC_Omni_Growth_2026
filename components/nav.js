@@ -10,7 +10,7 @@ const navHTML = `
                 </a>
             </div>
 
-            <div class="hidden md:flex space-x-6 text-sm font-bold text-slate-500 font-heading uppercase tracking-wide">
+            <div id="playbook-center-links" class="hidden md:flex space-x-6 text-sm font-bold text-slate-500 font-heading uppercase tracking-wide">
                 <a href="/index.html#problem" class="hover:text-red-600 transition">1. Problem</a>
                 <a href="/index.html#agitation" class="hover:text-orange-600 transition">2. Agitation</a>
                 <a href="/index.html#solution" class="hover:text-green-600 transition">3. Solution</a>
@@ -176,9 +176,24 @@ const navHTML = `
 </nav>
 `;
 
+// Inject into the DOM and apply intelligent display logic
 document.addEventListener("DOMContentLoaded", () => {
     const globalNavContainer = document.getElementById('global-nav');
     if (globalNavContainer) {
+        // 1. Inject the HTML
         globalNavContainer.innerHTML = navHTML;
+
+        // 2. DYNAMIC LOGIC: Hide Playbook links on Report pages
+        const currentPath = window.location.pathname;
+        // Identify if we are on the homepage (covers root '/' and 'index.html')
+        const isHomepage = currentPath === '/' || currentPath.endsWith('index.html') || currentPath === '';
+
+        if (!isHomepage) {
+            // Find the center links container by its new ID and hide it
+            const centerLinks = document.getElementById('playbook-center-links');
+            if (centerLinks) {
+                centerLinks.style.display = 'none';
+            }
+        }
     }
 });
