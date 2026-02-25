@@ -1,42 +1,40 @@
 export const config = {
-  matcher: '/((?!_next/static|_next/image|favicon.ico).*)', // Chặn toàn bộ, chừa lại tài nguyên hệ thống
+  matcher: '/(.*)', // Quét bảo vệ toàn bộ trang web
 };
 
 export default async function middleware(req) {
-  // 1. Kiểm tra Cookie xem user đã đăng nhập chưa
+  // 1. Kiểm tra Cookie (Phiên làm việc)
   const cookie = req.headers.get('cookie') || '';
   if (cookie.includes('omni_auth=granted')) {
-    // Đã đăng nhập -> cho phép đi tiếp vào xem báo cáo
+    // Đã đăng nhập -> cho phép vào xem báo cáo
     return new Response(null, { headers: { 'x-middleware-next': '1' } });
   }
 
   const url = new URL(req.url);
   let errorMessage = '';
 
-  // 2. Xử lý khi user bấm nút "Đăng nhập" (gửi form POST)
+  // 2. Xử lý khi Submit Form
   if (req.method === 'POST') {
     const body = await req.text();
     const params = new URLSearchParams(body);
     const user = params.get('username');
     const pwd = params.get('password');
 
-    // NHẬT ĐỔI USER/PASS Ở ĐÂY
     if (user === 'omnigrowth' && pwd === 'growth2026') {
-      // Đúng pass -> Lưu cookie 1 ngày (86400s) và load lại trang
+      // FIX BẢO MẬT: Bỏ Max-Age. Trở thành Session Cookie (Tắt trình duyệt là mất)
       return new Response(null, {
         status: 302,
         headers: {
           'Location': url.pathname,
-          'Set-Cookie': 'omni_auth=granted; Path=/; HttpOnly; Max-Age=86400',
+          'Set-Cookie': 'omni_auth=granted; Path=/; HttpOnly; SameSite=Strict', 
         },
       });
     } else {
-      // Sai pass -> Hiển thị thông báo lỗi
       errorMessage = '<div class="error-msg">Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng thử lại!</div>';
     }
   }
 
-  // 3. Render giao diện Đăng nhập mang brand PNJ (HTML + CSS)
+  // 3. Giao diện Đăng nhập PNJ Brand
   const html = `
     <!DOCTYPE html>
     <html lang="vi">
@@ -68,7 +66,7 @@ export default async function middleware(req) {
           margin-bottom: 32px;
         }
         .title {
-          color: #003468; /* Xanh ngọc đen đặc trưng của PNJ */
+          color: #003468;
           font-size: 20px;
           font-weight: 600;
           margin-bottom: 8px;
@@ -93,7 +91,7 @@ export default async function middleware(req) {
         }
         .input-group input:focus {
           outline: none;
-          border-color: #F7A800; /* Vàng PNJ */
+          border-color: #F7A800;
         }
         .error-msg {
           color: #dc3545;
@@ -106,7 +104,7 @@ export default async function middleware(req) {
         .btn-submit {
           width: 100%;
           padding: 14px;
-          background-color: #003468; /* Nền xanh PNJ */
+          background-color: #003468;
           color: white;
           border: none;
           border-radius: 8px;
@@ -122,7 +120,7 @@ export default async function middleware(req) {
     </head>
     <body>
       <div class="login-container">
-        <img src="https://cdn.pnj.io/images/logo/pnj.com.vn.png" alt="PNJ Logo" class="logo">
+        <img src="https://cdn.pnj.io/images/logo/pnj.com.vn.png" referrerpolicy="no-referrer" alt="PNJ Logo" class="logo">
         <div class="title">Omni-Growth Workspace</div>
         <div class="subtitle">Vui lòng đăng nhập để xem báo cáo</div>
         
@@ -142,7 +140,6 @@ export default async function middleware(req) {
     </html>
   `;
 
-  // Trả về giao diện HTML
   return new Response(html, {
     status: 200,
     headers: {
