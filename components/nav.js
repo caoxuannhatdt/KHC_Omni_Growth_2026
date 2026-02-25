@@ -23,7 +23,7 @@ const navHTML = `
                 <button id="download-btn" onclick="downloadAsImage()" title="Tải về dạng ảnh PNG" class="inline-flex items-center gap-2 bg-gradient-to-br from-[#002d72] to-[#1e40af] text-white text-[13px] font-bold py-2 px-4 rounded-full border-none cursor-pointer shadow-md hover:shadow-lg hover:-translate-y-px transition-all">
                     <span class="spinner" style="display:none; width:14px; height:14px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite;"></span>
                     <i class="fas fa-download btn-icon"></i>
-                    <span class="btn-label">Tải Về (PNG)</span>
+                    <span class="btn-label hidden sm:inline-block">Tải Về</span>
                 </button>
 
                 <div class="relative group py-4">
@@ -31,10 +31,11 @@ const navHTML = `
                         <i class="fas fa-th text-lg"></i>
                     </button>
 
-                    <div class="absolute top-full right-0 w-64 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-3 mt-1 cursor-default">
+                    <div class="absolute top-full right-0 w-[calc(100vw-24px)] md:w-64 max-h-[85vh] overflow-y-auto md:overflow-visible bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-3 mt-1 cursor-default origin-top-right">
                         
                         <div class="px-4 pb-2 mb-2 border-b border-slate-100 flex justify-between items-center">
                             <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest font-heading">Modules</h3>
+                            <span class="text-[8px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-bold uppercase">Mobile Ready</span>
                         </div>
 
                         <div class="relative group/cat px-2">
@@ -43,21 +44,23 @@ const navHTML = `
                                     <div class="w-7 h-7 rounded bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fas fa-calendar-alt"></i></div>
                                     Report Monthly
                                 </div>
-                                <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                             </a>
 
-                            <div class="absolute top-0 right-full w-56 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/cat:opacity-100 group-hover/cat:visible transition-all duration-200 z-50 py-3">
-                                <div class="px-4 pb-2 mb-2 border-b border-slate-100">
+                            <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-56 md:mr-1 bg-slate-50 md:bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/cat:block md:group-hover/cat:opacity-100 md:group-hover/cat:visible transition-all duration-200 z-50 py-2 md:py-3 mt-1 md:mt-0">
+                                <div class="px-4 pb-2 mb-2 border-b border-slate-200 md:border-slate-100 hidden md:block">
                                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Năm 2026</span>
                                 </div>
 
                                 <div class="relative group/month px-2">
-                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors">
+                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-slate-50 transition-colors">
                                         <span class="text-xs font-bold text-slate-700">Tháng 01/2026</span>
-                                        <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                                     </a>
 
-                                    <div class="absolute top-0 right-full w-48 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/month:opacity-100 group-hover/month:visible transition-all duration-200 z-50 py-2">
+                                    <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-48 md:mr-1 bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/month:block md:group-hover/month:opacity-100 md:group-hover/month:visible transition-all duration-200 z-50 py-1 md:py-2 mt-1 md:mt-0">
                                         <div class="px-2 space-y-0.5">
                                             <a href="/reports/monthly/2026/01/tong-quan.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 text-xs font-bold text-[#002d72]"><i class="fas fa-chart-pie opacity-70"></i> Tổng Quan</a>
                                             <a href="/reports/monthly/2026/01/cn-hcm.html" class="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs text-slate-600 font-medium">CN HCM</a>
@@ -71,11 +74,12 @@ const navHTML = `
                                 </div>
 
                                 <div class="relative group/month px-2 mt-1">
-                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors">
+                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-slate-50 transition-colors">
                                         <span class="text-xs font-bold text-slate-700">Tháng 02/2026</span>
-                                        <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                                     </a>
-                                    <div class="absolute top-0 right-full w-48 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/month:opacity-100 group-hover/month:visible transition-all duration-200 z-50 py-2">
+                                    <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-48 md:mr-1 bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/month:block md:group-hover/month:opacity-100 md:group-hover/month:visible transition-all duration-200 z-50 py-1 md:py-2 mt-1 md:mt-0">
                                         <div class="px-2 space-y-0.5">
                                             <a href="/reports/monthly/2026/02/tong-quan.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 text-xs font-bold text-[#002d72]"><i class="fas fa-chart-pie opacity-70"></i> Tổng Quan</a>
                                             <a href="/reports/monthly/2026/02/cn-hcm.html" class="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs text-slate-600 font-medium">CN HCM</a>
@@ -96,20 +100,22 @@ const navHTML = `
                                     <div class="w-7 h-7 rounded bg-teal-50 text-teal-600 flex items-center justify-center"><i class="fas fa-history"></i></div>
                                     30D Lookback
                                 </div>
-                                <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                             </a>
 
-                            <div class="absolute top-0 right-full w-56 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/cat:opacity-100 group-hover/cat:visible transition-all duration-200 z-50 py-3">
-                                <div class="px-4 pb-2 mb-2 border-b border-slate-100">
+                            <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-56 md:mr-1 bg-slate-50 md:bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/cat:block md:group-hover/cat:opacity-100 md:group-hover/cat:visible transition-all duration-200 z-50 py-2 md:py-3 mt-1 md:mt-0">
+                                <div class="px-4 pb-2 mb-2 border-b border-slate-200 md:border-slate-100 hidden md:block">
                                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Năm 2026</span>
                                 </div>
 
                                 <div class="relative group/month px-2">
-                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors">
+                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-slate-50 transition-colors">
                                         <span class="text-xs font-bold text-slate-700">Tháng 01/2026</span>
-                                        <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                                     </a>
-                                    <div class="absolute top-0 right-full w-48 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/month:opacity-100 group-hover/month:visible transition-all duration-200 z-50 py-2">
+                                    <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-48 md:mr-1 bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/month:block md:group-hover/month:opacity-100 md:group-hover/month:visible transition-all duration-200 z-50 py-1 md:py-2 mt-1 md:mt-0">
                                         <div class="px-2 space-y-0.5">
                                             <a href="/reports/30d-lookback/2026/01/tong-quan.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-teal-50 text-xs font-bold text-teal-700"><i class="fas fa-chart-pie opacity-70"></i> Tổng Quan</a>
                                             <a href="/reports/30d-lookback/2026/01/cn-hcm.html" class="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs text-slate-600 font-medium">CN HCM</a>
@@ -123,11 +129,12 @@ const navHTML = `
                                 </div>
 
                                 <div class="relative group/month px-2 mt-1">
-                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors">
+                                    <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-slate-50 transition-colors">
                                         <span class="text-xs font-bold text-slate-700">Tháng 02/2026</span>
-                                        <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                        <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                                     </a>
-                                    <div class="absolute top-0 right-full w-48 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/month:opacity-100 group-hover/month:visible transition-all duration-200 z-50 py-2">
+                                    <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-48 md:mr-1 bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/month:block md:group-hover/month:opacity-100 md:group-hover/month:visible transition-all duration-200 z-50 py-1 md:py-2 mt-1 md:mt-0">
                                         <div class="px-2 space-y-0.5">
                                             <a href="/reports/30d-lookback/2026/02/tong-quan.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-teal-50 text-xs font-bold text-teal-700"><i class="fas fa-chart-pie opacity-70"></i> Tổng Quan</a>
                                             <a href="/reports/30d-lookback/2026/02/cn-hcm.html" class="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs text-slate-600 font-medium">CN HCM</a>
@@ -148,9 +155,10 @@ const navHTML = `
                                     <div class="w-7 h-7 rounded bg-purple-50 text-purple-600 flex items-center justify-center"><i class="fas fa-chart-line"></i></div>
                                     Quarterly
                                 </div>
-                                <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                             </a>
-                            <div class="absolute top-0 right-full w-48 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/cat:opacity-100 group-hover/cat:visible transition-all duration-200 z-50 py-3">
+                            <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-48 md:mr-1 bg-slate-50 md:bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/cat:block md:group-hover/cat:opacity-100 md:group-hover/cat:visible transition-all duration-200 z-50 py-2 md:py-3 mt-1 md:mt-0">
                                 <div class="px-4"><span class="block text-xs text-slate-400 italic">Chưa có dữ liệu</span></div>
                             </div>
                         </div>
@@ -161,9 +169,10 @@ const navHTML = `
                                     <div class="w-7 h-7 rounded bg-red-50 text-red-600 flex items-center justify-center"><i class="fas fa-bullseye"></i></div>
                                     Campaigns
                                 </div>
-                                <i class="fas fa-chevron-left text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-down md:hidden text-[10px] text-slate-400"></i>
+                                <i class="fas fa-chevron-left hidden md:inline-block text-[10px] text-slate-400"></i>
                             </a>
-                            <div class="absolute top-0 right-full w-48 mr-1 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] opacity-0 invisible group-hover/cat:opacity-100 group-hover/cat:visible transition-all duration-200 z-50 py-3">
+                            <div class="hidden md:block static md:absolute md:top-0 md:right-full w-full md:w-48 md:mr-1 bg-slate-50 md:bg-white border-0 md:border border-slate-200 rounded-xl md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,45,114,0.15)] md:opacity-0 md:invisible group-hover/cat:block md:group-hover/cat:opacity-100 md:group-hover/cat:visible transition-all duration-200 z-50 py-2 md:py-3 mt-1 md:mt-0">
                                 <div class="px-4"><span class="block text-xs text-slate-400 italic">Chưa có dữ liệu</span></div>
                             </div>
                         </div>
@@ -176,20 +185,16 @@ const navHTML = `
 </nav>
 `;
 
-// Inject into the DOM and apply intelligent display logic
 document.addEventListener("DOMContentLoaded", () => {
     const globalNavContainer = document.getElementById('global-nav');
     if (globalNavContainer) {
-        // 1. Inject the HTML
         globalNavContainer.innerHTML = navHTML;
 
-        // 2. DYNAMIC LOGIC: Hide Playbook links on Report pages
+        // DYNAMIC LOGIC: Hide Playbook links on Report pages
         const currentPath = window.location.pathname;
-        // Identify if we are on the homepage (covers root '/' and 'index.html')
         const isHomepage = currentPath === '/' || currentPath.endsWith('index.html') || currentPath === '';
 
         if (!isHomepage) {
-            // Find the center links container by its new ID and hide it
             const centerLinks = document.getElementById('playbook-center-links');
             if (centerLinks) {
                 centerLinks.style.display = 'none';
