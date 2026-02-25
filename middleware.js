@@ -1,10 +1,5 @@
-import { next } from '@vercel/edge';
-
 export const config = {
-  // Chặn tất cả, TRỪ các file có đuôi mở rộng như .png, .jpg, .css, .js
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.css).*)',
-  ],
+  matcher: '/:path*',
 };
 
 export default function middleware(req) {
@@ -12,20 +7,24 @@ export default function middleware(req) {
 
   if (authHeader) {
     const authValue = authHeader.split(' ')[1];
-    // Giải mã từ Base64
-    const [user, pwd] = atob(authValue).split(':');
+    // Giải mã Base64 sang chuỗi user:pass
+    const decoded = atob(authValue);
+    const [user, pwd] = decoded.split(':');
 
-    // NHẬT SỬA USER VÀ PASSWORD Ở ĐÂY
-    if (user === 'omnigrowth' && pwd === 'Niemtin&Phongcach') {
-      return next();
+    // Nhập User và Pass của Nhật ở đây
+    if (user === 'omnigrowth' && pwd === 'growth2026') {
+      // Cho phép đi tiếp nếu đúng
+      return new Response(null, {
+        headers: { 'x-middleware-next': '1' },
+      });
     }
   }
 
-  // Nếu chưa đăng nhập hoặc sai, hiện hộp thoại yêu cầu User/Pass
-  return new Response('Auth Required', {
+  // Nếu sai hoặc chưa nhập, hiện hộp thoại yêu cầu tài khoản
+  return new Response('Vui lòng đăng nhập để truy cập.', {
     status: 401,
     headers: {
-      'WWW-Authenticate': 'Basic realm="Vui lòng nhập tài khoản để xem báo cáo hoặc liên hệ với Omni-Growth trong trường hợp cần hỗ trợ"',
+      'WWW-Authenticate': 'Basic realm="Vui lòng đăng nhập để xem báo cáo hoặc liên hệ với Omni-Growth team trong trường hợp cần hỗ trợ"',
     },
   });
 }
