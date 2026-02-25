@@ -41,7 +41,8 @@ export default async function middleware(req) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Omni-Growth Team Workspace</title>
+      <title>Omni-Growth Workspace</title>
+      <link rel="icon" href="/Icon.png" type="image/png">
       <style>
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
