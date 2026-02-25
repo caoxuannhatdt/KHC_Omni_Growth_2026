@@ -41,7 +41,7 @@ export default async function middleware(req) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Đăng nhập - Omni Growth 2026</title>
+      <title>Omni-Growth Team Workspace</title>
       <style>
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
