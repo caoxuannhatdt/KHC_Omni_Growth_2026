@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PNJ Omni-Growth: Playbook</title>
-    <meta property="og:image" content="https://cdn.pnj.io/images/logo/pnj.com.vn.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -290,6 +289,152 @@
         .stripe-3 {
             width: 60px;
             animation: road-move 2.5s linear infinite 2s;
+        }
+
+        /* =============================================
+           CSS TỪ INDEX 3 - BẢN ĐỒ TỌA ĐỘ O2O
+           ============================================= */
+
+        /* Coordinate System Styles */
+        .graph-wrapper {
+            padding-left: 60px;
+            /* Space for Y-axis label */
+            padding-bottom: 40px;
+            /* Space for X-axis label */
+            position: relative;
+        }
+
+        .graph-container {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            background-image:
+                linear-gradient(rgba(203, 213, 225, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(203, 213, 225, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: left bottom;
+            border-left: 4px solid #002d72;
+            /* Y Axis */
+            border-bottom: 4px solid #002d72;
+            /* X Axis */
+        }
+
+        /* Arrows for axes */
+        .graph-container::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -12px;
+            border-width: 0 10px 20px 10px;
+            border-style: solid;
+            border-color: transparent transparent #002d72 transparent;
+        }
+
+        .graph-container::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            right: -20px;
+            border-width: 10px 0 10px 20px;
+            border-style: solid;
+            border-color: transparent transparent transparent #002d72;
+        }
+
+        /* Fixed Y Axis Label */
+        .y-axis-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 40px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .y-axis-label {
+            transform: rotate(-90deg);
+            white-space: nowrap;
+            transform-origin: center;
+        }
+
+        /* Diagonal Growth Path */
+        .growth-path {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top right, transparent 45%, rgba(212, 175, 55, 0.08) 50%, transparent 55%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Data Points (Cards) */
+        .data-card {
+            position: absolute;
+            transform: translate(-50%, 50%);
+            width: 190px;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .data-card:hover {
+            z-index: 20;
+            transform: translate(-50%, 50%) scale(1.05);
+            box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Zones Backgrounds */
+        .zone-bg {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.03;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .zone-1 {
+            bottom: -10%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background-color: #64748b;
+        }
+
+        .zone-2 {
+            bottom: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            background-color: #002d72;
+        }
+
+        .zone-3 {
+            top: -10%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background-color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .graph-wrapper {
+                padding-left: 40px;
+            }
+
+            .graph-container {
+                height: 950px;
+            }
+
+            .data-card {
+                width: 160px;
+                transform: translate(0, 50%);
+            }
+
+            .y-axis-container {
+                width: 40px;
+            }
         }
     </style>
 </head>
@@ -1789,19 +1934,6 @@
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="bg-slate-950 py-10 text-center">
-            <div class="max-w-7xl mx-auto px-4">
-                <img src="https://cdn.pnj.io/images/logo/pnj.com.vn.png" alt="PNJ Logo"
-                    class="nav-logo-img h-10 w-auto bg-white p-1.5 rounded-lg object-contain mx-auto mb-4"
-                    crossorigin="anonymous" id="pnj-logo-footer">
-                <p class="text-slate-500 text-xs font-bold tracking-widest uppercase mb-1">© 2026 PNJ OMNI-GROWTH TEAM.
-                </p>
-                <p class="text-slate-600 text-[10px]">Omni-Growth Playbook 2026 — Toàn bộ nội dung mang tính nội bộ
-                    &amp; bảo mật.</p>
-            </div>
-        </footer>
-
     </div><!-- /#report-container -->
 
     <!-- Chart.js Implementations -->
@@ -1926,7 +2058,298 @@
             }
         }
     </script>
+
+    <!-- =============================================
+         NỘI DUNG TỪ INDEX 3 - BẢN ĐỒ TỌA ĐỘ O2O
+         ============================================= -->
+    <section
+        class="max-w-[1200px] mx-auto bg-white p-6 md:p-12 rounded-3xl border border-slate-200 shadow-xl overflow-hidden relative my-8"
+        style="margin-left: auto; margin-right: auto;">
+
+        <!-- HEADER -->
+        <div class="text-center mb-10 relative z-10">
+            <span
+                class="bg-[#002d72]/10 text-[#002d72] border border-[#002d72]/20 px-4 py-1.5 rounded-full text-[11px] font-black tracking-widest uppercase mb-4 inline-block">
+                <i class="fas fa-chart-line mr-1"></i> Key Action 2026
+            </span>
+            <h2 class="text-3xl md:text-5xl font-black text-slate-900 font-heading tracking-tight mb-4">
+                Bản Đồ Tọa Độ <span class="text-[#002d72]">O2O Maturity</span>
+            </h2>
+            <p class="text-slate-600 font-medium max-w-3xl mx-auto text-sm md:text-base">
+                Tăng trưởng bền vững: Sự cộng hưởng giữa <strong class="text-blue-600">Nền tảng hệ thống và Trải nghiệm
+                    khách hàng</strong>, lấy <strong class="text-orange-500">Sức khỏe vòng đời làm trọng tâm</strong>.
+            </p>
+        </div>
+
+        <!-- THE COORDINATE GRAPH -->
+        <div class="graph-wrapper">
+
+            <!-- FIXED Y Axis Label -->
+            <div class="y-axis-container">
+                <div
+                    class="y-axis-label text-[10px] md:text-xs font-black text-[#002d72] uppercase tracking-widest flex items-center gap-2">
+                    <i class="fas fa-server transform rotate-90"></i> Back-stage <span
+                        class="text-slate-400 font-medium normal-case tracking-normal">Năng lực Tiền tuyến &amp; Hệ
+                        thống</span>
+                </div>
+            </div>
+
+            <!-- X Axis Label -->
+            <div
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-[10px] md:text-xs font-black text-[#002d72] uppercase tracking-widest flex items-center gap-2">
+                Front-stage <i class="fas fa-bullhorn"></i> <span
+                    class="text-slate-400 font-medium normal-case tracking-normal hidden md:inline">Điểm chạm &amp; Trải
+                    nghiệm CX</span>
+            </div>
+
+            <!-- Graph Area -->
+            <div class="graph-container">
+
+                <div class="zone-bg zone-1"></div>
+                <div class="zone-bg zone-2"></div>
+                <div class="zone-bg zone-3"></div>
+                <div class="growth-path"></div>
+
+                <!-- THE TARGET (Top Right) -->
+                <div class="absolute top-0 right-0 transform translate-x-4 -translate-y-4 text-center z-20">
+                    <div
+                        class="w-20 h-20 bg-gradient-to-br from-[#d4af37] to-yellow-500 rounded-full flex items-center justify-center border-4 border-white shadow-[0_0_30px_rgba(212,175,55,0.4)] animate-pulse mx-auto mb-2">
+                        <i class="fas fa-crown text-3xl text-white"></i>
+                    </div>
+                    <div class="bg-white px-3 py-1.5 rounded-lg border border-yellow-200 shadow-md">
+                        <p class="text-[10px] text-slate-500 font-bold uppercase mb-0.5">Mục Tiêu</p>
+                        <p class="text-xs font-black text-[#002d72] uppercase">Sức Khỏe Khách Hàng<br>ư(Customer Health)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- GIAI ĐOẠN 1: NỀN TẢNG (MÀU XÁM/SLATE) -->
+                <!-- ========================================== -->
+
+                <!-- 1. VOE (Đáy trái) -->
+                <div class="data-card" style="bottom: 12%; left: 18%;">
+                    <div class="bg-slate-50 border-2 border-slate-200 p-3 rounded-xl shadow-sm">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-comment-dots"></i></span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-[11px] mb-1">Khảo sát Tiền tuyến (VOE)</h4>
+                        <p class="text-[9px] text-slate-500">Đo lường NPS nội bộ. Lắng nghe và tháo gỡ nút thắt vận
+                            hành.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Aftersales VOC (Tịnh tiến lên phải) -->
+                <div class="data-card" style="bottom: 18%; left: 38%;">
+                    <div class="bg-slate-50 border-2 border-slate-200 p-3 rounded-xl shadow-sm">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-star"></i></span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-[11px] mb-1">Dịch vụ Aftersales VOC</h4>
+                        <p class="text-[9px] text-slate-500">Ghi nhận phản hồi sau mua. Tự động phân luồng xử lý.</p>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- GIAI ĐOẠN 2: TỐI ƯU HÓA (MÀU XANH NAVY) -->
+                <!-- ========================================== -->
+
+                <!-- 3. Công cụ Digital (Mép trái) -->
+                <div class="data-card" style="bottom: 35%; left: 20%;">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-3 rounded-xl shadow-md">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-blue-200 text-[#002d72] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-tablet-alt"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#002d72] text-[11px] mb-1">Khai thác Công cụ Digital</h4>
+                        <p class="text-[9px] text-slate-600">Ứng dụng công cụ Digital (FMB,ZMB, ...) và MPOS. Thấu hiểu
+                            chân dung và nhu cầu khách hàng.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. Active Listening (KÉO VÀO LẤP KHOẢNG TRỐNG TRUNG TÂM) -->
+                <div class="data-card" style="bottom: 40%; left: 45%;">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-3 rounded-xl shadow-md">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-blue-200 text-[#002d72] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-headphones-alt"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#002d72] text-[11px] mb-1">Người Bạn Đồng Hành</h4>
+                        <p class="text-[9px] text-slate-600">Thu thập Data định tính (Pain-points) và cập nhật ngược vào
+                            CDP.</p>
+                    </div>
+                </div>
+
+                <!-- 5. Local KOC & Social (Đỉnh của Giai đoạn 2) -->
+                <div class="data-card" style="bottom: 62%; left: 25%;">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-3 rounded-xl shadow-md">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-blue-200 text-[#002d72] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-video"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#002d72] text-[11px] mb-1">Local KOC &amp; Social Selling</h4>
+                        <p class="text-[9px] text-slate-600">Mỗi TVV đều có thể là đại sứ. Thu hút traffic Mạng xã
+                            hội về Cửa hàng.</p>
+                    </div>
+                </div>
+
+                <!-- 6. Clienteling (Nghiêng về External) -->
+                <div class="data-card" style="bottom: 45%; left: 65%;">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-3 rounded-xl shadow-md">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-blue-200 text-[#002d72] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-users"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#002d72] text-[11px] mb-1">Clienteling (RFM + CJM)</h4>
+                        <p class="text-[9px] text-slate-600">Thấu hiểu chân dung số - May đo trải nghiệm.</p>
+                    </div>
+                </div>
+
+                <!-- 7. Đánh chặn CIS (Sát trục X) -->
+                <div class="data-card" style="bottom: 25%; left: 72%;">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-3 rounded-xl shadow-md">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-blue-200 text-[#002d72] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-shield-alt"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#002d72] text-[11px] mb-1">CIS &amp; Win-back</h4>
+                        <p class="text-[9px] text-slate-600">Phát hiện ý định rời bỏ để tung kịch bản Win-back.</p>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- GIAI ĐOẠN 3: ĐỘT PHÁ & DI SẢN (MÀU VÀNG/DARK) -->
+                <!-- ========================================== -->
+
+                <!-- 8. Dashboard CJM360 (NGỰ TRỊ KHU VỰC TRUNG TÂM GĐ 3) -->
+                <div class="data-card" style="bottom: 65%; left: 52%;">
+                    <div
+                        class="bg-[#fefce8] border-2 border-[#d4af37] p-3 rounded-xl shadow-md transform hover:scale-105">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-[#facc15]/30 text-[#b49020] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-chart-pie"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#b49020] text-[11px] mb-1">Dashboard Toàn Trình (CJM360)</h4>
+                        <p class="text-[9px] text-slate-700">Đo lường hiệu suất toàn trình khách hàng sau mua.</p>
+                    </div>
+                </div>
+
+                <!-- 9. Tư vấn Cá nhân hóa (ĐẨY LÊN GÓC TRÁI CAO, TRÁNH ĐÈ DASHBOARD) -->
+                <div class="data-card" style="bottom: 82%; left: 42%;">
+                    <div
+                        class="bg-[#fefce8] border-2 border-[#d4af37] p-3 rounded-xl shadow-md transform hover:scale-105">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-[#facc15]/30 text-[#b49020] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-magic"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#b49020] text-[11px] mb-1">Tư Vấn Data Insight</h4>
+                        <p class="text-[9px] text-slate-700">Chốt deal dựa trên thấu hiểu Insight cá nhân thay vì phụ
+                            thuộc vào chương trình khuyến mãi.</p>
+                    </div>
+                </div>
+
+                <!-- 10. Tín hiệu O2O (Góc phải) -->
+                <div class="data-card" style="bottom: 55%; left: 85%;">
+                    <div
+                        class="bg-[#fefce8] border-2 border-[#d4af37] p-3 rounded-xl shadow-md transform hover:scale-105">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span
+                                class="w-5 h-5 rounded bg-[#facc15]/30 text-[#b49020] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-wifi"></i></span>
+                        </div>
+                        <h4 class="font-bold text-[#b49020] text-[11px] mb-1">Tín Hiệu O2O (CJM360)</h4>
+                        <p class="text-[9px] text-slate-700">Giăng lưới Digital Footprint. Tự động kích hoạt điểm chạm
+                            khi khách phát sinh nhu cầu.</p>
+                    </div>
+                </div>
+
+                <!-- 11. Scoring Card (THE MOAT) -->
+                <div class="data-card" style="bottom: 85%; left: 72%;">
+                    <div
+                        class="bg-[#0f172a] border-2 border-[#d4af37] p-3.5 rounded-xl shadow-xl transform hover:scale-110">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span
+                                class="w-6 h-6 rounded-full bg-[#d4af37]/20 text-[#facc15] flex items-center justify-center text-[10px]"><i
+                                    class="fas fa-satellite-dish"></i></span>
+                        </div>
+                        <h4 class="font-black text-white text-[12px] mb-1 leading-tight">Customer Scoring Card</h4>
+                        <p class="text-[10px] text-slate-300">Chấm điểm sức khỏe Real-time. Cung cấp kịch bản cá nhân
+                            hóa tự động cho Tiền tuyến.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MÔ TẢ 3 GIAI ĐOẠN (EXECUTIVE SUMMARY - C-LEVEL WORDING) -->
+        <div class="mt-12 bg-slate-50 border border-slate-200 rounded-2xl p-6">
+            <h3
+                class="text-sm font-black text-[#002d72] uppercase tracking-wide mb-4 text-center border-b border-slate-200 pb-3">
+                Tiến Trình Chuyển Đổi Năng Lực (Maturity Roadmap)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Phase 1 -->
+                <div class="relative">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-3 h-3 rounded-full bg-slate-400 shrink-0"></span>
+                        <h4 class="text-xs font-bold text-slate-800 uppercase">Giai Đoạn 1: Nền Tảng</h4>
+                    </div>
+                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Tối ưu hạ tầng công cụ &amp; quy trình.</li>
+                        <li>Gỡ bỏ rào cản thao tác, tạo nền móng vận hành chuẩn cho Tiền tuyến.</li>
+                    </ul>
+                </div>
+                <!-- Phase 2 -->
+                <div class="relative md:border-l border-slate-200 md:pl-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-3 h-3 rounded-full bg-[#002d72] shrink-0"></span>
+                        <h4 class="text-xs font-bold text-[#002d72] uppercase">Giai Đoạn 2: Tối Ưu</h4>
+                    </div>
+                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Xác định điểm chạm khách hàng, thấu hiểu chân dung, may đo trải nghiệm.</li>
+                        <li>Trao quyền Local KOC để chuyển hóa traffic Mạng xã hội thành doanh thu O2O.</li>
+                    </ul>
+                </div>
+                <!-- Phase 3 -->
+                <div class="relative md:border-l border-slate-200 md:pl-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-3 h-3 rounded-full bg-[#d4af37] shrink-0"></span>
+                        <h4 class="text-xs font-bold text-[#b49020] uppercase">Giai Đoạn 3: Đột Phá</h4>
+                    </div>
+                    <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Dự báo điểm rơi mua hàng qua Customer Scoring Card.</li>
+                        <li>Trang bị kịch bản chốt sales cá nhân hóa hoàn toàn tự động (Data Insight).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-10 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <img src="https://cdn.pnj.io/images/logo/pnj.com.vn.png" alt="PNJ Logo"
+                class="nav-logo-img h-10 w-auto bg-white p-1.5 rounded-lg object-contain mx-auto mb-4"
+                crossorigin="anonymous" id="pnj-logo-footer">
+            <p class="text-slate-500 text-xs font-bold tracking-widest uppercase mb-1">© 2026 PNJ OMNI-GROWTH TEAM.
+            </p>
+            <p class="text-slate-600 text-[10px]">Omni-Growth Playbook 2026 — Toàn bộ nội dung mang tính nội bộ
+                &amp; bảo mật.</p>
+        </div>
+    </footer>
+
 </body>
 
 </html>
-
