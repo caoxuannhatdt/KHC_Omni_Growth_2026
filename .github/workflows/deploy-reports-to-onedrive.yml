@@ -1,23 +1,60 @@
-name: 🚀 Push Báo Cáo Lên OneDrive (Qua Email)
+name: 🚀 Push Báo Cáo Lên OneDrive (Smart Auto)
 
 on:
   workflow_dispatch:
     inputs:
-      files_to_sync:
-        description: 'Nhập tên file/thư mục cần đẩy (VD: index.html components/nav.js)'
-        required: true
-        default: 'index.html'
+      auto_detect:
+        description: 'Tự động gom các file vừa sửa/thêm mới nhất (Auto-detect)'
+        type: boolean
+        default: true
+      manual_files:
+        description: 'Gõ thêm file khác nếu cần (VD: index.html css/style.css). Bỏ trống nếu không cần.'
+        required: false
+        default: ''
 
 jobs:
   send_email_to_pnj:
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Lấy mã nguồn mới nhất
+      - name: 📥 Lấy mã nguồn (cần lịch sử để so sánh)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Lấy 2 bản ghi gần nhất để so sánh sự thay đổi
 
-      - name: 🗂️ Đóng gói file thành ZIP
+      - name: 🗂️ Quét và Đóng gói file thông minh
         run: |
-          zip -r Report_Omni_2026.zip ${{ github.event.inputs.files_to_sync }}
+          FILES_TO_ZIP=""
+          
+          # 1. Nếu ô Auto-detect được tick, quét các file vừa thay đổi
+          if [ "${{ github.event.inputs.auto_detect }}" == "true" ]; then
+            # Tìm các file có sự thay đổi giữa phiên bản hiện tại và phiên bản trước đó
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+            echo "🔍 Đã quét thấy các file vừa thay đổi: $CHANGED_FILES"
+            FILES_TO_ZIP="$CHANGED_FILES"
+          fi
+          
+          # 2. Cộng thêm các file gõ bằng tay (nếu có)
+          if [ -n "${{ github.event.inputs.manual_files }}" ]; then
+            FILES_TO_ZIP="$FILES_TO_ZIP ${{ github.event.inputs.manual_files }}"
+          fi
+          
+          # 3. Lọc lại: Chỉ giữ những file thực sự tồn tại (bỏ qua file đã bị xóa)
+          EXISTING_FILES=""
+          for file in $FILES_TO_ZIP; do
+            if [ -f "$file" ] || [ -d "$file" ]; then
+              EXISTING_FILES="$EXISTING_FILES $file"
+            fi
+          done
+          
+          # 4. Kiểm tra và nén ZIP
+          if [ -z "$EXISTING_FILES" ]; then
+            echo "❌ Không có file nào hợp lệ để nén! Hãy kiểm tra lại."
+            exit 1
+          fi
+          
+          echo "📦 Đang nén các file: $EXISTING_FILES"
+          # Loại bỏ các file trùng lặp trong danh sách và nén lại
+          echo "$EXISTING_FILES" | tr ' ' '\n' | sort | uniq | tr '\n' ' ' | xargs zip -r Report_Omni_2026.zip
           
       - name: 📧 Gửi Email sang tài khoản PNJ
         uses: dawidd6/action-send-mail@v3
@@ -25,13 +62,10 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
-          # Đã gõ thẳng Email gửi ở đây (Không cần dùng Secret)
           username: "caoxuannhatdt@gmail.com"
-          # Lấy mật khẩu từ Két sắt (Secret duy nhất bạn vừa tạo)
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: "[BÁO CÁO OMNI 2026] File giao diện mới nhất"
-          # Đã gõ thẳng Email nhận ở đây (Không cần dùng Secret)
+          subject: "[BÁO CÁO OMNI 2026] Cập nhật giao diện tự động"
           to: "nhat.cx@pnj.com.vn"
           from: "Hệ thống GitHub <caoxuannhatdt@gmail.com>"
-          body: "Hệ thống vừa đóng gói các file báo cáo bạn yêu cầu. File đính kèm sẽ được Power Automate tự động nhận diện và bung ra OneDrive."
+          body: "Hệ thống đã tự động quét các file vừa cập nhật và đóng gói lại. File đính kèm đã sẵn sàng để đồng bộ lên OneDrive."
           attachments: Report_Omni_2026.zip
