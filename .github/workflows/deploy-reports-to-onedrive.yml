@@ -25,12 +25,12 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
-          # Gõ thẳng email nguồn vào đây
+          # Đã gõ thẳng Email gửi ở đây (Không cần dùng Secret)
           username: "caoxuannhatdt@gmail.com"
-          # Gọi đúng tên mật khẩu trong két sắt
+          # Lấy mật khẩu từ Két sắt (Secret duy nhất bạn vừa tạo)
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
           subject: "[BÁO CÁO OMNI 2026] File giao diện mới nhất"
-          # Gõ thẳng email đích vào đây
+          # Đã gõ thẳng Email nhận ở đây (Không cần dùng Secret)
           to: "nhat.cx@pnj.com.vn"
           from: "Hệ thống GitHub <caoxuannhatdt@gmail.com>"
           body: "Hệ thống vừa đóng gói các file báo cáo bạn yêu cầu. File đính kèm sẽ được Power Automate tự động nhận diện và bung ra OneDrive."
