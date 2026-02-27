@@ -17,7 +17,6 @@ jobs:
 
       - name: 🗂️ Đóng gói file thành ZIP
         run: |
-          # Lệnh zip sẽ gom đúng các file bạn gõ vào 1 cục, giữ nguyên cấu trúc thư mục
           zip -r Report_Omni_2026.zip ${{ github.event.inputs.files_to_sync }}
           
       - name: 📧 Gửi Email sang tài khoản PNJ
@@ -26,13 +25,13 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
-          # Gõ thẳng email của bạn vào đây
+          # Gõ thẳng email nguồn vào đây
           username: "caoxuannhatdt@gmail.com"
-          # VẪN GIỮ NGUYÊN BIẾN MẬT KHẨU NÀY
+          # Gọi đúng tên mật khẩu trong két sắt
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
           subject: "[BÁO CÁO OMNI 2026] File giao diện mới nhất"
-          # Gõ thẳng email PNJ vào đây
+          # Gõ thẳng email đích vào đây
           to: "nhat.cx@pnj.com.vn"
           from: "Hệ thống GitHub <caoxuannhatdt@gmail.com>"
-          body: "Hệ thống vừa đóng gói các file báo cáo bạn yêu cầu. File đính kèm sẽ được Power Automate tự động nhận diện và bung ra OneDrive của bạn, sau đó copy sang cho Sếp Kiên."
+          body: "Hệ thống vừa đóng gói các file báo cáo bạn yêu cầu. File đính kèm sẽ được Power Automate tự động nhận diện và bung ra OneDrive."
           attachments: Report_Omni_2026.zip
