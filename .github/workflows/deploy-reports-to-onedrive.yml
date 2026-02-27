@@ -1,0 +1,35 @@
+name: 🚀 Push Báo Cáo Lên OneDrive (Qua Email)
+
+on:
+  workflow_dispatch:
+    inputs:
+      files_to_sync:
+        description: 'Nhập tên file/thư mục cần đẩy (VD: index.html components/nav.js)'
+        required: true
+        default: 'index.html'
+
+jobs:
+  send_email_to_pnj:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Lấy mã nguồn mới nhất
+        uses: actions/checkout@v4
+
+      - name: 🗂️ Đóng gói file thành ZIP
+        run: |
+          # Lệnh zip sẽ gom đúng các file bạn gõ vào 1 cục, giữ nguyên cấu trúc thư mục
+          zip -r Report_Omni_2026.zip ${{ github.event.inputs.files_to_sync }}
+          
+      - name: 📧 Gửi Email sang tài khoản PNJ
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "[BÁO CÁO OMNI 2026] File giao diện mới nhất"
+          to: ${{ secrets.PNJ_EMAIL }}
+          from: "Hệ thống GitHub <${{ secrets.GMAIL_USERNAME }}>"
+          body: "Hệ thống vừa đóng gói các file báo cáo bạn yêu cầu. File đính kèm sẽ được Power Automate tự động nhận diện và bung ra OneDrive của bạn, sau đó copy sang cho Sếp Kiên."
+          attachments: Report_Omni_2026.zip
