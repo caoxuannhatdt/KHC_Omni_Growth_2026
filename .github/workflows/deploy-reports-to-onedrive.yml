@@ -1,0 +1,101 @@
+name: 🚀 Push Báo Cáo Lên OneDrive (Kiểm Soát Kép)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '🔍 XEM TRƯỚC: Chỉ in danh sách, KHÔNG gửi mail.'
+        type: boolean
+        default: true
+      push_all_html:
+        description: '🌟 BỐC HẾT: Đẩy TẤT CẢ file HTML đang có trong dự án'
+        type: boolean
+        default: false
+      auto_detect:
+        description: '⚡ CẬP NHẬT: Chỉ gom những file VỪA MỚI SỬA'
+        type: boolean
+        default: true
+      manual_files:
+        description: 'Gõ thêm (VD: assets/ style.css *.png)'
+        required: false
+        default: ''
+
+jobs:
+  send_email_to_pnj:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Lấy mã nguồn
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Phải lấy toàn bộ lịch sử để dễ tìm kiếm
+
+      - name: 🗂️ Lên danh sách file cần đẩy
+        id: prepare_files
+        run: |
+          FILES_TO_ZIP=""
+          
+          # 1. Lệnh bốc hết tất cả HTML trong dự án
+          if [ "${{ github.event.inputs.push_all_html }}" == "true" ]; then
+            ALL_HTML=$(find . -name "*.html" -type f | sed 's|^\./||')
+            FILES_TO_ZIP="$FILES_TO_ZIP $ALL_HTML"
+          fi
+          
+          # 2. Lệnh chỉ gom file vừa sửa đổi
+          if [ "${{ github.event.inputs.auto_detect }}" == "true" ]; then
+            # Dùng || true để tránh lỗi nếu đây là commit đầu tiên không có lịch sử
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD || true) 
+            FILES_TO_ZIP="$FILES_TO_ZIP $CHANGED_FILES"
+          fi
+          
+          # 3. File bổ sung nhập bằng tay
+          if [ -n "${{ github.event.inputs.manual_files }}" ]; then
+            FILES_TO_ZIP="$FILES_TO_ZIP ${{ github.event.inputs.manual_files }}"
+          fi
+          
+          # 4. Lọc lại: Xóa trùng lặp và bỏ qua file không tồn tại
+          EXISTING_FILES=""
+          for file in $FILES_TO_ZIP; do
+            if [ -f "$file" ] || [ -d "$file" ]; then
+              EXISTING_FILES="$EXISTING_FILES $file"
+            fi
+          done
+          EXISTING_FILES=$(echo "$EXISTING_FILES" | tr ' ' '\n' | sort | uniq | tr '\n' ' ')
+          
+          if [ -z "$EXISTING_FILES" ]; then
+            echo "❌ Không tìm thấy file hợp lệ nào! (Có thể dự án chưa có file nào, hoặc bạn chưa tích chọn chế độ gom file)."
+            exit 1
+          fi
+          
+          echo "DANH_SACH_FILE=$EXISTING_FILES" >> $GITHUB_ENV
+          
+      - name: 📋 XEM TRƯỚC DANH SÁCH (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "=================================================="
+          echo "👀 CHẾ ĐỘ XEM TRƯỚC ĐANG BẬT - SẼ KHÔNG GỬI MAIL"
+          echo "Hệ thống sẽ gom các file sau đây để đẩy lên OneDrive:"
+          for file in ${{ env.DANH_SACH_FILE }}; do
+            echo " 👉 $file"
+          done
+          echo "=================================================="
+          echo "Nếu danh sách đã chuẩn, hãy chạy lại và BỎ TICK ô đầu tiên nhé!"
+
+      - name: 🗂️ Đóng gói file thành ZIP
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        run: |
+          echo "${{ env.DANH_SACH_FILE }}" | xargs zip -r Report_Omni_2026.zip
+          
+      - name: 📧 Gửi Email sang tài khoản PNJ
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: "caoxuannhatdt@gmail.com"
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "[BÁO CÁO OMNI 2026] Cập nhật giao diện tự động"
+          to: "nhat.cx@pnj.com.vn"
+          from: "Hệ thống GitHub <caoxuannhatdt@gmail.com>"
+          body: "Hệ thống đã gom các file sau: ${{ env.DANH_SACH_FILE }}. File đính kèm đã sẵn sàng."
+          attachments: Report_Omni_2026.zip
