@@ -442,4 +442,12 @@ import { workspaceMenu } from '/config/menu-config.js';
   function open() { isOpen = true; mega.classList.add('open'); }
   function close() { isOpen = false; mega.classList.remove('open'); }
 
+  // Auto-load branch navigation for Clienteling natively inside nav
+  if (!document.getElementById('omni-branch-nav-script') && window.location.pathname.toLowerCase().includes('/clienteling/')) {
+    const b = document.createElement('script');
+    b.id = 'omni-branch-nav-script';
+    b.src = '/components/local-branch-nav.js';
+    document.head.appendChild(b);
+  }
+
 })();
