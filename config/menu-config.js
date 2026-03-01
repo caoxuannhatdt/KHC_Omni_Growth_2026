@@ -97,10 +97,10 @@ export const workspaceMenu = [
         icon: 'fa-layer-group',
         theme: 'emerald',
         subGroups: [],
-        // Lôi thẳng ra ngoài
         features: [
             { name: 'Roadmap 2026', url: '/modules/updating.html', status: 'coming-soon' },
-            { name: 'Release Notes', url: '/modules/updating.html', status: 'coming-soon' }
+            // Đã cập nhật đường dẫn mới và đổi status thành active
+            { name: 'Release Notes', url: '/modules/whats-new/release-notes.html', status: 'active' }
         ]
     }
 ];
