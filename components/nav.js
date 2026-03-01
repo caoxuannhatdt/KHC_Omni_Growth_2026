@@ -293,32 +293,7 @@ import { workspaceMenu } from '/config/menu-config.js';
     return html || emptyStateHTML();
   }
 
-  // LEVEL 2: Months inside a SubGroup (Monthly / 30D Lookback)
-  function renderLevel2Months(subGroupData) {
-    // We parse the features into Months (e.g. T01/2026)
-    if (!subGroupData.features || subGroupData.features.length === 0) return emptyStateHTML();
 
-    let months = {};
-    subGroupData.features.forEach(f => {
-      const m = f.name.match(/T\d{2}\/\d{4}/);
-      const key = m ? m[0] : 'Khác';
-      if (!months[key]) months[key] = [];
-      months[key].push(f);
-    });
-
-    const keys = Object.keys(months).sort((a, b) => b.localeCompare(a)); // Descending T02 then T01
-
-    return `<div class="folder-grid">` + keys.map((m, i) => `
-            <div class="folder-card" data-action="go-month" data-month="${m}" style="animation-delay: ${i * 0.05}s">
-                <div class="folder-icon"><i class="fas fa-calendar-alt"></i></div>
-                <div style="flex:1">
-                    <div class="folder-name">${m}</div>
-                    <div style="font-size:12px;color:#64748b;">${months[m].length} Báo cáo</div>
-                </div>
-                <i class="fas fa-arrow-right" style="color:#cbd5e1; font-size: 14px; transition: .2s;"></i>
-            </div>
-        `).join('') + `</div>`;
-  }
 
   // LEVEL 1: SubGroups inside Module
   function renderLevel1SubGroups(moduleIdx) {
@@ -344,14 +319,7 @@ import { workspaceMenu } from '/config/menu-config.js';
 
     if (currentState.subGroup) {
       bc += ` <i class="fas fa-chevron-right" style="font-size:10px;color:#cbd5e1;"></i> `;
-
-      if (mod.moduleName === 'Clienteling') {
-        bc += currentState.month
-          ? `<button class="bc-btn" data-action="go-subgroup" data-sg="${currentState.subGroup}">${currentState.subGroup}</button> <i class="fas fa-chevron-right" style="font-size:10px;color:#cbd5e1;"></i> <span class="bc-current">${currentState.month}</span>`
-          : `<span class="bc-current">${currentState.subGroup}</span>`;
-      } else {
-        bc += `<span class="bc-current">${currentState.subGroup}</span>`;
-      }
+      bc += `<span class="bc-current">${currentState.subGroup}</span>`;
     }
     return `<div class="breadcrumb">${bc}</div>`;
   }
@@ -361,24 +329,9 @@ import { workspaceMenu } from '/config/menu-config.js';
     const mod = workspaceMenu[currentState.moduleIdx];
     let contentHtml = '';
 
-    if (currentState.month && currentState.subGroup) {
-      // L3
+    if (currentState.subGroup) {
       const sgData = mod.subGroups.find(g => g.groupName === currentState.subGroup);
-      let monthLinks = [];
-      if (sgData && sgData.features) {
-        monthLinks = sgData.features.filter(f => f.name.includes(currentState.month) || (currentState.month === 'Khác' && !f.name.match(/T\d{2}\/\d{4}/)));
-      }
-      contentHtml = renderLevel3Links({ links: monthLinks });
-    }
-    else if (currentState.subGroup) {
-      const sgData = mod.subGroups.find(g => g.groupName === currentState.subGroup);
-      if (mod.moduleName === 'Clienteling') {
-        // L2 (Month folders)
-        contentHtml = renderLevel2Months(sgData || {});
-      } else {
-        // Flattened: Directly show L3 links for non-Clienteling
-        contentHtml = renderLevel3Links({ links: (sgData || {}).features || [] });
-      }
+      contentHtml = renderLevel3Links({ links: (sgData || {}).features || [] });
     }
     else {
       // L1
@@ -396,14 +349,9 @@ import { workspaceMenu } from '/config/menu-config.js';
         `;
 
     // Attach BC listeners
-    featPane.querySelectorAll('[data-action="go-home"]').forEach(btn => btn.onclick = () => { currentState.subGroup = null; currentState.month = null; renderRightPane(); });
+    featPane.querySelectorAll('[data-action="go-home"]').forEach(btn => btn.onclick = () => { currentState.subGroup = null; renderRightPane(); });
     featPane.querySelectorAll('[data-action="go-subgroup"]').forEach(btn => btn.onclick = (e) => {
       currentState.subGroup = e.currentTarget.getAttribute('data-sg');
-      currentState.month = null;
-      renderRightPane();
-    });
-    featPane.querySelectorAll('[data-action="go-month"]').forEach(btn => btn.onclick = (e) => {
-      currentState.month = e.currentTarget.getAttribute('data-month');
       renderRightPane();
     });
   }
