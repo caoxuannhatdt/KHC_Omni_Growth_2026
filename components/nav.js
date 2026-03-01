@@ -31,7 +31,8 @@ import { workspaceMenu } from '/config/menu-config.js';
   /* ── CSS ───────────────────────────────────────────────────────────── */
   const css = document.createElement('style');
   css.textContent = `
-        #omni-nav, #omni-nav * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        #omni-nav { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        #omni-nav *, #omni-nav *::before, #omni-nav *::after { box-sizing: inherit; }
         #omni-mega {
             display: none;
             position: absolute;

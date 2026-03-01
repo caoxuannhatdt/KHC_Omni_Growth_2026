@@ -52,10 +52,8 @@
         st.id = 'omni-base-style';
         st.textContent = `
             html { scroll-behavior: smooth; }
-            *, *::before, *::after {
-                font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-                box-sizing: border-box;
-            }
+            body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+            *, *::before, *::after { box-sizing: border-box; }
             @keyframes omni-spin { to { transform: rotate(360deg); } }
             @keyframes omni-fade-in {
                 from { opacity: 0; transform: translateY(-8px) scale(.98); }
