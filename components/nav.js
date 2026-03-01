@@ -93,7 +93,7 @@ import { workspaceMenu } from '/config/menu-config.js';
         }
         .omni-mod-pill:hover { background: #e2e8f0; }
         .omni-mod-pill.active { background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .15s; }
+        .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .15s; font-size: 14px; color: rgba(100, 116, 139, 0.85); }
         
         /* Dynamic JS injected styles will handle the active pill color/shadow glow */
 
@@ -151,7 +151,7 @@ import { workspaceMenu } from '/config/menu-config.js';
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;position:relative;">
-            <button onclick="typeof downloadAsImage==='function'&&downloadAsImage()" style="padding:8px 16px;border-radius:8px;border:none;background:${PNJ_BLUE};color:white;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+            <button class="btn-download" style="padding:8px 16px;border-radius:8px;border:none;background:${PNJ_BLUE};color:white;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;">
                 <i class="fas fa-download"></i> Tải Về (PNG)
             </button>
             <button id="omni-menu-btn" style="width:40px;height:40px;border-radius:8px;border:1px solid #cbd5e1;background:white;color:${PNJ_BLUE};cursor:pointer;display:flex;align-items:center;justify-content:center;">
@@ -334,14 +334,16 @@ import { workspaceMenu } from '/config/menu-config.js';
         if (idx === i) {
           p.classList.add('active');
           p.style.color = pColor;
-          iconDiv.style.backgroundColor = hexToRgba(pColor, 0.15);
+          iconDiv.style.background = `linear-gradient(135deg, ${hexToRgba(pColor, 0.18)}, ${hexToRgba(pColor, 0.12)})`;
           iconI.style.color = pColor;
-          iconI.style.textShadow = `0px 0px 8px ${hexToRgba(pColor, 0.5)}`; // Text shadow glow
+          iconI.style.filter = `brightness(1.15) saturate(1.4)`;
+          iconI.style.textShadow = `0px 0px 10px ${hexToRgba(pColor, 0.6)}`; // Text shadow glow
         } else {
           p.classList.remove('active');
           p.style.color = '';
-          iconDiv.style.backgroundColor = '';
+          iconDiv.style.background = '';
           iconI.style.color = '';
+          iconI.style.filter = '';
           iconI.style.textShadow = '';
         }
       });
@@ -363,7 +365,16 @@ import { workspaceMenu } from '/config/menu-config.js';
 
   mega.addEventListener('click', e => e.stopPropagation());
   menuBtn.addEventListener('click', e => { e.stopPropagation(); isOpen ? close() : open(); });
-  document.addEventListener('click', e => { if (isOpen) close(); });
+  document.addEventListener('click', e => {
+    // Handle download delegation safely
+    const dlBtn = e.target.closest('.btn-download');
+    if (dlBtn) {
+      if (typeof window.downloadAsImage === 'function') window.downloadAsImage();
+    }
+
+    // Handle menu close
+    if (isOpen && !e.target.closest('#omni-mega')) close();
+  });
 
   function open() { isOpen = true; mega.classList.add('open'); }
   function close() { isOpen = false; mega.classList.remove('open'); }
