@@ -2,53 +2,33 @@
  * config/menu-config.js
  * IA Clean-up & Grouping — Omni-Growth Workspace 2026
  *
- * Broken / empty URLs → /modules/updating.html (placeholder page)
- * status: 'active' | 'research' | 'coming-soon'
+ * Tối ưu UX: 
+ * - Loại bỏ các folder thừa ở System, CJM360.
+ * - Tinh gọn danh sách chi nhánh trong Clienteling (Chỉ điều hướng theo tháng).
+ * - Cập nhật Icon Semantic & Bảng màu Premium.
  */
 
 export const workspaceMenu = [
     /* ═══════════════════════════════════════════════════════════════════════
-       1. CLIENTELING
+       1. CLIENTELING (Theme: Teal / Xanh mòng két)
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'Clienteling',
-        icon: 'fa-users',
-        theme: 'blue',
+        icon: 'fa-handshake', // Icon mang tính kết nối khách hàng
+        theme: 'teal',
         subGroups: [
             {
                 groupName: 'Monthly',
                 features: [
-                    { name: 'T01/2026 – Tổng Quan', url: '/modules/clienteling/monthly/2026/01/tong-quan.html', status: 'active' },
-                    { name: 'T01/2026 – CN HCM', url: '/modules/clienteling/monthly/2026/01/cn-hcm.html', status: 'active' },
-                    { name: 'T01/2026 – CN MBC', url: '/modules/clienteling/monthly/2026/01/cn-mbc.html', status: 'active' },
-                    { name: 'T01/2026 – CN MTG', url: '/modules/clienteling/monthly/2026/01/cn-mtg.html', status: 'active' },
-                    { name: 'T01/2026 – CN MTY', url: '/modules/clienteling/monthly/2026/01/cn-mty.html', status: 'active' },
-                    { name: 'T01/2026 – CN TNN', url: '/modules/clienteling/monthly/2026/01/cn-tnn.html', status: 'active' },
-                    { name: 'T02/2026 – Tổng Quan', url: '/modules/clienteling/monthly/2026/02/tong-quan.html', status: 'active' },
-                    { name: 'T02/2026 – CN DNB', url: '/modules/clienteling/monthly/2026/02/cn-dnb.html', status: 'active' },
-                    { name: 'T02/2026 – CN HCM', url: '/modules/clienteling/monthly/2026/02/cn-hcm.html', status: 'active' },
-                    { name: 'T02/2026 – CN MBC', url: '/modules/clienteling/monthly/2026/02/cn-mbc.html', status: 'active' },
-                    { name: 'T02/2026 – CN MTG', url: '/modules/clienteling/monthly/2026/02/cn-mtg.html', status: 'active' },
-                    { name: 'T02/2026 – CN MTY', url: '/modules/clienteling/monthly/2026/02/cn-mty.html', status: 'active' },
-                    { name: 'T02/2026 – CN TNN', url: '/modules/clienteling/monthly/2026/02/cn-tnn.html', status: 'active' }
+                    { name: 'Tháng 01/2026', url: '/modules/clienteling/monthly/2026/01/tong-quan.html', status: 'active' },
+                    { name: 'Tháng 02/2026', url: '/modules/clienteling/monthly/2026/02/tong-quan.html', status: 'active' }
                 ]
             },
             {
                 groupName: '30D Lookback',
                 features: [
-                    { name: 'T01/2026 – Tổng Quan', url: '/modules/clienteling/30d-lookback/2026/01/tong-quan.html', status: 'active' },
-                    { name: 'T01/2026 – CN HCM', url: '/modules/clienteling/30d-lookback/2026/01/cn-hcm.html', status: 'active' },
-                    { name: 'T01/2026 – CN MBC', url: '/modules/clienteling/30d-lookback/2026/01/cn-mbc.html', status: 'active' },
-                    { name: 'T01/2026 – CN MTG', url: '/modules/clienteling/30d-lookback/2026/01/cn-mtg.html', status: 'active' },
-                    { name: 'T01/2026 – CN MTY', url: '/modules/clienteling/30d-lookback/2026/01/cn-mty.html', status: 'active' },
-                    { name: 'T01/2026 – CN TNN', url: '/modules/clienteling/30d-lookback/2026/01/cn-tnn.html', status: 'active' },
-                    { name: 'T02/2026 – Tổng Quan', url: '/modules/clienteling/30d-lookback/2026/02/tong-quan.html', status: 'active' },
-                    { name: 'T02/2026 – CN DNB', url: '/modules/clienteling/30d-lookback/2026/02/cn-dnb.html', status: 'active' },
-                    { name: 'T02/2026 – CN HCM', url: '/modules/clienteling/30d-lookback/2026/02/cn-hcm.html', status: 'active' },
-                    { name: 'T02/2026 – CN MBC', url: '/modules/clienteling/30d-lookback/2026/02/cn-mbc.html', status: 'active' },
-                    { name: 'T02/2026 – CN MTG', url: '/modules/clienteling/30d-lookback/2026/02/cn-mtg.html', status: 'active' },
-                    { name: 'T02/2026 – CN MTY', url: '/modules/clienteling/30d-lookback/2026/02/cn-mty.html', status: 'active' },
-                    { name: 'T02/2026 – CN TNN', url: '/modules/clienteling/30d-lookback/2026/02/cn-tnn.html', status: 'active' }
+                    { name: 'Tháng 01/2026', url: '/modules/clienteling/30d-lookback/2026/01/tong-quan.html', status: 'active' },
+                    { name: 'Tháng 02/2026', url: '/modules/clienteling/30d-lookback/2026/02/tong-quan.html', status: 'active' }
                 ]
             },
             { groupName: 'Quarterly', features: [] },
@@ -57,58 +37,52 @@ export const workspaceMenu = [
     },
 
     /* ═══════════════════════════════════════════════════════════════════════
-       2. CSC - SCORING CARD
+       2. CSC - SCORING CARD (Theme: Indigo)
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'CSC - Scoring Card',
-        icon: 'fa-chart-pie',
+        icon: 'fa-bullseye', // Icon nhắm mục tiêu/chấm điểm
         theme: 'indigo',
         subGroups: []
     },
 
     /* ═══════════════════════════════════════════════════════════════════════
-       3. CJM360
+       3. CJM360 (Theme: Rose / Hồng san hô)
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'CJM360',
-        icon: 'fa-wifi',
-        theme: 'green',
-        subGroups: [
-            {
-                groupName: 'Dashboard',
-                features: [
-                    { name: 'CJM360 Dashboard', url: '/modules/updating.html', status: 'coming-soon' }
-                ]
-            }
+        icon: 'fa-route', // Icon hành trình (Journey)
+        theme: 'rose',
+        subGroups: [],
+        // Lôi thẳng ra ngoài, không nhét vào folder Dashboard nữa
+        features: [
+            { name: 'CJM360 Dashboard', url: '/modules/updating.html', status: 'coming-soon' }
         ]
     },
 
     /* ═══════════════════════════════════════════════════════════════════════
-       4. UAV 2026
+       4. UAV 2026 (Theme: Sky Blue)
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'UAV 2026',
-        icon: 'fa-solid fa-shuttle-space',
-        theme: 'slate',
+        icon: 'fa-rocket', // Tốc độ, cất cánh
+        theme: 'sky',
         subGroups: []
     },
 
     /* ═══════════════════════════════════════════════════════════════════════
-       5. INNOVATION LAB
+       5. INNOVATION LAB (Theme: Purple)
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'Innovation Lab',
-        icon: 'fa-flask',
-        theme: 'orange',
+        icon: 'fa-microscope', // Rõ nghĩa phòng lab/nghiên cứu
+        theme: 'purple',
         subGroups: [
             {
                 groupName: 'Explore',
                 features: [
-                    {
-                        name: 'CIS – Đánh Chặn Rời Bỏ',
-                        url: '/modules/innovation/cis/index.html',
-                        status: 'research'
-                    }
+                    // Các link trong Explore sẽ được render phẳng ra ngoài nhờ logic JS
+                    { name: 'CIS – Đánh Chặn Rời Bỏ', url: '/modules/innovation/cis/index.html', status: 'research' }
                 ]
             },
             { groupName: 'Exploit', features: [] }
@@ -116,13 +90,14 @@ export const workspaceMenu = [
     },
 
     /* ═══════════════════════════════════════════════════════════════════════
-       6. SYSTEM & UPDATES
+       6. SYSTEM & UPDATES (Theme: Emerald)
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'System & Updates',
-        icon: 'fa-bullhorn',
-        theme: 'slate',
+        icon: 'fa-layer-group',
+        theme: 'emerald',
         subGroups: [],
+        // Lôi thẳng ra ngoài
         features: [
             { name: 'Roadmap 2026', url: '/modules/updating.html', status: 'coming-soon' },
             { name: 'Release Notes', url: '/modules/updating.html', status: 'coming-soon' }

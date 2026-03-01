@@ -17,12 +17,12 @@ import { workspaceMenu } from '/config/menu-config.js';
   const PNJ_GOLD = '#F7A800';
 
   const THEME_COLORS = {
-    'Clienteling': '#003468',
-    'CSC - Scoring Card': '#4f46e5', // Kept indigo for CSC to be consistent since it was requested earlier
-    'CJM360': '#4F46E5',  // Indigo
-    'UAV 2026': '#0EA5E9',
+    'Clienteling': '#0D9488', // Teal
+    'CSC - Scoring Card': '#4F46E5', // Indigo
+    'CJM360': '#E11D48',  // Rose
+    'UAV 2026': '#0EA5E9', // Sky
     'Innovation Lab': '#9333EA', // Purple
-    'System & Updates': '#059669' // System emerald
+    'System & Updates': '#10B981' // Emerald
   };
 
   const p = window.location.pathname;
@@ -102,7 +102,7 @@ import { workspaceMenu } from '/config/menu-config.js';
         }
         .omni-mod-pill:hover { background: #e2e8f0; }
         .omni-mod-pill.active { background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .2s; font-size: 14px; color: rgba(100, 116, 139, 0.85); }
+        .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: .2s; font-size: 14px; }
         
         /* Dynamic JS injected styles will handle the active pill color/shadow glow */
 
@@ -251,6 +251,48 @@ import { workspaceMenu } from '/config/menu-config.js';
         `).join('');
   }
 
+  // FLATTENED VIEWS (For CJM360, System, Innovation Lab)
+  function renderFlattenedGroups(mod) {
+    if ((!mod.subGroups || mod.subGroups.length === 0) && (!mod.features || mod.features.length === 0)) return emptyStateHTML();
+
+    let html = '';
+    let globalDelay = 0;
+
+    // 1. Direct features
+    if (mod.features && mod.features.length > 0) {
+      html += mod.features.map((f) => {
+        const delay = globalDelay++ * 0.04;
+        return `
+            <a href="${f.url}" class="omni-feat-link" style="animation-delay: ${delay}s">
+                <div class="feat-link-icon"><i class="fas ${f.icon || 'fa-file-alt'}"></i></div>
+                ${f.name}
+            </a>`;
+      }).join('');
+    }
+
+    // 2. Subgroups and their features
+    if (mod.subGroups && mod.subGroups.length > 0) {
+      mod.subGroups.forEach(sg => {
+        if (sg.features && sg.features.length > 0) {
+          // Add a small group header
+          const delay = globalDelay++ * 0.04;
+          html += `<div style="font-size: 12px; font-weight: 700; color: #94a3b8; margin: 16px 0 8px 4px; text-transform: uppercase; animation: slide-up-fade 0.4s ease forwards; opacity: 0; transform: translateY(12px); animation-delay: ${delay}s">${sg.groupName}</div>`;
+
+          html += sg.features.map(f => {
+            const delay2 = globalDelay++ * 0.04;
+            return `
+                    <a href="${f.url}" class="omni-feat-link" style="animation-delay: ${delay2}s">
+                        <div class="feat-link-icon"><i class="fas ${f.icon || 'fa-file-alt'}"></i></div>
+                        ${f.name}
+                    </a>`;
+          }).join('');
+        }
+      });
+    }
+
+    return html || emptyStateHTML();
+  }
+
   // LEVEL 2: Months inside a SubGroup (Monthly / 30D Lookback)
   function renderLevel2Months(subGroupData) {
     // We parse the features into Months (e.g. T01/2026)
@@ -340,17 +382,9 @@ import { workspaceMenu } from '/config/menu-config.js';
     }
     else {
       // L1
-      if (!mod.subGroups || mod.subGroups.length === 0) {
-        // Flattened completely: show direct features if it exists
-        if (mod.features && mod.features.length > 0) {
-          contentHtml = renderLevel3Links({ links: mod.features });
-        } else {
-          contentHtml = emptyStateHTML();
-        }
-      } else if (mod.subGroups && mod.subGroups.length === 1 && mod.moduleName !== 'Clienteling') {
-        // Smart flatten if only 1 subgroup exists!
-        currentState.subGroup = mod.subGroups[0].groupName;
-        contentHtml = renderLevel3Links({ links: mod.subGroups[0].features || [] });
+      if (mod.moduleName !== 'Clienteling') {
+        // Smart flatten everything not Clienteling!
+        contentHtml = renderFlattenedGroups(mod);
       } else {
         contentHtml = renderLevel1SubGroups(currentState.moduleIdx);
       }
@@ -390,7 +424,7 @@ import { workspaceMenu } from '/config/menu-config.js';
     const themeColor = THEME_COLORS[displayName] || THEME_COLORS['Clienteling'];
 
     pill.innerHTML = `
-            <div class="pill-icon"><i class="fas ${mod.icon || 'fa-cube'}"></i></div>
+            <div class="pill-icon" style="background:${hexToRgba(themeColor, 0.1)}; color:${themeColor};"><i class="fas ${mod.icon || 'fa-cube'}"></i></div>
             <span>${displayName}</span>
         `;
     pill.onclick = () => {
@@ -422,8 +456,8 @@ import { workspaceMenu } from '/config/menu-config.js';
         } else {
           p.classList.remove('active');
           p.style.color = '';
-          iconDiv.style.background = '';
-          iconI.style.color = '';
+          iconDiv.style.background = hexToRgba(pColor, 0.1);
+          iconI.style.color = pColor;
           iconI.style.filter = '';
           iconI.style.textShadow = '';
         }
