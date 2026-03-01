@@ -204,7 +204,7 @@ import { workspaceMenu } from '/config/menu-config.js';
 
     let months = {};
     subGroupData.features.forEach(f => {
-      const m = f.name.match(/T\\d{2}\\/\\d{ 4} /);
+      const m = f.name.match(/T\d{2}\/\d{4}/);
       const key = m ? m[0] : 'Khác';
       if (!months[key]) months[key] = [];
       months[key].push(f);
@@ -259,7 +259,7 @@ import { workspaceMenu } from '/config/menu-config.js';
       const sgData = mod.subGroups.find(g => g.groupName === currentState.subGroup);
       let monthLinks = [];
       if (sgData && sgData.features) {
-        monthLinks = sgData.features.filter(f => f.name.includes(currentState.month) || (currentState.month === 'Khác' && !f.name.match(/T\\d{2}\\/\\d{ 4} /)));
+        monthLinks = sgData.features.filter(f => f.name.includes(currentState.month) || (currentState.month === 'Khác' && !f.name.match(/T\d{2}\/\d{4}/)));
       }
       contentHtml = renderLevel3Links({ links: monthLinks });
     }
