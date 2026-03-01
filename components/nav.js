@@ -1,263 +1,298 @@
 /**
  * components/nav.js
  * Data-driven Mega Menu — Omni-Growth Workspace
- * Reads from /config/menu-config.js via dynamic import
+ * 2-Column App Drawer: Left = Module list | Right = Features on hover/click
  */
 
 (async function () {
 
-    /* ─── 1. Load menu data ─────────────────────────────────────────── */
-    let workspaceMenu = [];
-    try {
-        // Resolve the root-relative path from any depth
-        const base = window.location.origin;
-        const mod = await import(`${base}/config/menu-config.js`);
-        workspaceMenu = mod.workspaceMenu || [];
-    } catch (e) {
-        console.warn('[nav.js] Could not load menu-config.js:', e);
-    }
+  /* ─── 0. Guard: prevent double-injection ─────────────────────────────── */
+  if (document.getElementById('omni-nav')) return;
 
-    /* ─── 2. Module icon / colour map ──────────────────────────────── */
-    const moduleStyles = {
-        'Clienteling': { icon: 'fa-briefcase', accent: '#002d72', bg: '#EFF6FF' },
-        'CJM360': { icon: 'fa-users', accent: '#0f766e', bg: '#F0FDFA' },
-        'UAV 2026': { icon: 'fa-plane', accent: '#7c3aed', bg: '#F5F3FF' },
-        'CIS': { icon: 'fa-database', accent: '#b45309', bg: '#FFFBEB' },
-        "What's New": { icon: 'fa-star', accent: '#dc2626', bg: '#FFF1F2' },
-    };
+  /* ─── 1. Load menu data ──────────────────────────────────────────────── */
+  let workspaceMenu = [];
+  try {
+    const base = window.location.origin;
+    const mod = await import(`${base}/config/menu-config.js`);
+    workspaceMenu = mod.workspaceMenu || [];
+  } catch (e) {
+    console.warn('[nav.js] Could not load menu-config.js:', e);
+  }
 
-    /* ─── 3. Build Mega Panel HTML ──────────────────────────────────── */
-    const moduleListHTML = workspaceMenu.map((mod, idx) => {
-        const style = moduleStyles[mod.name] || { icon: 'fa-circle', accent: '#64748b', bg: '#F8FAFC' };
-        return `
-      <button
-        class="mega-module-btn w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:shadow-sm"
-        data-idx="${idx}"
-        style="--accent:${style.accent}; --bg:${style.bg};"
-      >
-        <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-              style="background:${style.bg}; color:${style.accent};">
-          <i class="fas ${style.icon} text-sm"></i>
-        </span>
-        <span class="text-sm font-bold" style="color:${style.accent};">${mod.name}</span>
-        ${mod.features.length ? `<span class="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full" style="background:${style.bg};color:${style.accent};">${mod.features.length}</span>` : ''}
-      </button>`;
-    }).join('');
+  /* ─── 2. Detect if on homepage ───────────────────────────────────────── */
+  const path = window.location.pathname;
+  const isHome = path === '/' || path === '/index.html' || path.endsWith('/index.html');
 
-    const megaPanelHTML = `
-    <div id="mega-panel"
-         style="display:none; position:fixed; top:64px; left:0; right:0; z-index:9999;
-                background:rgba(0,0,0,0.35); backdrop-filter:blur(4px); min-height:100vh;"
-         role="dialog" aria-modal="true">
+  /* ─── 3. Build nav HTML ──────────────────────────────────────────────── */
+  const ctaStyle = 'color:#64748b; text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; transition:color 0.15s; white-space:nowrap;';
+  const navEl = document.createElement('nav');
+  navEl.id = 'omni-nav';
+  navEl.setAttribute('aria-label', 'Global Navigation');
+  navEl.style.cssText = `
+        position: sticky; top: 0; z-index: 9999;
+        background: rgba(255,255,255,0.97);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(226,232,240,0.8);
+        box-shadow: 0 1px 12px rgba(0,45,114,0.07);
+        font-family: 'Inter', sans-serif;
+    `;
 
-      <!-- The floating card -->
-      <div id="mega-card"
-           style="position:absolute; top:8px; right:16px; width:480px; max-width:calc(100vw - 32px);
-                  background:#fff; border-radius:20px;
-                  box-shadow: 0 24px 64px rgba(0,45,114,0.18);
-                  overflow:hidden; display:flex; flex-direction:column;">
+  navEl.innerHTML = `
+        <div style="max-width:1400px; margin:0 auto; padding:0 20px; height:60px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
 
-        <!-- Card header -->
-        <div style="padding:16px 20px 12px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <p style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:.12em;">WORKSPACE</p>
-            <h2 style="font-size:15px; font-weight:800; color:#002d72; margin:0;">Omni-Growth Modules</h2>
-          </div>
-          <button id="mega-close-btn"
-                  style="width:32px;height:32px;border-radius:50%;background:#f8fafc;border:1px solid #e2e8f0;
-                         display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748b;
-                         font-size:16px;transition:background 0.2s;"
-                  aria-label="Close">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
+            <!-- LEFT: Logo + Brand -->
+            <a href="/index.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
+                <img src="/Logo.png" alt="PNJ" id="omni-logo"
+                    style="height:36px; width:auto; object-fit:contain; background:#fff; padding:4px 6px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1);"
+                    onerror="this.style.display='none'">
+                <span style="font-size:13px; font-weight:900; letter-spacing:0.12em; color:#002d72; text-transform:uppercase;">OMNI-GROWTH</span>
+            </a>
 
-        <!-- Two-column body -->
-        <div style="display:flex; height:320px; overflow:hidden;">
-
-          <!-- Left: Module list -->
-          <div style="width:200px; flex-shrink:0; border-right:1px solid #f1f5f9; padding:10px 8px; overflow-y:auto; display:flex; flex-direction:column; gap:2px;">
-            ${moduleListHTML}
-          </div>
-
-          <!-- Right: Features panel -->
-          <div id="mega-features-panel" style="flex:1; padding:16px; overflow-y:auto;">
-            <div id="mega-empty-state" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#cbd5e1;gap:8px;">
-              <i class="fas fa-th-large" style="font-size:32px;"></i>
-              <span style="font-size:12px; font-weight:600;">Chọn một module để xem</span>
+            <!-- CENTER: CTA Homepage Links (hidden on non-home pages) -->
+            <div id="omni-cta-links" style="display:${isHome ? 'flex' : 'none'}; align-items:center; gap:20px; flex:1; justify-content:center; flex-wrap:wrap;">
+                <a href="#problem"             style="${ctaStyle}" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#64748b'">1. Problem</a>
+                <a href="#agitation"           style="${ctaStyle}" onmouseover="this.style.color='#ea580c'" onmouseout="this.style.color='#64748b'">2. Agitation</a>
+                <a href="#solution"            style="${ctaStyle}" onmouseover="this.style.color='#16a34a'" onmouseout="this.style.color='#64748b'">3. Solution</a>
+                <a href="#execution"           style="${ctaStyle}" onmouseover="this.style.color='#002d72'" onmouseout="this.style.color='#64748b'">4. Thực Thi</a>
+                <a href="#internal-empowerment" style="${ctaStyle}" onmouseover="this.style.color='#0d9488'" onmouseout="this.style.color='#64748b'">5. Internal</a>
             </div>
-            <div id="mega-features-list" style="display:none;"></div>
-          </div>
 
+            <!-- RIGHT: Download Button + Mega Menu Trigger -->
+            <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+
+                <!-- Download Button -->
+                <button id="omni-download-btn"
+                    onclick="typeof downloadAsImage === 'function' && downloadAsImage()"
+                    title="Tải về dạng ảnh PNG"
+                    style="display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:999px; border:none; cursor:pointer; font-family:inherit; font-size:12px; font-weight:700; color:#fff; background:linear-gradient(135deg,#002d72,#1e40af); box-shadow:0 3px 10px rgba(0,45,114,0.25); transition:all 0.2s;">
+                    <i class="fas fa-download" style="font-size:11px;"></i>
+                    <span class="omni-dl-label">Tải Về</span>
+                </button>
+
+                <!-- Mega Menu Toggle -->
+                <button id="omni-menu-btn"
+                    aria-label="Open App Drawer"
+                    aria-expanded="false"
+                    style="width:38px; height:38px; border-radius:10px; border:1px solid rgba(0,45,114,0.15); background:#fff; color:#002d72; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0;">
+                    <i class="fas fa-th" style="font-size:15px;"></i>
+                </button>
+            </div>
         </div>
 
-        <!-- Card footer -->
-        <div style="padding:10px 20px; border-top:1px solid #f1f5f9; background:#fafafa; font-size:10px; color:#94a3b8; text-align:center;">
-          PNJ OMNI-GROWTH WORKSPACE · 2026
+        <!-- ═══ MEGA PANEL (2-Column App Drawer) ═══════════════════════════ -->
+        <div id="omni-mega-panel"
+            role="dialog" aria-modal="true" aria-label="App Drawer"
+            style="display:none; position:fixed; top:60px; left:0; right:0; bottom:0; z-index:9998;">
+
+            <!-- Backdrop -->
+            <div id="omni-backdrop" style="position:absolute; inset:0; background:rgba(2,6,23,0.45); backdrop-filter:blur(4px);"></div>
+
+            <!-- Panel container -->
+            <div id="omni-drawer"
+                style="position:absolute; top:0; right:0; width:560px; max-width:95vw; height:100%; background:#fff; box-shadow:-8px 0 40px rgba(0,45,114,0.15); display:flex; flex-direction:column; overflow:hidden; border-left:1px solid #e2e8f0;">
+
+                <!-- Panel header -->
+                <div style="padding:16px 20px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
+                    <div>
+                        <p style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#94a3b8;">Workspace</p>
+                        <p style="font-size:15px; font-weight:900; color:#002d72; margin-top:1px;">OMNI-GROWTH 2026</p>
+                    </div>
+                    <button id="omni-close-btn" aria-label="Close"
+                        style="width:32px; height:32px; border-radius:8px; border:1px solid #e2e8f0; background:#f8fafc; color:#64748b; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- 2-Column body: Left = Modules | Right = Features -->
+                <div style="display:flex; flex:1; overflow:hidden;">
+
+                    <!-- LEFT COLUMN: Module List -->
+                    <div id="omni-module-list"
+                        style="width:190px; flex-shrink:0; background:#f8fafc; border-right:1px solid #e2e8f0; overflow-y:auto; padding:8px;">
+                    </div>
+
+                    <!-- RIGHT COLUMN: Features -->
+                    <div id="omni-feature-pane"
+                        style="flex:1; overflow-y:auto; padding:16px;">
+                        <div id="omni-feature-empty" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:#cbd5e1; text-align:center;">
+                            <i class="fas fa-hand-pointer" style="font-size:28px; margin-bottom:10px;"></i>
+                            <p style="font-size:12px; font-weight:600;">Chọn một module<br>để xem chức năng</p>
+                        </div>
+                        <div id="omni-feature-content" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>`;
+    `;
 
-    /* ─── 4. Build full nav HTML ────────────────────────────────────── */
-    const navHTML = `
-<style>
-  .mega-module-btn:hover { background: var(--bg, #EFF6FF); }
-  .mega-module-btn.active { background: var(--bg, #EFF6FF); box-shadow: inset 0 0 0 1.5px var(--accent, #002d72); }
-  #mega-panel { animation: megaFadeIn .18s ease; }
-  @keyframes megaFadeIn { from { opacity:0 } to { opacity:1 } }
-  #mega-card { animation: megaSlideDown .22s cubic-bezier(.22,1,.36,1); }
-  @keyframes megaSlideDown { from { transform:translateY(-8px); opacity:0; } to { transform:translateY(0); opacity:1; } }
-</style>
+  /* ─── 4. Mount nav into #global-nav or prepend to body ──────────────── */
+  const mount = document.getElementById('global-nav') || (() => {
+    const wrapper = document.createElement('div');
+    wrapper.id = 'global-nav';
+    document.body.prepend(wrapper);
+    return wrapper;
+  })();
+  mount.appendChild(navEl);
 
-<nav style="position:sticky; top:0; z-index:100; backdrop-filter:blur(10px);
-            background:rgba(255,255,255,0.96); box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-  <div style="max-width:1280px; margin:0 auto; padding:0 16px; display:flex; align-items:center; height:64px; gap:16px;">
+  /* ─── 5. Populate Left Column with modules ─────────────────────────── */
+  const moduleList = document.getElementById('omni-module-list');
+  const featurePane = document.getElementById('omni-feature-content');
+  const featureEmpty = document.getElementById('omni-feature-empty');
 
-    <!-- Logo -->
-    <a href="/index.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
-      <img src="/Logo.png" alt="PNJ Logo" style="height:40px; width:auto; object-fit:contain;">
-      <span style="font-weight:900; font-size:18px; color:#002d72; letter-spacing:-0.02em; font-family:inherit;">OMNI-GROWTH</span>
-    </a>
+  const MODULE_ACCENT = ['#4f46e5', '#0ea5e9', '#f59e0b', '#10b981', '#ec4899'];
+  const MODULE_ICONS = { briefcase: 'briefcase', users: 'users', plane: 'paper-plane', database: 'database', star: 'star' };
 
-    <!-- CTA Homepage Links -->
-    <div id="playbook-center-links"
-         style="display:flex; align-items:center; gap:20px; flex:1; justify-content:center; flex-wrap:wrap;">
-      <a href="/index.html#problem"              class="nav-cta-link" style="color:#64748b;font-size:12px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#64748b'">1. Problem</a>
-      <a href="/index.html#agitation"            class="nav-cta-link" style="color:#64748b;font-size:12px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;" onmouseover="this.style.color='#ea580c'" onmouseout="this.style.color='#64748b'">2. Agitation</a>
-      <a href="/index.html#solution"             class="nav-cta-link" style="color:#64748b;font-size:12px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;" onmouseover="this.style.color='#16a34a'" onmouseout="this.style.color='#64748b'">3. Solution</a>
-      <a href="/index.html#execution"            class="nav-cta-link" style="color:#64748b;font-size:12px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;" onmouseover="this.style.color='#002d72'" onmouseout="this.style.color='#64748b'">4. Thực Thi</a>
-      <a href="/index.html#internal-empowerment" class="nav-cta-link" style="color:#64748b;font-size:12px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;" onmouseover="this.style.color='#0f766e'" onmouseout="this.style.color='#64748b'">5. Internal</a>
-    </div>
+  let activeIdx = -1;
 
-    <!-- Right actions -->
-    <div style="display:flex; align-items:center; gap:10px; flex-shrink:0; margin-left:auto;">
+  function selectModule(idx) {
+    activeIdx = idx;
+    const mod = workspaceMenu[idx];
 
-      <!-- Download button -->
-      <button id="download-btn" onclick="typeof downloadAsImage === 'function' && downloadAsImage()"
-              title="Tải về dạng ảnh PNG"
-              style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#002d72,#1e40af);
-                     color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:100px;
-                     border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,45,114,0.25);transition:all .2s;"
-              onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 18px rgba(0,45,114,0.35)'"
-              onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(0,45,114,0.25)'">
-        <span class="spinner" style="display:none;width:13px;height:13px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;"></span>
-        <i class="fas fa-download btn-icon"></i>
-        <span class="btn-label" style="display:none;">Tải Về</span>
-      </button>
-      <style>@keyframes spin{to{transform:rotate(360deg)}} @media(min-width:640px){#download-btn .btn-label{display:inline!important}}</style>
+    /* Update left-column active state */
+    moduleList.querySelectorAll('.omni-mod-item').forEach((el, i) => {
+      const isActive = i === idx;
+      el.style.background = isActive ? '#fff' : 'transparent';
+      el.style.borderLeft = isActive ? `3px solid ${MODULE_ACCENT[i % MODULE_ACCENT.length]}` : '3px solid transparent';
+      el.style.color = isActive ? '#002d72' : '#64748b';
+      el.style.fontWeight = isActive ? '700' : '500';
+    });
 
-      <!-- Mega Menu Toggle -->
-      <button id="mega-menu-btn" title="Workspace Modules" aria-label="Mở Workspace Menu"
-              style="width:40px;height:40px;border-radius:12px;background:#fff;color:#002d72;
-                     border:1.5px solid rgba(0,45,114,0.2);display:flex;align-items:center;justify-content:center;
-                     cursor:pointer;box-shadow:0 2px 6px rgba(0,45,114,0.08);transition:all .2s;"
-              onmouseover="this.style.background='#002d72';this.style.color='#fff'"
-              onmouseout="this.style.background='#fff';this.style.color='#002d72'">
-        <i class="fas fa-th" style="font-size:15px;"></i>
-      </button>
-
-    </div>
-  </div>
-</nav>
-
-${megaPanelHTML}`;
-
-    /* ─── 5. Inject nav into DOM ────────────────────────────────────── */
-    const container = document.getElementById('global-nav');
-    if (container) {
-        container.innerHTML = navHTML;
-    } else {
-        // Fallback: prepend to body
-        const wrapper = document.createElement('div');
-        wrapper.id = 'global-nav';
-        wrapper.innerHTML = navHTML;
-        document.body.prepend(wrapper);
+    /* Render right-column features */
+    if (!mod.features || mod.features.length === 0) {
+      featureEmpty.style.display = 'flex';
+      featurePane.style.display = 'none'; // Fixed: Changed featureContent to featurePane
+      featureEmpty.innerHTML = `
+                <i class="fas fa-hard-hat" style="font-size:28px; margin-bottom:10px; color:#e2e8f0;"></i>
+                <p style="font-size:12px; font-weight:600; color:#cbd5e1;">Module này đang<br>được phát triển</p>`;
+      return;
     }
 
-    /* ─── 6. Homepage link visibility logic ─────────────────────────── */
-    const path = window.location.pathname;
-    const isHome = path === '/' || path === '' || path.endsWith('index.html');
-    const ctaLinks = document.getElementById('playbook-center-links');
-    if (ctaLinks && !isHome) {
-        ctaLinks.style.display = 'none';
-    }
+    featureEmpty.style.display = 'none';
+    featurePane.style.display = 'block';
 
-    /* ─── 7. Mega Panel interactions ────────────────────────────────── */
-    const megaPanel = document.getElementById('mega-panel');
-    const megaCard = document.getElementById('mega-card');
-    const megaMenuBtn = document.getElementById('mega-menu-btn');
-    const megaCloseBtn = document.getElementById('mega-close-btn');
-    const featuresPanel = document.getElementById('mega-features-list');
-    const emptyState = document.getElementById('mega-empty-state');
+    const accent = MODULE_ACCENT[idx % MODULE_ACCENT.length];
+    featurePane.innerHTML = `
+            <p style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:${accent}; margin-bottom:12px;">${mod.name}</p>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                ${mod.features.map(f => `
+                    <a href="${f.url}" style="
+                        display:flex; align-items:center; gap:10px;
+                        padding:10px 12px; border-radius:10px;
+                        border:1px solid #f1f5f9;
+                        background:#fff; text-decoration:none;
+                        color:#334155; font-size:13px; font-weight:600;
+                        transition:all 0.15s;
+                        box-shadow:0 1px 3px rgba(0,0,0,0.04);"
+                        onmouseover="this.style.background='${accent}10'; this.style.borderColor='${accent}40'; this.style.color='${accent}'"
+                        onmouseout="this.style.background='#fff'; this.style.borderColor='#f1f5f9'; this.style.color='#334155'">
+                        <span style="width:28px; height:28px; border-radius:8px; background:${accent}15; color:${accent}; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">
+                            <i class="fas fa-file-chart-line"></i>
+                        </span>
+                        <span>${f.name}</span>
+                        <i class="fas fa-chevron-right" style="margin-left:auto; font-size:10px; color:#cbd5e1;"></i>
+                    </a>
+                `).join('')}
+            </div>`;
+  }
 
-    function openMega() { megaPanel.style.display = 'block'; document.body.style.overflow = 'hidden'; }
-    function closeMega() { megaPanel.style.display = 'none'; document.body.style.overflow = ''; }
+  /* Build module buttons */
+  workspaceMenu.forEach((mod, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'omni-mod-item';
+    btn.setAttribute('data-index', i);
+    const accent = MODULE_ACCENT[i % MODULE_ACCENT.length];
+    const iconName = MODULE_ICONS[mod.icon] || mod.icon || 'circle';
+    btn.style.cssText = `
+            width:100%; text-align:left; border:none; background:transparent;
+            border-left:3px solid transparent; border-radius:8px;
+            padding:10px 12px; margin-bottom:2px; cursor:pointer;
+            display:flex; align-items:center; gap:10px;
+            font-family:'Inter',sans-serif; font-size:13px; font-weight:500;
+            color:#64748b; transition:all 0.15s;`;
+    btn.innerHTML = `
+            <span style="width:30px; height:30px; border-radius:8px; background:${accent}15; color:${accent}; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">
+                <i class="fas fa-${iconName}"></i>
+            </span>
+            <span style="line-height:1.2;">${mod.name}</span>`;
 
-    megaMenuBtn?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        megaPanel.style.display === 'block' ? closeMega() : openMega();
+    btn.addEventListener('click', () => selectModule(i));
+    btn.addEventListener('mouseenter', () => {
+      if (i !== activeIdx) btn.style.background = '#fff';
     });
-
-    megaCloseBtn?.addEventListener('click', closeMega);
-
-    // Click outside the card to close
-    megaPanel?.addEventListener('click', (e) => {
-        if (!megaCard.contains(e.target)) closeMega();
+    btn.addEventListener('mouseleave', () => {
+      if (i !== activeIdx) btn.style.background = 'transparent';
     });
+    moduleList.appendChild(btn);
+  });
 
-    // ESC key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMega();
+  /* Auto-select first module if available */
+  if (workspaceMenu.length > 0) {
+    setTimeout(() => selectModule(0), 0);
+  }
+
+  /* ─── 6. Mega Panel open / close logic ──────────────────────────────── */
+  const menuBtn = document.getElementById('omni-menu-btn');
+  const closeBtn = document.getElementById('omni-close-btn');
+  const backdrop = document.getElementById('omni-backdrop');
+  const panel = document.getElementById('omni-mega-panel');
+  const drawer = document.getElementById('omni-drawer');
+  const featureContent = document.getElementById('omni-feature-content');
+
+  function openPanel() {
+    panel.style.display = 'block';
+    drawer.style.transform = 'translateX(100%)';
+    drawer.style.transition = 'transform 0.28s cubic-bezier(0.22,1,0.36,1)';
+    requestAnimationFrame(() => {
+      drawer.style.transform = 'translateX(0)';
     });
+    menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
 
-    // Module button clicks → render features
-    document.querySelectorAll('.mega-module-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.idx, 10);
-            const mod = workspaceMenu[idx];
-            if (!mod) return;
+  function closePanel() {
+    drawer.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      panel.style.display = 'none';
+      document.body.style.overflow = '';
+    }, 280);
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
 
-            // Highlight active module
-            document.querySelectorAll('.mega-module-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+  menuBtn.addEventListener('click', () => {
+    panel.style.display === 'none' ? openPanel() : closePanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+  backdrop.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && panel.style.display !== 'none') closePanel();
+  });
 
-            const style = moduleStyles[mod.name] || { icon: 'fa-circle', accent: '#64748b', bg: '#F8FAFC' };
+  /* ─── 7. Download button hover ─────────────────────────────────────── */
+  const dlBtn = document.getElementById('omni-download-btn');
+  dlBtn.addEventListener('mouseenter', () => {
+    dlBtn.style.background = 'linear-gradient(135deg,#1e40af,#2563eb)';
+    dlBtn.style.transform = 'translateY(-1px)';
+  });
+  dlBtn.addEventListener('mouseleave', () => {
+    dlBtn.style.background = 'linear-gradient(135deg,#002d72,#1e40af)';
+    dlBtn.style.transform = 'translateY(0)';
+  });
 
-            if (!mod.features || mod.features.length === 0) {
-                emptyState.innerHTML = `
-          <i class="fas fa-hourglass-half" style="font-size:28px;"></i>
-          <span style="font-size:12px;font-weight:600;">Chưa có dữ liệu cho module này</span>`;
-                emptyState.style.display = 'flex';
-                featuresPanel.style.display = 'none';
-                return;
-            }
-
-            // Build feature links
-            featuresPanel.innerHTML = `
-        <p style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin:0 0 12px;">
-          <i class="fas ${style.icon}" style="color:${style.accent};margin-right:5px;"></i>${mod.name}
-        </p>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          ${mod.features.map(f => `
-            <a href="${f.url}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;
-                                      background:#f8fafc;text-decoration:none;transition:all .18s;border:1px solid #f1f5f9;"
-               onmouseover="this.style.background='${style.bg}';this.style.borderColor='${style.accent}30'"
-               onmouseout="this.style.background='#f8fafc';this.style.borderColor='#f1f5f9'">
-              <span style="width:32px;height:32px;border-radius:8px;background:${style.bg};color:${style.accent};
-                           display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <i class="fas ${style.icon} text-sm"></i>
-              </span>
-              <div>
-                <span style="font-size:13px;font-weight:700;color:#1e293b;">${f.name}</span>
-                ${f.status === 'active' ? `<span style="display:block;font-size:10px;color:#22c55e;font-weight:600;margin-top:1px;">● Active</span>` : `<span style="display:block;font-size:10px;color:#94a3b8;font-weight:600;margin-top:1px;">Coming soon</span>`}
-              </div>
-              <i class="fas fa-chevron-right" style="margin-left:auto;font-size:10px;color:#cbd5e1;"></i>
-            </a>`).join('')}
-        </div>`;
-
-            emptyState.style.display = 'none';
-            featuresPanel.style.display = 'block';
-        });
-    });
+  /* ─── 8. Inject nav-only styles ─────────────────────────────────────── */
+  const style = document.createElement('style');
+  style.textContent = `
+        #omni-mega-panel { animation: omni-fadeIn 0.2s ease; }
+        @keyframes omni-fadeIn { from { opacity:0; } to { opacity:1; } }
+        #omni-module-list::-webkit-scrollbar,
+        #omni-feature-pane::-webkit-scrollbar { width: 4px; }
+        #omni-module-list::-webkit-scrollbar-thumb,
+        #omni-feature-pane::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 2px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @media (max-width:640px) {
+            .omni-dl-label { display:none !important; }
+            #omni-drawer { width: 100% !important; max-width:100% !important; }
+        }
+    `;
+  document.head.appendChild(style);
 
 })();
