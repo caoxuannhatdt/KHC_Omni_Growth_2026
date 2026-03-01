@@ -16,14 +16,13 @@ import { workspaceMenu } from '/config/menu-config.js';
   const PNJ_BLUE = '#002d72';
   const PNJ_GOLD = '#F7A800';
 
-  const THEME = {
-    blue: '#003468',
-    indigo: '#4f46e5',
-    green: '#059669',
-    slate: '#475569',
-    orange: '#ea580c',
-    pink: '#db2777',
-    purple: '#9333ea'
+  const THEME_COLORS = {
+    'Clienteling': '#003468',
+    'CSC - Scoring Card': '#4f46e5', // Kept indigo for CSC to be consistent since it was requested earlier
+    'CJM360': '#4F46E5',  // Indigo
+    'UAV 2026': '#0EA5E9',
+    'Innovation Lab': '#9333EA', // Purple
+    'System & Updates': '#059669' // System emerald
   };
 
   const p = window.location.pathname;
@@ -92,10 +91,11 @@ import { workspaceMenu } from '/config/menu-config.js';
             font-size: 13px; font-weight: 600; color: #475569;
             transition: all .15s;
         }
-        .omni-mod-pill:hover { background: #e2e8f0; color: ${PNJ_BLUE}; }
-        .omni-mod-pill.active { background: white; color: ${PNJ_BLUE}; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .omni-mod-pill:hover { background: #e2e8f0; }
+        .omni-mod-pill.active { background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .15s; }
-        .omni-mod-pill.active .pill-icon { background: rgba(0, 52, 104, 0.15); color: ${PNJ_BLUE} !important; box-shadow: 0 0 12px rgba(0, 52, 104, 0.25); }
+        
+        /* Dynamic JS injected styles will handle the active pill color/shadow glow */
 
         /* SubGroup / Folder Cards (Level 1/2) */
         .folder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -303,18 +303,48 @@ import { workspaceMenu } from '/config/menu-config.js';
     });
   }
 
+  // Utility for rgba conversion
+  function hexToRgba(hex, alpha) {
+    let r = parseInt(hex.slice(1, 3), 16),
+      g = parseInt(hex.slice(3, 5), 16),
+      b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
   // Build Left Modules
   workspaceMenu.forEach((mod, i) => {
     const pill = document.createElement('button');
     pill.className = 'omni-mod-pill';
     const displayName = mod.moduleName === 'Customer Scoring Card' ? 'CSC - Scoring Card' : mod.moduleName;
+    const themeColor = THEME_COLORS[displayName] || THEME_COLORS['Clienteling'];
+
     pill.innerHTML = `
             <div class="pill-icon"><i class="fas ${mod.icon || 'fa-cube'}"></i></div>
             <span>${displayName}</span>
         `;
     pill.onclick = () => {
       currentState = { moduleIdx: i, subGroup: null, month: null };
-      document.querySelectorAll('.omni-mod-pill').forEach((p, idx) => p.classList.toggle('active', idx === i));
+
+      document.querySelectorAll('.omni-mod-pill').forEach((p, idx) => {
+        const pName = workspaceMenu[idx].moduleName === 'Customer Scoring Card' ? 'CSC - Scoring Card' : workspaceMenu[idx].moduleName;
+        const pColor = THEME_COLORS[pName] || THEME_COLORS['Clienteling'];
+        const iconDiv = p.querySelector('.pill-icon');
+        const iconI = iconDiv.querySelector('i');
+
+        if (idx === i) {
+          p.classList.add('active');
+          p.style.color = pColor;
+          iconDiv.style.backgroundColor = hexToRgba(pColor, 0.15);
+          iconI.style.color = pColor;
+          iconI.style.textShadow = `0px 0px 8px ${hexToRgba(pColor, 0.5)}`; // Text shadow glow
+        } else {
+          p.classList.remove('active');
+          p.style.color = '';
+          iconDiv.style.backgroundColor = '';
+          iconI.style.color = '';
+          iconI.style.textShadow = '';
+        }
+      });
       renderRightPane();
     };
     modList.appendChild(pill);
@@ -322,8 +352,8 @@ import { workspaceMenu } from '/config/menu-config.js';
 
   /* Init */
   if (workspaceMenu.length > 0) {
-    document.querySelectorAll('.omni-mod-pill')[0].classList.add('active');
-    renderRightPane();
+    const firstPill = document.querySelectorAll('.omni-mod-pill')[0];
+    firstPill.click(); // Trigger dynamic style explicitly
   }
 
   /* ── Open / Close ──────────────────────────────────────────────────── */

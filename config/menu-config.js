@@ -88,7 +88,7 @@ export const workspaceMenu = [
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'UAV 2026',
-        icon: 'fa-rocket',
+        icon: 'fa-solid fa-shuttle-space',
         theme: 'slate',
         subGroups: []
     },
