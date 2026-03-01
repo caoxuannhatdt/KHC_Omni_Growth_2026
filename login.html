@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập — PNJ OMNI-GROWTH 2026</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/Icon.png" type="image/png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #0c1a4a 100%);
+            min-height: 100vh;
+        }
+
+        .card-glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.08);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #fff;
+            background: linear-gradient(135deg, #002d72, #1e40af);
+            box-shadow: 0 4px 20px rgba(0, 45, 114, 0.4);
+            transition: all 0.2s;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(0, 45, 114, 0.5);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .error-msg {
+            display: none;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            20% {
+                transform: translateX(-8px)
+            }
+
+            40% {
+                transform: translateX(8px)
+            }
+
+            60% {
+                transform: translateX(-5px)
+            }
+
+            80% {
+                transform: translateX(5px)
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Background decorative blobs -->
+    <div
+        style="position:fixed; top:-20%; left:-10%; width:500px; height:500px; background:radial-gradient(circle, rgba(0,45,114,0.3) 0%, transparent 70%); pointer-events:none;">
+    </div>
+    <div
+        style="position:fixed; bottom:-20%; right:-10%; width:400px; height:400px; background:radial-gradient(circle, rgba(30,64,175,0.2) 0%, transparent 70%); pointer-events:none;">
+    </div>
+
+    <!-- Login Card -->
+    <div class="card-glass rounded-2xl w-full max-w-sm p-8 relative z-10">
+
+        <!-- Logo & Brand -->
+        <div class="text-center mb-8">
+            <img src="/Logo.png" alt="PNJ Logo"
+                class="h-12 w-auto object-contain bg-white px-3 py-1.5 rounded-xl mx-auto mb-4"
+                onerror="this.style.display='none'">
+            <h1 class="text-white text-xl font-black tracking-widest uppercase">OMNI-GROWTH</h1>
+            <p class="text-slate-500 text-sm mt-1">Workspace 2026 · Nội bộ PNJ</p>
+        </div>
+
+        <!-- Login Form — CLIENT-SIDE ONLY, no method/action (prevents HTTP 405) -->
+        <form id="login-form" onsubmit="handleLogin(event)" autocomplete="off" novalidate>
+
+            <div class="mb-4">
+                <label class="block text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Mật khẩu truy
+                    cập</label>
+                <div class="relative">
+                    <input type="password" id="password-input" class="input-field" placeholder="Nhập mật khẩu..."
+                        autocomplete="current-password" autofocus>
+                    <button type="button" onclick="togglePassword()"
+                        style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer; font-size:14px; padding:4px;">
+                        <i class="fas fa-eye" id="eye-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-msg mb-4" id="error-msg">
+                <i class="fas fa-exclamation-circle mr-2"></i>Sai mật khẩu. Vui lòng thử lại.
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-login">
+                <i class="fas fa-unlock-alt mr-2"></i>Truy Cập Workspace
+            </button>
+        </form>
+
+        <!-- Footer note -->
+        <p class="text-center text-slate-600 text-xs mt-6">
+            <i class="fas fa-shield-alt mr-1"></i>Tài liệu nội bộ · Không chia sẻ ra ngoài
+        </p>
+    </div>
+
+    <script>
+        // ─── CLIENT-SIDE AUTHENTICATION ───────────────────────────────────────
+        // Static password check — no POST request, no server interaction.
+        // This fully prevents the Vercel HTTP 405 (Method Not Allowed) error.
+
+        const VALID_PASSWORD = 'omni2026'; // ← Change this to your actual password
+
+        function handleLogin(event) {
+            event.preventDefault(); // Critical: never submit the form to a server
+
+            const input = document.getElementById('password-input');
+            const errorEl = document.getElementById('error-msg');
+            const form = document.getElementById('login-form');
+
+            const entered = input.value.trim();
+
+            if (entered === VALID_PASSWORD) {
+                // ── SUCCESS ──
+                errorEl.classList.remove('show');
+                sessionStorage.setItem('omni_auth', 'true');
+                input.disabled = true;
+                document.querySelector('.btn-login').innerHTML = '<i class="fas fa-check mr-2"></i>Đang chuyển hướng...';
+                setTimeout(() => { window.location.href = '/index.html'; }, 600);
+            } else {
+                // ── FAILURE ──
+                errorEl.classList.add('show');
+                form.classList.add('shake');
+                input.value = '';
+                input.focus();
+                setTimeout(() => form.classList.remove('shake'), 400);
+            }
+        }
+
+        function togglePassword() {
+            const input = document.getElementById('password-input');
+            const icon = document.getElementById('eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
