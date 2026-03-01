@@ -3,7 +3,7 @@
  * Fully automated, zero-config Local Branch Navigation for Clienteling reports.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initBranchNav() {
     // 1. Scope Protection
     const path = window.location.pathname.toLowerCase();
     if (!path.includes('/clienteling/')) return;
@@ -12,8 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('auto-branch-nav')) return;
 
     // 2. Target Identification & Placement
-    const headerBlock = document.querySelector('#report-container > .card-glass:first-child');
-    if (!headerBlock) return;
+    // The main header is usually the first .card-glass inside #report-container
+    const headerBlock = document.querySelector('#report-container > .card-glass:first-of-type') ||
+        document.querySelector('.card-glass:first-of-type');
+
+    if (!headerBlock) {
+        // Retry if DOM isn't fully parsed yet (e.g., heavily reliant on scripts)
+        setTimeout(initBranchNav, 100);
+        return;
+    }
 
     // 3. Component UI/UX (Inject CSS)
     if (!document.getElementById('lbn-styles')) {
@@ -98,4 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const defaultPill = navContainer.querySelector('[data-target="tong-quan"]');
         if (defaultPill) defaultPill.classList.add('active');
     }
-});
+}
+
+// Bootstrap
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBranchNav);
+} else {
+    initBranchNav();
+}
