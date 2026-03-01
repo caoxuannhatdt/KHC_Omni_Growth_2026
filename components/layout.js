@@ -73,12 +73,21 @@
     }
 
     function loadNav() {
-        if (document.getElementById('omni-nav-script')) return;
-        const s = document.createElement('script');
-        s.id = 'omni-nav-script';
-        s.type = 'module';
-        s.src = `${window.location.origin}/components/nav.js`;
-        document.head.appendChild(s);
+        if (!document.getElementById('omni-nav-script')) {
+            const s = document.createElement('script');
+            s.id = 'omni-nav-script';
+            s.type = 'module';
+            s.src = `${window.location.origin}/components/nav.js`;
+            document.head.appendChild(s);
+        }
+
+        // Auto-load branch navigation for Clienteling
+        if (!document.getElementById('omni-branch-nav-script')) {
+            const b = document.createElement('script');
+            b.id = 'omni-branch-nav-script';
+            b.src = `${window.location.origin}/components/local-branch-nav.js`;
+            document.head.appendChild(b);
+        }
     }
 
     /* 6. PNJ Footer */
