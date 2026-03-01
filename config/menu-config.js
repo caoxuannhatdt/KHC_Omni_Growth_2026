@@ -2,9 +2,7 @@
  * config/menu-config.js
  * IA Clean-up & Grouping — Omni-Growth Workspace 2026
  *
- * Schema per module:
- *   { moduleName, icon, theme, subGroups: [ { groupName, features: [ { name, url, status } ] } ] }
- *
+ * Broken / empty URLs → /modules/updating.html (placeholder page)
  * status: 'active' | 'research' | 'coming-soon'
  */
 
@@ -53,22 +51,16 @@ export const workspaceMenu = [
                     { name: 'T02/2026 – CN TNN', url: '/modules/clienteling/30d-lookback/2026/02/cn-tnn.html', status: 'active' }
                 ]
             },
-            {
-                groupName: 'Quarterly',
-                features: []
-            },
-            {
-                groupName: 'Campaigns',
-                features: []
-            }
+            { groupName: 'Quarterly', features: [] },
+            { groupName: 'Campaigns', features: [] }
         ]
     },
 
     /* ═══════════════════════════════════════════════════════════════════════
-       2. CUSTOMER SCORING CARD
+       2. CSC - SCORING CARD
        ═══════════════════════════════════════════════════════════════════════ */
     {
-        moduleName: 'Customer Scoring Card',
+        moduleName: 'CSC - Scoring Card',
         icon: 'fa-calculator',
         theme: 'indigo',
         subGroups: []
@@ -85,7 +77,7 @@ export const workspaceMenu = [
             {
                 groupName: 'Dashboard',
                 features: [
-                    { name: 'CJM360 Dashboard', url: '#', status: 'coming-soon' }
+                    { name: 'CJM360 Dashboard', url: '/modules/updating.html', status: 'coming-soon' }
                 ]
             }
         ]
@@ -119,10 +111,7 @@ export const workspaceMenu = [
                     }
                 ]
             },
-            {
-                groupName: 'Exploit',
-                features: []
-            }
+            { groupName: 'Exploit', features: [] }
         ]
     },
 
@@ -137,8 +126,8 @@ export const workspaceMenu = [
             {
                 groupName: 'Roadmap',
                 features: [
-                    { name: 'Master Roadmap 2026', url: '/modules/whats-new/roadmap.html', status: 'active' },
-                    { name: 'Release Notes', url: '/modules/whats-new/release-notes.html', status: 'active' }
+                    { name: 'Master Roadmap 2026', url: '/modules/updating.html', status: 'coming-soon' },
+                    { name: 'Release Notes', url: '/modules/updating.html', status: 'coming-soon' }
                 ]
             }
         ]

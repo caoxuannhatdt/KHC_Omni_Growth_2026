@@ -6,8 +6,9 @@
  *
  * Automatically:
  *   1. Injects Tailwind CDN, FontAwesome 6.4.0, Google Fonts (Inter) → <head>
- *   2. Creates <div id="global-nav"> at top of <body>, loads nav.js as ES module
- *   3. Injects standard PNJ Omni-Growth <footer> at bottom of <body>
+ *   2. Adds smooth scroll + body font style
+ *   3. Creates <div id="global-nav"> at top of <body>, loads nav.js as ES module
+ *   4. Injects standard PNJ Omni-Growth <footer> at bottom of <body>
  */
 
 (function () {
@@ -24,17 +25,9 @@
         document.head.appendChild(el);
     }
 
-    /* ─── 1. Inject CDN dependencies ─────────────────────────────────────── */
+    /* ─── 1. Inject CDN dependencies (in order: FA → Fonts → Tailwind) ──── */
 
-    // Tailwind CSS CDN
-    if (!document.getElementById('omni-tailwind') && !document.querySelector('script[src*="tailwindcss"]')) {
-        const tw = document.createElement('script');
-        tw.id = 'omni-tailwind';
-        tw.src = 'https://cdn.tailwindcss.com';
-        document.head.appendChild(tw);
-    }
-
-    // FontAwesome 6.4.0
+    // FontAwesome 6.4.0 — FIRST to ensure icons render before layout paint
     injectLink({
         id: 'omni-fontawesome',
         href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -48,15 +41,30 @@
         href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap',
     });
 
-    // Base font reset
-    if (!document.getElementById('omni-font-style')) {
+    // Tailwind CSS CDN
+    if (!document.getElementById('omni-tailwind') && !document.querySelector('script[src*="tailwindcss"]')) {
+        const tw = document.createElement('script');
+        tw.id = 'omni-tailwind';
+        tw.src = 'https://cdn.tailwindcss.com';
+        document.head.appendChild(tw);
+    }
+
+    /* ─── 2. Base styles: font reset + smooth scroll ─────────────────────── */
+    if (!document.getElementById('omni-base-style')) {
         const st = document.createElement('style');
-        st.id = 'omni-font-style';
-        st.textContent = `*, *::before, *::after { font-family: 'Inter', system-ui, -apple-system, sans-serif; box-sizing: border-box; }`;
+        st.id = 'omni-base-style';
+        st.textContent = `
+            html { scroll-behavior: smooth; }
+            *, *::before, *::after {
+                font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+                box-sizing: border-box;
+            }
+            @keyframes omni-spin { to { transform: rotate(360deg); } }
+        `;
         document.head.prepend(st);
     }
 
-    /* ─── 2. Ensure #global-nav at top of <body> ─────────────────────────── */
+    /* ─── 3. Ensure #global-nav at top of <body> ─────────────────────────── */
     function ensureNav() {
         if (document.getElementById('global-nav')) return;
         const div = document.createElement('div');
@@ -64,7 +72,7 @@
         document.body.prepend(div);
     }
 
-    /* ─── 3. Load nav.js as ES Module ────────────────────────────────────── */
+    /* ─── 4. Load nav.js as ES Module ────────────────────────────────────── */
     function loadNav() {
         if (document.getElementById('omni-nav-script')) return;
         const s = document.createElement('script');
@@ -74,13 +82,12 @@
         document.head.appendChild(s);
     }
 
-    /* ─── 4. Inject standard PNJ Omni-Growth footer at bottom of <body> ──── */
+    /* ─── 5. Inject standard PNJ Omni-Growth footer ──────────────────────── */
     function injectFooter() {
         if (document.getElementById('omni-footer')) return;
         const footer = document.createElement('footer');
         footer.id = 'omni-footer';
         footer.className = 'bg-slate-950 py-10 text-center';
-        footer.style.fontFamily = "'Inter', sans-serif";
         footer.innerHTML = `
             <div style="max-width:1200px;margin:0 auto;padding:0 20px;">
                 <img src="/Logo.png" alt="PNJ Logo"
@@ -97,7 +104,7 @@
         document.body.appendChild(footer);
     }
 
-    /* ─── 5. Run after DOM is ready ─────────────────────────────────────── */
+    /* ─── 6. Run after DOM is ready ─────────────────────────────────────── */
     function init() {
         ensureNav();
         loadNav();

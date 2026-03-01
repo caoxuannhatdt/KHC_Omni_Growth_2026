@@ -9,16 +9,17 @@ export default function middleware(request) {
     const basicAuth = authorizationHeader.split(' ')[1];
     const [user, password] = atob(basicAuth).split(':');
 
-    // Tài khoản: pnj / Mật khẩu: omni2026
-    if (user === 'pnj' && password === 'omni2026') {
+    // Tài khoản: omnigrowth / Mật khẩu: omni2026
+    if (user === 'omnigrowth' && password === 'omni2026') {
       return; // Cho phép đi tiếp
     }
   }
 
-  return new Response('Yêu cầu đăng nhập hệ thống Omni-Growth', {
+  return new Response('Unauthorized', {
     status: 401,
     headers: {
       'WWW-Authenticate': 'Basic realm="Omni-Growth Secure Workspace"',
+      'Content-Type': 'text/plain',
     },
   });
 }

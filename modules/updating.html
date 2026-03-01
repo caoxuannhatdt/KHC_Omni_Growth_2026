@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang Cập Nhật — PNJ OMNI-GROWTH 2026</title>
+    <meta name="robots" content="noindex">
+    <script type="module" src="/components/layout.js"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+
+        .updating-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .updating-card {
+            text-align: center;
+            max-width: 480px;
+        }
+
+        .updating-icon-wrap {
+            width: 96px;
+            height: 96px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #003468, #0052a5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 32px rgba(0, 52, 104, 0.25);
+            animation: pulse-card 2.5s ease-in-out infinite;
+        }
+
+        .updating-icon-wrap i {
+            font-size: 40px;
+            color: #F7A800;
+        }
+
+        @keyframes pulse-card {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                box-shadow: 0 8px 32px rgba(0, 52, 104, 0.25);
+            }
+
+            50% {
+                transform: translateY(-6px);
+                box-shadow: 0 16px 40px rgba(0, 52, 104, 0.35);
+            }
+        }
+
+        .updating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff7ed;
+            color: #ea580c;
+            border: 1px solid #fed7aa;
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .updating-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .updating-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .updating-progress {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .updating-progress-bar {
+            height: 100%;
+            width: 45%;
+            background: linear-gradient(90deg, #003468, #F7A800);
+            border-radius: 2px;
+            animation: progress-shimmer 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes progress-shimmer {
+            from {
+                width: 30%;
+            }
+
+            to {
+                width: 75%;
+            }
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #003468, #0052a5);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all .2s;
+            box-shadow: 0 4px 12px rgba(0, 52, 104, .25);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 52, 104, .35);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="global-nav"></div>
+
+    <div class="updating-body">
+        <div class="updating-card">
+
+            <div class="updating-icon-wrap">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+
+            <div class="updating-badge">
+                <i class="fas fa-circle-notch fa-spin" style="font-size:9px;"></i>
+                Đang Đồng Bộ
+            </div>
+
+            <h1 class="updating-title">Dữ liệu đang được<br>đồng bộ cho mục này</h1>
+
+            <p class="updating-desc">
+                Module này đang trong quá trình xây dựng và hoàn thiện.<br>
+                Nội dung sẽ sớm được cập nhật trong thời gian tới.
+            </p>
+
+            <div class="updating-progress">
+                <div class="updating-progress-bar"></div>
+            </div>
+
+            <a href="/index.html" class="back-btn">
+                <i class="fas fa-arrow-left" style="font-size:11px;"></i>
+                Về Trang Chủ
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>
