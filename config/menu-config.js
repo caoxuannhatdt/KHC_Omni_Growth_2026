@@ -1,114 +1,205 @@
 /**
  * config/menu-config.js
- * Central data source for the Omni-Growth Workspace navigation.
- * Consumed by components/nav.js to build the 2-column App Drawer Mega Menu.
+ * 6-Module Information Architecture — Omni-Growth Workspace 2026
+ *
+ * Clienteling features are flexible by month/region sub-folders.
+ * status values: 'active' | 'coming-soon' | 'research'
  */
 
 export const workspaceMenu = [
     {
-        moduleName: 'Clienteling',
-        icon: 'fa-users',
-        accent: '#4f46e5',
-        description: 'Quản trị hành trình & hiệu quả KHC',
+        moduleName: "Clienteling",
+        icon: "fa-users",
+        theme: "blue",
         features: [
+            /* ── Report Monthly ── flexible sub-pages by date ── */
             {
-                name: 'Report Monthly',
-                url: '/modules/clienteling/monthly/',
-                icon: 'fa-calendar-alt',
-                description: 'Báo cáo hiệu quả hàng tháng'
+                name: "Monthly · T01/2026 – Tổng Quan",
+                url: "/modules/clienteling/monthly/2026/01/tong-quan.html",
+                status: "active"
             },
             {
-                name: '30D Lookback',
-                url: '/modules/clienteling/30d-lookback/',
-                icon: 'fa-history',
-                description: 'Nhìn lại 30 ngày qua'
+                name: "Monthly · T01/2026 – CN HCM",
+                url: "/modules/clienteling/monthly/2026/01/cn-hcm.html",
+                status: "active"
             },
             {
-                name: 'Quarterly',
-                url: '/modules/clienteling/quarterly/',
-                icon: 'fa-chart-bar',
-                description: 'Tổng kết theo quý'
+                name: "Monthly · T01/2026 – CN MBC",
+                url: "/modules/clienteling/monthly/2026/01/cn-mbc.html",
+                status: "active"
             },
             {
-                name: 'Campaigns',
-                url: '/modules/clienteling/campaigns/',
-                icon: 'fa-bullseye',
-                description: 'Quản lý chiến dịch chăm sóc'
-            }
+                name: "Monthly · T01/2026 – CN MTG",
+                url: "/modules/clienteling/monthly/2026/01/cn-mtg.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T01/2026 – CN MTY",
+                url: "/modules/clienteling/monthly/2026/01/cn-mty.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T01/2026 – CN TNN",
+                url: "/modules/clienteling/monthly/2026/01/cn-tnn.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – Tổng Quan",
+                url: "/modules/clienteling/monthly/2026/02/tong-quan.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – CN DNB",
+                url: "/modules/clienteling/monthly/2026/02/cn-dnb.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – CN HCM",
+                url: "/modules/clienteling/monthly/2026/02/cn-hcm.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – CN MBC",
+                url: "/modules/clienteling/monthly/2026/02/cn-mbc.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – CN MTG",
+                url: "/modules/clienteling/monthly/2026/02/cn-mtg.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – CN MTY",
+                url: "/modules/clienteling/monthly/2026/02/cn-mty.html",
+                status: "active"
+            },
+            {
+                name: "Monthly · T02/2026 – CN TNN",
+                url: "/modules/clienteling/monthly/2026/02/cn-tnn.html",
+                status: "active"
+            },
+            /* ── 30D Lookback ── flexible by date ── */
+            {
+                name: "30D Lookback · T01/2026 – Tổng Quan",
+                url: "/modules/clienteling/30d-lookback/2026/01/tong-quan.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T01/2026 – CN HCM",
+                url: "/modules/clienteling/30d-lookback/2026/01/cn-hcm.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T01/2026 – CN MBC",
+                url: "/modules/clienteling/30d-lookback/2026/01/cn-mbc.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T01/2026 – CN MTG",
+                url: "/modules/clienteling/30d-lookback/2026/01/cn-mtg.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T01/2026 – CN MTY",
+                url: "/modules/clienteling/30d-lookback/2026/01/cn-mty.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T01/2026 – CN TNN",
+                url: "/modules/clienteling/30d-lookback/2026/01/cn-tnn.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – Tổng Quan",
+                url: "/modules/clienteling/30d-lookback/2026/02/tong-quan.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – CN DNB",
+                url: "/modules/clienteling/30d-lookback/2026/02/cn-dnb.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – CN HCM",
+                url: "/modules/clienteling/30d-lookback/2026/02/cn-hcm.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – CN MBC",
+                url: "/modules/clienteling/30d-lookback/2026/02/cn-mbc.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – CN MTG",
+                url: "/modules/clienteling/30d-lookback/2026/02/cn-mtg.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – CN MTY",
+                url: "/modules/clienteling/30d-lookback/2026/02/cn-mty.html",
+                status: "active"
+            },
+            {
+                name: "30D Lookback · T02/2026 – CN TNN",
+                url: "/modules/clienteling/30d-lookback/2026/02/cn-tnn.html",
+                status: "active"
+            },
+            /* ── Other reports ── */
+            { name: "Quarterly", url: "#", status: "coming-soon" },
+            { name: "Campaigns", url: "#", status: "coming-soon" }
         ]
     },
     {
-        moduleName: 'CJM360',
-        icon: 'fa-wifi',
-        accent: '#0ea5e9',
-        description: 'Customer Journey Map toàn diện',
+        moduleName: "Customer Scoring",
+        icon: "fa-calculator",
+        theme: "indigo",
         features: [
-            {
-                name: 'Tín Hiệu O2O',
-                url: '/modules/cjm360/o2o-signals.html',
-                icon: 'fa-map-pin',
-                description: 'Theo dõi tín hiệu Online-to-Offline'
-            },
-            {
-                name: 'Lead Dashboard',
-                url: '/modules/cjm360/lead-dashboard.html',
-                icon: 'fa-tachometer-alt',
-                description: 'Bảng theo dõi chuyển đổi Lead'
-            }
+            { name: "Model Tracking", url: "#", status: "coming-soon" },
+            { name: "Health Dashboard", url: "#", status: "coming-soon" }
         ]
     },
     {
-        moduleName: 'UAV 2026',
-        icon: 'fa-rocket',
-        accent: '#f59e0b',
-        description: 'Kế hoạch Tăng trưởng 2026',
+        moduleName: "CJM360",
+        icon: "fa-wifi",
+        theme: "green",
         features: [
-            {
-                name: 'Master Plan',
-                url: '/modules/uav-2026/master-plan.html',
-                icon: 'fa-project-diagram',
-                description: 'Kế hoạch tổng thể toàn năm'
-            },
-            {
-                name: 'Tracking P&L',
-                url: '/modules/uav-2026/tracking-pl.html',
-                icon: 'fa-dollar-sign',
-                description: 'Theo dõi kết quả kinh doanh'
-            }
+            { name: "Store Leads", url: "#", status: "coming-soon" },
+            { name: "Conversion Rate", url: "#", status: "coming-soon" }
         ]
     },
     {
-        moduleName: 'CIS',
-        icon: 'fa-shield-alt',
-        accent: '#10b981',
-        description: 'Customer Intelligence System',
+        moduleName: "UAV 2026",
+        icon: "fa-rocket",
+        theme: "slate",
+        features: [
+            { name: "Master Plan", url: "#", status: "coming-soon" },
+            { name: "P&L Tracking", url: "#", status: "coming-soon" }
+        ]
+    },
+    {
+        moduleName: "Innovation Lab",
+        icon: "fa-flask",
+        theme: "orange",
         features: [
             {
-                name: 'Đánh Chặn Rời Bỏ',
-                url: '/modules/cis/churn-intercept.html',
-                icon: 'fa-user-shield',
-                description: 'Phá vỡ rào cản rời bỏ khách hàng'
+                name: "[Explore] CIS - Đánh Chặn",
+                url: "/modules/innovation/cis/index.html",
+                status: "research"
+            },
+            {
+                name: "[Exploit] Cập nhật sau",
+                url: "#",
+                status: "coming-soon"
             }
         ]
     },
     {
         moduleName: "System & Updates",
-        icon: 'fa-bullhorn',
-        accent: '#ec4899',
-        description: 'Lộ trình & nhật ký cập nhật hệ thống',
+        icon: "fa-bullhorn",
+        theme: "slate",
         features: [
-            {
-                name: 'Master Roadmap 2026',
-                url: '/modules/whats-new/roadmap.html',
-                icon: 'fa-map',
-                description: 'Quản trị tương lai — hướng đi chiến lược'
-            },
-            {
-                name: 'Release Notes',
-                url: '/modules/whats-new/release-notes.html',
-                icon: 'fa-clipboard-list',
-                description: 'Nhật ký cập nhật tính năng'
-            }
+            { name: "Master Roadmap 2026", url: "/modules/whats-new/roadmap.html", status: "active" },
+            { name: "Release Notes", url: "/modules/whats-new/release-notes.html", status: "active" }
         ]
     }
 ];

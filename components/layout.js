@@ -1,14 +1,13 @@
 /**
  * components/layout.js  —  App Shell Entry Point
- * Omni-Growth Workspace
+ * Omni-Growth Workspace 2026
  *
- * Add ONE script tag to any HTML page:
- *   <script type="module" src="/components/layout.js"></script>
+ * Usage: <script type="module" src="/components/layout.js"></script>
  *
- * This script automatically:
- *   1. Injects Tailwind CDN, FontAwesome 6.4, and Google Fonts (Inter) into <head>
- *   2. Creates <div id="global-nav"> at top of <body> and loads nav.js (ES module)
- *   3. Injects the standard PNJ Omni-Growth <footer> at the bottom of <body>
+ * Automatically:
+ *   1. Injects Tailwind CDN, FontAwesome 6.4.0, Google Fonts (Inter) → <head>
+ *   2. Creates <div id="global-nav"> at top of <body>, loads nav.js as ES module
+ *   3. Injects standard PNJ Omni-Growth <footer> at bottom of <body>
  */
 
 (function () {
@@ -65,7 +64,7 @@
         document.body.prepend(div);
     }
 
-    /* ─── 3. Load nav.js as ES Module ───────────────────────────────────── */
+    /* ─── 3. Load nav.js as ES Module ────────────────────────────────────── */
     function loadNav() {
         if (document.getElementById('omni-nav-script')) return;
         const s = document.createElement('script');
@@ -75,7 +74,7 @@
         document.head.appendChild(s);
     }
 
-    /* ─── 4. Inject standard PNJ Omni-Growth footer at end of <body> ─────── */
+    /* ─── 4. Inject standard PNJ Omni-Growth footer at bottom of <body> ──── */
     function injectFooter() {
         if (document.getElementById('omni-footer')) return;
         const footer = document.createElement('footer');
