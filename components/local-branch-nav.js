@@ -1,32 +1,39 @@
 /**
  * components/local-branch-nav.js
- * Local Branch Navigation specifically for Clienteling reports.
- * Requires a container with ID #omni-branch-nav to be present in the HTML.
+ * Fully automated, zero-config Local Branch Navigation for Clienteling reports.
  */
 
-(function () {
-    const navContainer = document.getElementById('omni-branch-nav');
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Scope Protection
+    const path = window.location.pathname.toLowerCase();
+    if (!path.includes('/clienteling/')) return;
 
-    // Safely exit if the required container does not exist
-    if (!navContainer) return;
+    // Prevent duplicate injections
+    if (document.getElementById('auto-branch-nav')) return;
 
-    // Inject CSS styles
+    // 2. Target Identification & Placement
+    const headerBlock = document.querySelector('#report-container > .card-glass:first-child');
+    if (!headerBlock) return;
+
+    // 3. Component UI/UX (Inject CSS)
     if (!document.getElementById('lbn-styles')) {
         const css = document.createElement('style');
         css.id = 'lbn-styles';
         css.textContent = `
-            .lbn-scroll-wrapper {
+            #auto-branch-nav {
                 display: inline-flex;
                 gap: 6px;
                 padding: 6px;
                 background: #f8fafc;
+                border: 1px solid #e2e8f0;
                 border-radius: 12px;
                 box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
                 overflow-x: auto;
                 scrollbar-width: none; /* Firefox */
                 max-width: 100%;
+                margin-bottom: 24px; /* mb-6 */
             }
-            .lbn-scroll-wrapper::-webkit-scrollbar {
+            #auto-branch-nav::-webkit-scrollbar {
                 display: none; /* Safari and Chrome */
             }
             .branch-pill {
@@ -40,7 +47,7 @@
                 transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             }
             .branch-pill:hover {
-                color: #0D9488;
+                color: #0D9488; /* Teal */
                 background: rgba(13, 148, 136, 0.05);
             }
             .branch-pill.active {
@@ -49,47 +56,46 @@
                 box-shadow: 0 4px 10px -2px rgba(13, 148, 136, 0.3);
                 pointer-events: none;
             }
+            .branch-pill i {
+                margin-right: 4px;
+            }
         `;
         document.head.appendChild(css);
     }
 
-    // Definitions for the branches
-    const branches = [
-        { id: 'tong-quan', label: 'Tổng Quan', href: './tong-quan.html' },
-        { id: 'cn-hcm', label: 'CN HCM', href: './cn-hcm.html' },
-        { id: 'cn-mbc', label: 'CN MBC', href: './cn-mbc.html' },
-        { id: 'cn-mtg', label: 'CN MTG', href: './cn-mtg.html' },
-        { id: 'cn-mty', label: 'CN MTY', href: './cn-mty.html' },
-        { id: 'cn-tnn', label: 'CN TNN', href: './cn-tnn.html' },
-        { id: 'cn-dnb', label: 'CN DNB', href: './cn-dnb.html' }
-    ];
+    // Create the container
+    const navContainer = document.createElement('div');
+    navContainer.id = 'auto-branch-nav';
 
-    const currentPath = window.location.pathname.toLowerCase();
+    // Component HTML (Relative links)
+    navContainer.innerHTML = `
+        <a href="./tong-quan.html" class="branch-pill" data-target="tong-quan"><i class="fas fa-globe"></i> Tổng Quan</a>
+        <a href="./cn-hcm.html" class="branch-pill" data-target="cn-hcm">CN HCM</a>
+        <a href="./cn-mbc.html" class="branch-pill" data-target="cn-mbc">CN MBC</a>
+        <a href="./cn-mtg.html" class="branch-pill" data-target="cn-mtg">CN MTG</a>
+        <a href="./cn-mty.html" class="branch-pill" data-target="cn-mty">CN MTY</a>
+        <a href="./cn-tnn.html" class="branch-pill" data-target="cn-tnn">CN TNN</a>
+        <a href="./cn-dnb.html" class="branch-pill" data-target="cn-dnb">CN DNB</a>
+    `;
 
-    // Find active branch by checking if current path ends with the branch href
-    let activeBranch = branches[0]; // Default to Tổng Quan
-    for (const b of branches) {
-        const filename = b.href.replace('./', '');
-        if (currentPath.endsWith(filename)) {
-            activeBranch = b;
-            break;
+    // Inject into DOM
+    headerBlock.insertAdjacentElement('afterend', navContainer);
+
+    // 4. Auto-Active Logic
+    const pills = navContainer.querySelectorAll('.branch-pill');
+    let matched = false;
+
+    pills.forEach(pill => {
+        const target = pill.getAttribute('data-target');
+        if (path.includes(target)) {
+            pill.classList.add('active');
+            matched = true;
         }
-    }
-
-    // Build the scrollable wrapper and pills
-    const wrapper = document.createElement('div');
-    wrapper.className = 'lbn-scroll-wrapper';
-
-    branches.forEach(b => {
-        const a = document.createElement('a');
-        a.href = b.href;
-        a.className = 'branch-pill' + (b === activeBranch ? ' active' : '');
-        a.textContent = b.label;
-        wrapper.appendChild(a);
     });
 
-    // Clear any existing content and append the new tab bar
-    navContainer.innerHTML = '';
-    navContainer.appendChild(wrapper);
-
-})();
+    // Default to 'Tổng Quan' if no match is found
+    if (!matched) {
+        const defaultPill = navContainer.querySelector('[data-target="tong-quan"]');
+        if (defaultPill) defaultPill.classList.add('active');
+    }
+});
