@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -1958,20 +1958,21 @@
 
     <script>
         async function downloadAsImage() {
-            const btn = document.getElementById('download-btn');
-            const label = btn.querySelector('.btn-label');
-            const originalLabel = label.textContent;
-
-            btn.classList.add('loading');
-            btn.disabled = true;
-            label.textContent = 'Đang xử lý...';
+            const btn = document.querySelector('.btn-download');
+            let originalHTML = '';
+            if (btn) {
+                originalHTML = btn.innerHTML;
+                btn.classList.add('loading');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+            }
 
             // Scroll to top so coordinates are clean before capture
             window.scrollTo(0, 0);
             await new Promise(r => setTimeout(r, 100));
 
             try {
-                const target = document.getElementById('report-container');
+                const target = document.getElementById('report-container') || document.body;
 
                 const canvas = await html2canvas(target, {
                     scale: 2,
@@ -1984,14 +1985,14 @@
                     imageTimeout: 15000,
                     onclone: (clonedDoc) => {
                         // 1. Force nav to static so it sits at top with no sticky gap
-                        const nav = clonedDoc.querySelector('.nav-sticky');
+                        const nav = clonedDoc.querySelector('.nav-sticky') || clonedDoc.getElementById('omni-nav');
                         if (nav) {
                             nav.style.cssText = 'position:static !important; box-shadow:none; backdrop-filter:none; background-color:#ffffff;';
                         }
 
                         // 2. Hide the download button so it doesn't appear in the image
-                        const dlBtn = clonedDoc.getElementById('download-btn');
-                        if (dlBtn) dlBtn.style.display = 'none';
+                        const dlBtns = clonedDoc.querySelectorAll('.btn-download');
+                        dlBtns.forEach(b => b.style.display = 'none');
 
                         // 3. Replace all external CDN logos with a CSS text fallback
                         //    to bypass CORS restrictions that break canvas rendering
@@ -2031,9 +2032,11 @@
                 console.error('Lỗi tạo ảnh:', err);
                 alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại.');
             } finally {
-                btn.classList.remove('loading');
-                btn.disabled = false;
-                label.textContent = originalLabel;
+                if (btn) {
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                }
             }
         }
     </script>
