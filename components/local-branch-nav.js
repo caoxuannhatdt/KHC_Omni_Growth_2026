@@ -24,7 +24,7 @@ function initBranchNav() {
     }
 
     if (!headerBlock) {
-        // Retry if DOM isn't fully parsed yet (e.g., heavily reliant on scripts)
+        // Retry if DOM isn't fully parsed yet
         setTimeout(initBranchNav, 100);
         return;
     }
@@ -35,7 +35,8 @@ function initBranchNav() {
         css.id = 'lbn-styles';
         css.textContent = `
             #auto-branch-nav {
-                display: inline-flex;
+                display: flex;
+                flex-wrap: nowrap;
                 gap: 6px;
                 padding: 6px;
                 background: #f8fafc;
@@ -46,6 +47,7 @@ function initBranchNav() {
                 scrollbar-width: none; /* Firefox */
                 max-width: 100%;
                 margin-bottom: 24px; /* mb-6 */
+                width: max-content;
             }
             #auto-branch-nav::-webkit-scrollbar {
                 display: none; /* Safari and Chrome */
@@ -81,9 +83,9 @@ function initBranchNav() {
     const navContainer = document.createElement('div');
     navContainer.id = 'auto-branch-nav';
 
-    // Component HTML (Relative links)
+    // Component HTML (Relative links to sibling branch reports)
     navContainer.innerHTML = `
-        <a href="./tong-quan.html" class="branch-pill" data-target="tong-quan"><i class="fas fa-globe"></i> Tổng Quan</a>
+        <a href="./tong-quan.html" class="branch-pill" data-target="tong-quan"><i class="fas fa-globe mr-1"></i> Tổng Quan</a>
         <a href="./cn-hcm.html" class="branch-pill" data-target="cn-hcm">CN HCM</a>
         <a href="./cn-mbc.html" class="branch-pill" data-target="cn-mbc">CN MBC</a>
         <a href="./cn-mtg.html" class="branch-pill" data-target="cn-mtg">CN MTG</a>
@@ -118,5 +120,6 @@ function initBranchNav() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initBranchNav);
 } else {
+    // If DOM is already loaded (e.g., dynamic imports or deferred script)
     initBranchNav();
 }
