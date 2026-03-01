@@ -17,12 +17,13 @@ import { workspaceMenu } from '/config/menu-config.js';
   const PNJ_GOLD = '#F7A800';
 
   const THEME = {
-    blue: PNJ_BLUE,
+    blue: '#003468',
     indigo: '#4f46e5',
-    green: '#16a34a',
+    green: '#059669',
     slate: '#475569',
     orange: '#ea580c',
     pink: '#db2777',
+    purple: '#9333ea'
   };
 
   const p = window.location.pathname;
@@ -94,7 +95,7 @@ import { workspaceMenu } from '/config/menu-config.js';
         .omni-mod-pill:hover { background: #e2e8f0; color: ${PNJ_BLUE}; }
         .omni-mod-pill.active { background: white; color: ${PNJ_BLUE}; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .15s; }
-        .omni-mod-pill.active .pill-icon { background: ${PNJ_BLUE}15; color: ${PNJ_BLUE} !important; }
+        .omni-mod-pill.active .pill-icon { background: rgba(0, 52, 104, 0.15); color: ${PNJ_BLUE} !important; box-shadow: 0 0 12px rgba(0, 52, 104, 0.25); }
 
         /* SubGroup / Folder Cards (Level 1/2) */
         .folder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -151,7 +152,7 @@ import { workspaceMenu } from '/config/menu-config.js';
 
         <div style="display:flex;align-items:center;gap:12px;position:relative;">
             <button onclick="typeof downloadAsImage==='function'&&downloadAsImage()" style="padding:8px 16px;border-radius:8px;border:none;background:${PNJ_BLUE};color:white;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                <i class="fas fa-download"></i> Tải Về
+                <i class="fas fa-download"></i> Tải Về (PNG)
             </button>
             <button id="omni-menu-btn" style="width:40px;height:40px;border-radius:8px;border:1px solid #cbd5e1;background:white;color:${PNJ_BLUE};cursor:pointer;display:flex;align-items:center;justify-content:center;">
                 <i class="fas fa-th" style="font-size:16px;pointer-events:none;"></i>
@@ -243,9 +244,14 @@ import { workspaceMenu } from '/config/menu-config.js';
 
     if (currentState.subGroup) {
       bc += ` <i class="fas fa-chevron-right" style="font-size:10px;color:#cbd5e1;"></i> `;
-      bc += currentState.month
-        ? `<button class="bc-btn" data-action="go-subgroup" data-sg="${currentState.subGroup}">${currentState.subGroup}</button> <i class="fas fa-chevron-right" style="font-size:10px;color:#cbd5e1;"></i> <span class="bc-current">${currentState.month}</span>`
-        : `<span class="bc-current">${currentState.subGroup}</span>`;
+
+      if (mod.moduleName === 'Clienteling') {
+        bc += currentState.month
+          ? `<button class="bc-btn" data-action="go-subgroup" data-sg="${currentState.subGroup}">${currentState.subGroup}</button> <i class="fas fa-chevron-right" style="font-size:10px;color:#cbd5e1;"></i> <span class="bc-current">${currentState.month}</span>`
+          : `<span class="bc-current">${currentState.subGroup}</span>`;
+      } else {
+        bc += `<span class="bc-current">${currentState.subGroup}</span>`;
+      }
     }
     return `<div class="breadcrumb">${bc}</div>`;
   }
@@ -265,9 +271,14 @@ import { workspaceMenu } from '/config/menu-config.js';
       contentHtml = renderLevel3Links({ links: monthLinks });
     }
     else if (currentState.subGroup) {
-      // L2
       const sgData = mod.subGroups.find(g => g.groupName === currentState.subGroup);
-      contentHtml = renderLevel2Months(sgData || {});
+      if (mod.moduleName === 'Clienteling') {
+        // L2 (Month folders)
+        contentHtml = renderLevel2Months(sgData || {});
+      } else {
+        // Flattened: Directly show L3 links for non-Clienteling
+        contentHtml = renderLevel3Links({ links: (sgData || {}).features || [] });
+      }
     }
     else {
       // L1

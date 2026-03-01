@@ -54,6 +54,7 @@
             html { scroll-behavior: smooth; }
             body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
             *, *::before, *::after { box-sizing: border-box; }
+            i[class^="fa-"], i[class*=" fa-"], .fas, .far, .fab, .fal, .fad { font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important; font-style: normal; font-variant: normal; text-rendering: auto; -webkit-font-smoothing: antialiased; }
             @keyframes omni-spin { to { transform: rotate(360deg); } }
             @keyframes omni-fade-in {
                 from { opacity: 0; transform: translateY(-8px) scale(.98); }
