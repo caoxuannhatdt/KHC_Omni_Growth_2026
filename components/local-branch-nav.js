@@ -12,9 +12,16 @@ function initBranchNav() {
     if (document.getElementById('auto-branch-nav')) return;
 
     // 2. Target Identification & Placement
-    // The main header is usually the first .card-glass inside #report-container
-    const headerBlock = document.querySelector('#report-container > .card-glass:first-of-type') ||
-        document.querySelector('.card-glass:first-of-type');
+    // We look for the specific header block that contains the PNJ logo
+    const allCards = document.querySelectorAll('#report-container .card-glass, .card-glass');
+    let headerBlock = null;
+
+    for (const card of allCards) {
+        if (card.innerHTML.includes('Logo-PNJ.png') || card.innerHTML.includes('Clienteling')) {
+            headerBlock = card;
+            break;
+        }
+    }
 
     if (!headerBlock) {
         // Retry if DOM isn't fully parsed yet (e.g., heavily reliant on scripts)

@@ -199,7 +199,7 @@ import { workspaceMenu } from '/config/menu-config.js';
             <a href="#problem" style="color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;text-decoration:none;">Problem</a>
             <a href="#agitation" style="color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;text-decoration:none;">Agitation</a>
             <a href="#solution" style="color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;text-decoration:none;">Solution</a>
-            <a href="#execution" style="color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;text-decoration:none;">Thực Thi</a>
+            <a href="#execution" style="color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;text-decoration:none;">Execution</a>
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;position:relative;">
