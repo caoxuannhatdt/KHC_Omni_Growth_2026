@@ -1,12 +1,16 @@
 /**
  * components/nav.js  —  ES Module
- * Omni-Growth Workspace 2026 · 2-Column App Drawer Mega Menu
+ * Omni-Growth Workspace 2026 · 2-Column App Drawer with SubGroup Rendering
  *
  * Imports workspaceMenu from /config/menu-config.js.
- * Feature status badges:
- *   'active'      → plain link, no badge
- *   'research'    → purple badge "Đang nghiên cứu"
- *   'coming-soon' → disabled link + orange badge "Sắp ra mắt"
+ * Each module can have `subGroups` (grouped) instead of `features` (flat).
+ *
+ * Feature status:
+ *   'active'      → plain clickable link
+ *   'research'    → clickable + purple "Đang nghiên cứu" badge
+ *   'coming-soon' → disabled link + orange "Sắp ra mắt" badge
+ *
+ * Empty module / subGroup → shows "Dữ liệu đang được đồng bộ"
  */
 
 import { workspaceMenu } from '/config/menu-config.js';
@@ -16,7 +20,7 @@ import { workspaceMenu } from '/config/menu-config.js';
   /* ─── Guard ──────────────────────────────────────────────────────────── */
   if (document.getElementById('omni-nav')) return;
 
-  /* ─── Theme palette (maps theme name → accent hex) ──────────────────── */
+  /* ─── Theme palette ──────────────────────────────────────────────────── */
   const THEME = {
     blue: '#2563eb',
     indigo: '#4f46e5',
@@ -30,7 +34,7 @@ import { workspaceMenu } from '/config/menu-config.js';
   const path = window.location.pathname;
   const isHome = path === '/' || path === '/index.html' || path.endsWith('/index.html');
 
-  /* ─── Global styles ─────────────────────────────────────────────────── */
+  /* ─── Global styles ──────────────────────────────────────────────────── */
   const style = document.createElement('style');
   style.textContent = `
         #omni-nav, #omni-nav * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -39,13 +43,13 @@ import { workspaceMenu } from '/config/menu-config.js';
             transition: transform .3s cubic-bezier(.22,1,.36,1);
         }
         #omni-drawer.open { transform: translateX(0); }
-        #omni-backdrop { opacity:0; transition: opacity .25s; pointer-events:none; }
+        #omni-backdrop { opacity:0; transition:opacity .25s; pointer-events:none; }
         #omni-backdrop.open { opacity:1; pointer-events:auto; }
         .omni-mod-btn { transition: background .15s, border-color .15s, color .15s; }
         .omni-feat-link { transition: background .12s, color .12s; text-decoration: none; }
-        .omni-feat-link.disabled { pointer-events: none; opacity: 0.55; cursor: default; }
+        .omni-feat-link.disabled { pointer-events:none; opacity:0.5; cursor:default; }
         #omni-module-list::-webkit-scrollbar,
-        #omni-feat-pane::-webkit-scrollbar { width:4px; }
+        #omni-feat-pane::-webkit-scrollbar { width: 4px; }
         #omni-module-list::-webkit-scrollbar-thumb,
         #omni-feat-pane::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:2px; }
         @media (max-width:640px) {
@@ -55,7 +59,7 @@ import { workspaceMenu } from '/config/menu-config.js';
     `;
   document.head.appendChild(style);
 
-  /* ─── Build sticky nav bar ───────────────────────────────────────────── */
+  /* ─── Build sticky nav ─────────────────────────────────────────────── */
   const nav = document.createElement('nav');
   nav.id = 'omni-nav';
   nav.setAttribute('aria-label', 'Global navigation');
@@ -69,7 +73,6 @@ import { workspaceMenu } from '/config/menu-config.js';
   nav.innerHTML = `
     <div style="max-width:1400px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
 
-        <!-- Logo & brand -->
         <a href="/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;">
             <img src="/Logo.png" alt="PNJ"
                 style="height:34px;width:auto;object-fit:contain;background:#fff;padding:4px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.1);"
@@ -77,7 +80,6 @@ import { workspaceMenu } from '/config/menu-config.js';
             <span style="font-size:12px;font-weight:900;letter-spacing:.15em;color:#002d72;text-transform:uppercase;">OMNI-GROWTH</span>
         </a>
 
-        <!-- CTA Links (homepage only) -->
         <div id="omni-cta" style="display:${isHome ? 'flex' : 'none'};align-items:center;gap:18px;flex:1;justify-content:center;flex-wrap:wrap;">
             <a href="#problem"               style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748b;text-decoration:none;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#64748b'">1. Problem</a>
             <a href="#agitation"             style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748b;text-decoration:none;" onmouseover="this.style.color='#ea580c'" onmouseout="this.style.color='#64748b'">2. Agitation</a>
@@ -86,9 +88,7 @@ import { workspaceMenu } from '/config/menu-config.js';
             <a href="#internal-empowerment"  style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748b;text-decoration:none;" onmouseover="this.style.color='#0d9488'" onmouseout="this.style.color='#64748b'">5. Internal</a>
         </div>
 
-        <!-- Right actions -->
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-
             <button id="omni-dl-btn" title="Tải về PNG"
                 onclick="typeof downloadAsImage==='function'&&downloadAsImage()"
                 style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,#002d72,#1e40af);box-shadow:0 3px 10px rgba(0,45,114,.25);transition:all .2s;"
@@ -127,7 +127,6 @@ import { workspaceMenu } from '/config/menu-config.js';
         display:flex;flex-direction:column;overflow:hidden;
     `;
   drawer.innerHTML = `
-        <!-- Header -->
         <div style="padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
             <div>
                 <p style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#94a3b8;">Workspace</p>
@@ -141,20 +140,19 @@ import { workspaceMenu } from '/config/menu-config.js';
             </button>
         </div>
 
-        <!-- 2-Column body -->
         <div style="display:flex;flex:1;overflow:hidden;">
-            <!-- Left: Module list -->
+            <!-- LEFT: Module list -->
             <div id="omni-module-list"
                 style="width:190px;flex-shrink:0;background:#f8fafc;border-right:1px solid #e2e8f0;overflow-y:auto;padding:8px;">
             </div>
-            <!-- Right: Features pane -->
+            <!-- RIGHT: Feature pane -->
             <div id="omni-feat-pane"
                 style="flex:1;overflow-y:auto;padding:16px 14px;">
             </div>
         </div>
     `;
 
-  /* ─── Mount elements ─────────────────────────────────────────────────── */
+  /* ─── Mount ─────────────────────────────────────────────────────────── */
   const mount = document.getElementById('global-nav') || (() => {
     const d = document.createElement('div'); d.id = 'global-nav';
     document.body.prepend(d); return d;
@@ -163,15 +161,36 @@ import { workspaceMenu } from '/config/menu-config.js';
   document.body.appendChild(backdrop);
   document.body.appendChild(drawer);
 
-  /* ─── Badge HTML helper ──────────────────────────────────────────────── */
+  /* ─── Badge helper ───────────────────────────────────────────────────── */
   function badgeHTML(status) {
-    if (status === 'coming-soon') {
+    if (status === 'coming-soon')
       return `<span style="margin-left:6px;font-size:8px;background:#fff7ed;color:#ea580c;font-weight:800;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;border:1px solid #fed7aa;">Sắp ra mắt</span>`;
-    }
-    if (status === 'research') {
+    if (status === 'research')
       return `<span style="margin-left:6px;font-size:8px;background:#faf5ff;color:#9333ea;font-weight:800;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;border:1px solid #e9d5ff;">Đang nghiên cứu</span>`;
-    }
     return '';
+  }
+
+  /* ─── Empty state HTML ───────────────────────────────────────────────── */
+  function emptyStateHTML(message = 'Dữ liệu đang được đồng bộ') {
+    return `
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px dashed #e2e8f0;margin-bottom:4px;">
+            <i class="fas fa-sync-alt" style="font-size:11px;color:#94a3b8;animation:spin 2s linear infinite;"></i>
+            <span style="font-size:12px;color:#94a3b8;font-style:italic;">${message}</span>
+        </div>`;
+  }
+
+  /* ─── Feature link HTML ──────────────────────────────────────────────── */
+  function featureLinkHTML(f, accent) {
+    const isDisabled = f.status === 'coming-soon';
+    return `
+        <a href="${isDisabled ? '#' : f.url}"
+            class="omni-feat-link${isDisabled ? ' disabled' : ''}"
+            style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid #f1f5f9;background:#fff;color:#334155;font-size:13px;font-weight:600;margin-bottom:4px;box-shadow:0 1px 3px rgba(0,0,0,.03);"
+            ${isDisabled ? '' : `onmouseover="this.style.background='${accent}10';this.style.borderColor='${accent}40';this.style.color='${accent}'" onmouseout="this.style.background='#fff';this.style.borderColor='#f1f5f9';this.style.color='#334155'"`}>
+            <i class="fas fa-chevron-right" style="font-size:10px;color:${accent};opacity:.6;flex-shrink:0;"></i>
+            <span style="flex:1;">${f.name}</span>
+            ${badgeHTML(f.status)}
+        </a>`;
   }
 
   /* ─── Render feature pane ────────────────────────────────────────────── */
@@ -184,7 +203,7 @@ import { workspaceMenu } from '/config/menu-config.js';
     const mod = workspaceMenu[idx];
     const accent = THEME[mod.theme] || '#002d72';
 
-    /* Update module button states */
+    /* Update module button active states */
     modList.querySelectorAll('.omni-mod-btn').forEach((btn, i) => {
       const a = THEME[workspaceMenu[i].theme] || '#002d72';
       const on = i === idx;
@@ -194,33 +213,38 @@ import { workspaceMenu } from '/config/menu-config.js';
       btn.style.fontWeight = on ? '700' : '500';
     });
 
-    /* Empty state */
-    if (!mod.features || mod.features.length === 0) {
-      featPane.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#cbd5e1;text-align:center;gap:10px;padding:20px;">
-                <i class="fas fa-hard-hat" style="font-size:32px;"></i>
-                <p style="font-size:13px;font-weight:600;">Module đang được phát triển</p>
-            </div>`;
+    /* ── Determine content: subGroups or flat features ── */
+    const hasSubGroups = mod.subGroups && mod.subGroups.length > 0;
+    const flatFeatures = mod.features;
+
+    // Completely empty module (no subGroups AND no features)
+    if (!hasSubGroups && (!flatFeatures || flatFeatures.length === 0)) {
+      featPane.innerHTML = `
+                <p style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:${accent};margin-bottom:14px;">${mod.moduleName}</p>
+                ${emptyStateHTML()}`;
       return;
     }
 
-    /* Feature list */
-    featPane.innerHTML = `
-            <p style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:${accent};margin-bottom:14px;">${mod.moduleName}</p>
-            <div style="display:flex;flex-direction:column;gap:5px;">
-                ${mod.features.map(f => {
-      const isDisabled = f.status === 'coming-soon';
-      return `
-                    <a href="${isDisabled ? '#' : f.url}"
-                        class="omni-feat-link${isDisabled ? ' disabled' : ''}"
-                        style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid #f1f5f9;background:#fff;color:#334155;font-size:13px;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.03);"
-                        ${isDisabled ? '' : `onmouseover="this.style.background='${accent}10';this.style.borderColor='${accent}40';this.style.color='${accent}'" onmouseout="this.style.background='#fff';this.style.borderColor='#f1f5f9';this.style.color='#334155'"`}>
-                        <i class="fas fa-chevron-right" style="font-size:10px;color:${accent};opacity:.6;flex-shrink:0;"></i>
-                        <span style="flex:1;">${f.name}</span>
-                        ${badgeHTML(f.status)}
-                    </a>`;
-    }).join('')}
-            </div>
-        `;
+    let html = `<p style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:${accent};margin-bottom:14px;">${mod.moduleName}</p>`;
+
+    if (hasSubGroups) {
+      /* ── Render SubGroups ── */
+      mod.subGroups.forEach(group => {
+        // SubGroup header
+        html += `<p style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid #f1f5f9;">${group.groupName}</p>`;
+
+        if (!group.features || group.features.length === 0) {
+          html += emptyStateHTML();
+        } else {
+          group.features.forEach(f => { html += featureLinkHTML(f, accent); });
+        }
+      });
+    } else {
+      /* ── Render flat features (legacy support) ── */
+      flatFeatures.forEach(f => { html += featureLinkHTML(f, accent); });
+    }
+
+    featPane.innerHTML = html;
   }
 
   /* ─── Build module buttons ───────────────────────────────────────────── */
@@ -250,6 +274,11 @@ import { workspaceMenu } from '/config/menu-config.js';
   /* Auto-select first module */
   if (workspaceMenu.length > 0) renderFeatures(0);
 
+  /* ─── Spin animation for sync icon ──────────────────────────────────── */
+  const spinStyle = document.createElement('style');
+  spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+  document.head.appendChild(spinStyle);
+
   /* ─── Open / Close logic ─────────────────────────────────────────────── */
   const menuBtn = document.getElementById('omni-menu-btn');
   const closeBtn = document.getElementById('omni-close-btn');
@@ -274,10 +303,7 @@ import { workspaceMenu } from '/config/menu-config.js';
     menuBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     setTimeout(() => {
-      if (!isOpen) {
-        drawer.style.display = 'none';
-        backdrop.style.display = 'none';
-      }
+      if (!isOpen) { drawer.style.display = 'none'; backdrop.style.display = 'none'; }
     }, 320);
   }
 
