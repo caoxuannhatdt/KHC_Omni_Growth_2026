@@ -4,172 +4,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đang Cập Nhật — PNJ OMNI-GROWTH 2026</title>
-    <meta name="robots" content="noindex">
-    <script type="module" src="/components/layout.js"></script>
+    <title>Đang Cập Nhật | Omni-Growth Workspace</title>
+    <link rel="icon" href="/Icon.png" type="image/png">
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
         body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: #f8fafc;
+            color: #334155;
         }
 
-        .updating-body {
+        .update-container {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px;
+            padding: 20px;
         }
 
-        .updating-card {
+        .update-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 48px;
+            max-width: 500px;
+            width: 100%;
             text-align: center;
-            max-width: 480px;
+            box-shadow: 0 20px 40px -10px rgba(0, 45, 114, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        .updating-icon-wrap {
-            width: 96px;
-            height: 96px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, #003468, #0052a5);
+        .update-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #002d72, #F7A800, #002d72);
+            background-size: 200% auto;
+            animation: gradient-shift 3s linear infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #002d72 0%, #0045a5 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 24px;
-            box-shadow: 0 8px 32px rgba(0, 52, 104, 0.25);
-            animation: pulse-card 2.5s ease-in-out infinite;
+            color: white;
+            font-size: 32px;
+            box-shadow: 0 10px 25px -5px rgba(0, 45, 114, 0.3);
+            animation: float-icon 3s ease-in-out infinite;
         }
 
-        .updating-icon-wrap i {
-            font-size: 40px;
-            color: #F7A800;
-        }
-
-        @keyframes pulse-card {
+        @keyframes float-icon {
 
             0%,
             100% {
                 transform: translateY(0);
-                box-shadow: 0 8px 32px rgba(0, 52, 104, 0.25);
             }
 
             50% {
-                transform: translateY(-6px);
-                box-shadow: 0 16px 40px rgba(0, 52, 104, 0.35);
+                transform: translateY(-10px);
             }
         }
 
-        .updating-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #fff7ed;
-            color: #ea580c;
-            border: 1px solid #fed7aa;
-            border-radius: 999px;
-            padding: 4px 12px;
-            font-size: 11px;
+        h1 {
+            color: #002d72;
             font-weight: 800;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            margin-bottom: 16px;
+            font-size: 24px;
+            margin-bottom: 12px;
         }
 
-        .updating-title {
-            font-size: 20px;
-            font-weight: 900;
-            color: #0f172a;
-            margin-bottom: 10px;
-            line-height: 1.3;
-        }
-
-        .updating-desc {
-            font-size: 14px;
+        p.desc {
             color: #64748b;
-            line-height: 1.7;
-            margin-bottom: 28px;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 32px;
         }
 
-        .updating-progress {
-            height: 4px;
+        .progress-bar-bg {
             background: #e2e8f0;
-            border-radius: 2px;
+            height: 6px;
+            border-radius: 3px;
+            width: 100%;
             overflow: hidden;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
-        .updating-progress-bar {
+        .progress-bar-fill {
+            background: #F7A800;
             height: 100%;
-            width: 45%;
-            background: linear-gradient(90deg, #003468, #F7A800);
-            border-radius: 2px;
-            animation: progress-shimmer 2s ease-in-out infinite alternate;
+            width: 30%;
+            border-radius: 3px;
+            animation: load-progress 2s ease-out forwards;
         }
 
-        @keyframes progress-shimmer {
-            from {
-                width: 30%;
+        @keyframes load-progress {
+            0% {
+                width: 0%;
             }
 
-            to {
-                width: 75%;
+            100% {
+                width: 45%;
             }
         }
 
-        .back-btn {
+        .btn-back {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #003468, #0052a5);
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 13px;
+            gap: 10px;
+            padding: 14px 28px;
+            background: #ffffff;
+            color: #002d72;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-weight: 700;
-            transition: all .2s;
-            box-shadow: 0 4px 12px rgba(0, 52, 104, .25);
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.2s;
         }
 
-        .back-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(0, 52, 104, .35);
+        .btn-back:hover {
+            border-color: #002d72;
+            color: #002d72;
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
         }
     </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div id="global-nav"></div>
 
-    <div class="updating-body">
-        <div class="updating-card">
+    <!-- Load App Shell Components -->
+    <script type="module" src="/components/layout.js"></script>
 
-            <div class="updating-icon-wrap">
-                <i class="fas fa-sync-alt"></i>
+    <div class="update-container">
+        <div class="update-card">
+            <div class="icon-wrapper">
+                <i class="fas fa-tools"></i>
             </div>
-
-            <div class="updating-badge">
-                <i class="fas fa-circle-notch fa-spin" style="font-size:9px;"></i>
-                Đang Đồng Bộ
-            </div>
-
-            <h1 class="updating-title">Dữ liệu đang được<br>đồng bộ cho mục này</h1>
-
-            <p class="updating-desc">
-                Module này đang trong quá trình xây dựng và hoàn thiện.<br>
-                Nội dung sẽ sớm được cập nhật trong thời gian tới.
+            <h1>Dữ liệu đang được đồng bộ</h1>
+            <p class="desc">Tính năng này đang trong quá trình nâng cấp và tích hợp dữ liệu mới. Vui lòng quay lại sau.
             </p>
 
-            <div class="updating-progress">
-                <div class="updating-progress-bar"></div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill"></div>
             </div>
 
-            <a href="/index.html" class="back-btn">
-                <i class="fas fa-arrow-left" style="font-size:11px;"></i>
-                Về Trang Chủ
+            <a href="/index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Quay lại Trang chủ
             </a>
         </div>
     </div>
