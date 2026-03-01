@@ -48,7 +48,7 @@ import { workspaceMenu } from '/config/menu-config.js';
             border-radius: 16px;
             box-shadow: 0 30px 60px -15px rgba(0,45,114,0.2);
             overflow: hidden;
-            animation: nav-fade-in .2s forwards;
+            animation: nav-fade-in .3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             min-height: 480px;
         }
         #omni-mega.open { display: flex; }
@@ -68,19 +68,28 @@ import { workspaceMenu } from '/config/menu-config.js';
         #omni-feat-pane {
             flex: 1;
             padding: 24px;
-            overflow-y: auto;
+            overflow-y: hidden;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         
         /* Level Containers */
         .nav-layer {
             display: none;
-            animation: slide-in .25s ease forwards;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px; /* For scrollbar */
         }
-        .nav-layer.active { display: block; }
-        @keyframes slide-in {
-            from { opacity: 0; transform: translateX(10px); }
-            to   { opacity: 1; transform: translateX(0); }
+        .nav-layer.active { display: block; animation: fade-in .3s ease forwards; }
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        
+        @keyframes slide-up-fade {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Module Pills */
@@ -89,45 +98,88 @@ import { workspaceMenu } from '/config/menu-config.js';
             border-radius: 10px; padding: 12px; margin-bottom: 4px;
             cursor: pointer; display: flex; align-items: center; gap: 12px;
             font-size: 13px; font-weight: 600; color: #475569;
-            transition: all .15s;
+            transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .omni-mod-pill:hover { background: #e2e8f0; }
         .omni-mod-pill.active { background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .15s; font-size: 14px; color: rgba(100, 116, 139, 0.85); }
+        .pill-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; transition: .2s; font-size: 14px; color: rgba(100, 116, 139, 0.85); }
         
         /* Dynamic JS injected styles will handle the active pill color/shadow glow */
 
         /* SubGroup / Folder Cards (Level 1/2) */
-        .folder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .folder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-bottom: 20px; }
         .folder-card {
             background: white; border: 1px solid #e2e8f0; border-radius: 12px;
-            padding: 16px; cursor: pointer; transition: all .2s;
-            display: flex; flex-direction: column; gap: 8px;
+            padding: 16px; cursor: pointer; transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: row; align-items: center; gap: 14px;
+            animation: slide-up-fade 0.4s ease forwards;
+            opacity: 0;
+            transform: translateY(12px);
         }
-        .folder-card:hover { border-color: ${PNJ_GOLD}; box-shadow: 0 10px 15px -3px rgba(0,45,114,.08); transform: translateY(-2px); }
-        .folder-icon { color: ${PNJ_BLUE}; font-size: 20px; }
-        .folder-name { font-weight: 700; color: #1e293b; font-size: 14px; }
+        .folder-card:hover { 
+            border-color: var(--theme-color, #002d72); 
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.08); 
+            transform: translateY(-2px); 
+        }
+        .folder-card:hover .fa-arrow-right {
+            color: var(--theme-color, #002d72) !important;
+            transform: translateX(3px);
+        }
+        .folder-icon { 
+            color: var(--theme-color, #002d72); 
+            background: var(--theme-bg, rgba(0,45,114,0.1)); 
+            font-size: 16px; width: 38px; height: 38px; border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            transition: all .3s;
+            flex-shrink: 0;
+        }
+        .folder-card:hover .folder-icon {
+            box-shadow: 0 0 12px var(--theme-bg, rgba(0,45,114,0.2));
+            transform: scale(1.05);
+        }
+        .folder-name { font-weight: 700; color: #1e293b; font-size: 14px; margin-bottom: 2px; }
         
         /* Links (Level 3) */
         .omni-feat-link {
-            display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
             border-radius: 10px; color: #334155; font-size: 13.5px; font-weight: 600;
-            text-decoration: none; margin-bottom: 6px; border: 1px solid transparent;
-            transition: all .15s;
+            text-decoration: none; margin-bottom: 8px; border: 1px solid transparent;
+            transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slide-up-fade 0.4s ease forwards;
+            opacity: 0;
+            transform: translateY(12px);
         }
-        .omni-feat-link:hover { background: ${PNJ_BLUE}0A; border-color: ${PNJ_BLUE}30; color: ${PNJ_BLUE}; }
+        .omni-feat-link:hover { 
+            background: var(--theme-hover, rgba(0,45,114,0.05)); 
+            border-color: var(--theme-border, rgba(0,45,114,0.2)); 
+            color: var(--theme-color, #002d72); 
+            transform: translateX(4px); 
+        }
+        .feat-link-icon {
+            flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px; 
+            background: var(--theme-bg, rgba(0,45,114,0.1)); 
+            color: var(--theme-color, #002d72); 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 15px; transition: all .2s;
+        }
+        .omni-feat-link:hover .feat-link-icon {
+            background: var(--theme-color, #002d72);
+            color: white;
+            box-shadow: 0 0 10px var(--theme-glow, rgba(0,45,114,0.4));
+            transform: scale(1.05);
+        }
         
         /* Breadcrumbs */
-        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
         .bc-btn { background: none; border: none; padding: 4px 8px; border-radius: 6px; color: #64748b; cursor: pointer; font-family: inherit; font-size: inherit; font-weight: inherit; transition: .15s; }
-        .bc-btn:hover { background: #e2e8f0; color: ${PNJ_BLUE}; }
-        .bc-current { color: ${PNJ_BLUE}; font-weight: 800; }
+        .bc-btn:hover { background: #e2e8f0; color: var(--theme-color, #002d72); }
+        .bc-current { color: var(--theme-color, #002d72); font-weight: 800; }
         
-        .empty-state { text-align: center; padding: 40px 20px; }
+        .empty-state { text-align: center; padding: 40px 20px; animation: fade-in .3s ease; }
         .empty-icon { font-size: 32px; color: #cbd5e1; margin-bottom: 16px; }
         .empty-text { color: #64748b; font-size: 14px; font-weight: 500; margin-bottom: 16px; }
-        .btn-update { display: inline-block; padding: 8px 16px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; color: ${PNJ_BLUE}; font-size: 13px; font-weight: 600; text-decoration: none; transition: .2s; }
-        .btn-update:hover { background: #f8fafc; border-color: ${PNJ_BLUE}; }
+        .btn-update { display: inline-block; padding: 8px 16px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; color: var(--theme-color, #002d72); font-size: 13px; font-weight: 600; text-decoration: none; transition: .2s; }
+        .btn-update:hover { background: #f8fafc; border-color: var(--theme-color, #002d72); }
     `;
   document.head.appendChild(css);
 
@@ -191,9 +243,9 @@ import { workspaceMenu } from '/config/menu-config.js';
   // LEVEL 3: Links inside a Month
   function renderLevel3Links(monthData) {
     if (!monthData.links || monthData.links.length === 0) return emptyStateHTML();
-    return monthData.links.map(f => `
-            <a href="${f.url}" class="omni-feat-link">
-                <i class="fas fa-file-alt" style="color:${PNJ_BLUE};opacity:0.7;"></i>
+    return monthData.links.map((f, i) => `
+            <a href="${f.url}" class="omni-feat-link" style="animation-delay: ${i * 0.04}s">
+                <div class="feat-link-icon"><i class="fas ${f.icon || 'fa-file-alt'}"></i></div>
                 ${f.name}
             </a>
         `).join('');
@@ -214,11 +266,14 @@ import { workspaceMenu } from '/config/menu-config.js';
 
     const keys = Object.keys(months).sort((a, b) => b.localeCompare(a)); // Descending T02 then T01
 
-    return `<div class="folder-grid">` + keys.map(m => `
-            <div class="folder-card" data-action="go-month" data-month="${m}">
+    return `<div class="folder-grid">` + keys.map((m, i) => `
+            <div class="folder-card" data-action="go-month" data-month="${m}" style="animation-delay: ${i * 0.05}s">
                 <div class="folder-icon"><i class="fas fa-calendar-alt"></i></div>
-                <div class="folder-name">${m}</div>
-                <div style="font-size:12px;color:#64748b;">${months[m].length} Báo cáo</div>
+                <div style="flex:1">
+                    <div class="folder-name">${m}</div>
+                    <div style="font-size:12px;color:#64748b;">${months[m].length} Báo cáo</div>
+                </div>
+                <i class="fas fa-arrow-right" style="color:#cbd5e1; font-size: 14px; transition: .2s;"></i>
             </div>
         `).join('') + `</div>`;
   }
@@ -228,11 +283,14 @@ import { workspaceMenu } from '/config/menu-config.js';
     const mod = workspaceMenu[moduleIdx];
     if (!mod.subGroups || mod.subGroups.length === 0) return emptyStateHTML();
 
-    return `<div class="folder-grid">` + mod.subGroups.map(g => `
-            <div class="folder-card" data-action="go-subgroup" data-sg="${g.groupName}">
-                <div class="folder-icon"><i class="fas fa-folder-open"></i></div>
-                <div class="folder-name">${g.groupName}</div>
-                <div style="font-size:12px;color:#64748b;">${g.features ? g.features.length + ' Mục' : '0 Mục'}</div>
+    return `<div class="folder-grid">` + mod.subGroups.map((g, i) => `
+            <div class="folder-card" data-action="go-subgroup" data-sg="${g.groupName}" style="animation-delay: ${i * 0.05}s">
+                <div class="folder-icon"><i class="fas ${g.icon || 'fa-folder-open'}"></i></div>
+                <div style="flex:1">
+                    <div class="folder-name">${g.groupName}</div>
+                    <div style="font-size:12px;color:#64748b;">${g.features ? g.features.length + ' Mục' : '0 Mục'}</div>
+                </div>
+                <i class="fas fa-arrow-right" style="color:#cbd5e1; font-size: 14px; transition: .2s;"></i>
             </div>
         `).join('') + `</div>`;
   }
@@ -289,6 +347,10 @@ import { workspaceMenu } from '/config/menu-config.js';
         } else {
           contentHtml = emptyStateHTML();
         }
+      } else if (mod.subGroups && mod.subGroups.length === 1 && mod.moduleName !== 'Clienteling') {
+        // Smart flatten if only 1 subgroup exists!
+        currentState.subGroup = mod.subGroups[0].groupName;
+        contentHtml = renderLevel3Links({ links: mod.subGroups[0].features || [] });
       } else {
         contentHtml = renderLevel1SubGroups(currentState.moduleIdx);
       }
@@ -347,6 +409,16 @@ import { workspaceMenu } from '/config/menu-config.js';
           iconI.style.color = pColor;
           iconI.style.filter = `brightness(1.15) saturate(1.4)`;
           iconI.style.textShadow = `0px 0px 10px ${hexToRgba(pColor, 0.6)}`; // Text shadow glow
+
+          // Inject CSS Variables for Right Pane
+          const mega = document.getElementById('omni-mega');
+          if (mega) {
+            mega.style.setProperty('--theme-color', pColor);
+            mega.style.setProperty('--theme-bg', hexToRgba(pColor, 0.08));
+            mega.style.setProperty('--theme-border', hexToRgba(pColor, 0.25));
+            mega.style.setProperty('--theme-hover', hexToRgba(pColor, 0.04));
+            mega.style.setProperty('--theme-glow', hexToRgba(pColor, 0.35));
+          }
         } else {
           p.classList.remove('active');
           p.style.color = '';
