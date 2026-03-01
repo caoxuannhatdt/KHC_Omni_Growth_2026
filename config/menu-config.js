@@ -27,8 +27,8 @@ export const workspaceMenu = [
             {
                 groupName: '30D Lookback',
                 features: [
-                    { name: 'Tháng 01/2026', url: '/modules/clienteling/30d-lookback/2026/01/tong-quan.html', status: 'active' },
-                    { name: 'Tháng 02/2026', url: '/modules/clienteling/30d-lookback/2026/02/tong-quan.html', status: 'active' }
+                    { name: 'Tháng 01/2026', url: '/modules/updating.html', status: 'coming-soon' },
+                    { name: 'Tháng 02/2026', url: '/modules/updating.html', status: 'coming-soon' }
                 ]
             },
             { groupName: 'Quarterly', features: [] },
