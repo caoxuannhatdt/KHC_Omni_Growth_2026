@@ -320,8 +320,9 @@ import { workspaceMenu } from '/config/menu-config.js';
   const menuBtn = document.getElementById('omni-menu-btn');
   let isOpen = false;
 
+  mega.addEventListener('click', e => e.stopPropagation());
   menuBtn.addEventListener('click', e => { e.stopPropagation(); isOpen ? close() : open(); });
-  document.addEventListener('click', e => { if (isOpen && !mega.contains(e.target) && e.target !== menuBtn) close(); });
+  document.addEventListener('click', e => { if (isOpen) close(); });
 
   function open() { isOpen = true; mega.classList.add('open'); }
   function close() { isOpen = false; mega.classList.remove('open'); }

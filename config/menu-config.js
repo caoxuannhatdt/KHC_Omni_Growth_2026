@@ -61,7 +61,7 @@ export const workspaceMenu = [
        ═══════════════════════════════════════════════════════════════════════ */
     {
         moduleName: 'CSC - Scoring Card',
-        icon: 'fa-chart-bar',
+        icon: 'fa-chart-pie',
         theme: 'indigo',
         subGroups: []
     },
