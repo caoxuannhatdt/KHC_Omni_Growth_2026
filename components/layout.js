@@ -2,18 +2,17 @@
  * components/layout.js  —  App Shell Entry Point
  * Omni-Growth Workspace 2026
  *
- * Usage: <script type="module" src="/components/layout.js"></script>
- *
- * Automatically:
- *   1. Injects Tailwind CDN, FontAwesome 6.4.0, Google Fonts (Inter) → <head>
- *   2. Adds smooth scroll + body font style
- *   3. Creates <div id="global-nav"> at top of <body>, loads nav.js as ES module
- *   4. Injects standard PNJ Omni-Growth <footer> at bottom of <body>
+ * Injects in order:
+ *   1. FontAwesome 6.4.0 (first — ensures icons paint before layout)
+ *   2. Google Fonts — Inter 400/600/800
+ *   3. Tailwind CSS CDN
+ *   4. Base style (Inter font, smooth scroll)
+ *   5. #global-nav + nav.js ES module
+ *   6. PNJ footer at bottom of body
  */
 
 (function () {
 
-    /* ─── Helper: idempotent <link> injection ────────────────────────────── */
     function injectLink({ rel, href, crossorigin, id }) {
         if (id && document.getElementById(id)) return;
         if (!id && document.querySelector(`link[href="${href}"]`)) return;
@@ -25,23 +24,21 @@
         document.head.appendChild(el);
     }
 
-    /* ─── 1. Inject CDN dependencies (in order: FA → Fonts → Tailwind) ──── */
-
-    // FontAwesome 6.4.0 — FIRST to ensure icons render before layout paint
+    /* 1. FontAwesome 6.4.0 — FIRST */
     injectLink({
         id: 'omni-fontawesome',
         href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     });
 
-    // Google Fonts — Inter
+    /* 2. Google Fonts — Inter 400/600/800 */
     injectLink({ id: 'omni-gf-pre', rel: 'preconnect', href: 'https://fonts.googleapis.com' });
     injectLink({ rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' });
     injectLink({
         id: 'omni-google-fonts',
-        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap',
     });
 
-    // Tailwind CSS CDN
+    /* 3. Tailwind CSS CDN */
     if (!document.getElementById('omni-tailwind') && !document.querySelector('script[src*="tailwindcss"]')) {
         const tw = document.createElement('script');
         tw.id = 'omni-tailwind';
@@ -49,7 +46,7 @@
         document.head.appendChild(tw);
     }
 
-    /* ─── 2. Base styles: font reset + smooth scroll ─────────────────────── */
+    /* 4. Base styles */
     if (!document.getElementById('omni-base-style')) {
         const st = document.createElement('style');
         st.id = 'omni-base-style';
@@ -60,11 +57,15 @@
                 box-sizing: border-box;
             }
             @keyframes omni-spin { to { transform: rotate(360deg); } }
+            @keyframes omni-fade-in {
+                from { opacity: 0; transform: translateY(-8px) scale(.98); }
+                to   { opacity: 1; transform: translateY(0)     scale(1);   }
+            }
         `;
         document.head.prepend(st);
     }
 
-    /* ─── 3. Ensure #global-nav at top of <body> ─────────────────────────── */
+    /* 5. #global-nav + nav.js */
     function ensureNav() {
         if (document.getElementById('global-nav')) return;
         const div = document.createElement('div');
@@ -72,7 +73,6 @@
         document.body.prepend(div);
     }
 
-    /* ─── 4. Load nav.js as ES Module ────────────────────────────────────── */
     function loadNav() {
         if (document.getElementById('omni-nav-script')) return;
         const s = document.createElement('script');
@@ -82,34 +82,23 @@
         document.head.appendChild(s);
     }
 
-    /* ─── 5. Inject standard PNJ Omni-Growth footer ──────────────────────── */
+    /* 6. PNJ Footer */
     function injectFooter() {
         if (document.getElementById('omni-footer')) return;
         const footer = document.createElement('footer');
         footer.id = 'omni-footer';
-        footer.className = 'bg-slate-950 py-10 text-center';
+        footer.style.cssText = 'background:#020617;padding:40px 20px;text-align:center;';
         footer.innerHTML = `
-            <div style="max-width:1200px;margin:0 auto;padding:0 20px;">
-                <img src="/Logo.png" alt="PNJ Logo"
-                    style="height:40px;width:auto;object-fit:contain;background:#fff;padding:6px 12px;border-radius:10px;display:block;margin:0 auto 16px;box-shadow:0 2px 8px rgba(0,0,0,0.2);"
-                    onerror="this.style.display='none'">
-                <p style="color:#475569;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px;">
-                    &copy; 2026 PNJ OMNI-GROWTH TEAM.
-                </p>
-                <p style="color:#334155;font-size:10px;">
-                    Omni-Growth Workspace 2026 &mdash; Toàn bộ nội dung mang tính nội bộ &amp; bảo mật.
-                </p>
-            </div>
+            <img src="/Logo.png" alt="PNJ"
+                style="height:36px;background:#fff;padding:5px 10px;border-radius:8px;display:block;margin:0 auto 14px;box-shadow:0 2px 8px rgba(0,0,0,.2);"
+                onerror="this.style.display='none'">
+            <p style="color:#475569;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px;">&copy; 2026 PNJ OMNI-GROWTH TEAM.</p>
+            <p style="color:#334155;font-size:10px;">Internal &amp; Confidential — Omni-Growth Workspace 2026</p>
         `;
         document.body.appendChild(footer);
     }
 
-    /* ─── 6. Run after DOM is ready ─────────────────────────────────────── */
-    function init() {
-        ensureNav();
-        loadNav();
-        injectFooter();
-    }
+    function init() { ensureNav(); loadNav(); injectFooter(); }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
