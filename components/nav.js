@@ -282,7 +282,16 @@ import { workspaceMenu } from '/config/menu-config.js';
     }
     else {
       // L1
-      contentHtml = renderLevel1SubGroups(currentState.moduleIdx);
+      if (!mod.subGroups || mod.subGroups.length === 0) {
+        // Flattened completely: show direct features if it exists
+        if (mod.features && mod.features.length > 0) {
+          contentHtml = renderLevel3Links({ links: mod.features });
+        } else {
+          contentHtml = emptyStateHTML();
+        }
+      } else {
+        contentHtml = renderLevel1SubGroups(currentState.moduleIdx);
+      }
     }
 
     featPane.innerHTML = `

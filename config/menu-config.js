@@ -122,14 +122,10 @@ export const workspaceMenu = [
         moduleName: 'System & Updates',
         icon: 'fa-bullhorn',
         theme: 'slate',
-        subGroups: [
-            {
-                groupName: 'Roadmap',
-                features: [
-                    { name: 'Master Roadmap 2026', url: '/modules/updating.html', status: 'coming-soon' },
-                    { name: 'Release Notes', url: '/modules/updating.html', status: 'coming-soon' }
-                ]
-            }
+        subGroups: [],
+        features: [
+            { name: 'Roadmap 2026', url: '/modules/updating.html', status: 'coming-soon' },
+            { name: 'Release Notes', url: '/modules/updating.html', status: 'coming-soon' }
         ]
     }
 ];
