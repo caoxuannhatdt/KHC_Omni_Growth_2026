@@ -98,7 +98,7 @@ export const workspaceMenu = [
         theme: 'emerald',
         subGroups: [],
         features: [
-            { name: 'Roadmap 2026', url: '/modules/updating.html', status: 'coming-soon' },
+            { name: 'Roadmap 2026', url: '/modules/whats-new/road-map.html', status: 'active' },
             // Đã cập nhật đường dẫn mới và đổi status thành active
             { name: 'Release Notes', url: '/modules/whats-new/release-notes.html', status: 'active' }
         ]
