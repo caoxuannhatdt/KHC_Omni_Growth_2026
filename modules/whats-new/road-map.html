@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni-Growth Strategic Roadmap 2026</title>
+    <!-- Font Inter: Chuẩn mực cho Corporate & Tech Dashboard -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* TONE MÀU "EXECUTIVE COMMAND CENTER" */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+
+            --line-color: #cbd5e1;
+            --line-active: #003366;
+
+            --tag-data: #1e40af;
+            --tag-growth: #c2410c;
+            --tag-tool: #0f766e;
+            --tag-sys: #334155;
+            --text-white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 60px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER SECTION */
+        .roadmap-header {
+            max-width: 960px;
+            margin: 0 auto 60px auto;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .roadmap-header h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+            color: var(--line-active);
+            text-transform: uppercase;
+        }
+
+        .roadmap-header p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* OVERALL PROGRESS METRIC (Thanh Tiến độ) */
+        .progress-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-stats {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e40af, #0ea5e9);
+            width: 0%;
+            /* Set by JS */
+            border-radius: 10px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ROADMAP CONTAINER (TRỤC CHÍNH) */
+        .roadmap-container {
+            max-width: 960px;
+            margin: 0 auto;
+            position: relative;
+            background: var(--bg-card);
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* QUARTER BLOCK */
+        .quarter-section {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .quarter-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            padding-top: 20px;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .quarter-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background-color: var(--line-color);
+        }
+
+        /* MONTH NODE */
+        .month-node {
+            position: relative;
+            padding-left: 50px;
+            padding-bottom: 40px;
+        }
+
+        .month-node::before {
+            content: '';
+            position: absolute;
+            left: 9px;
+            top: 30px;
+            bottom: -30px;
+            width: 3px;
+            background-color: var(--line-color);
+            border-radius: 2px;
+            transition: background-color 0.5s ease;
+        }
+
+        .month-dot {
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: var(--bg-body);
+            border: 5px solid var(--line-active);
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        /* JS Dynamic Status Classes for Months */
+        .status-past .month-dot {
+            background-color: var(--line-active);
+            box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1);
+        }
+
+        .status-past::before {
+            background-color: var(--line-active);
+        }
+
+        .status-active .month-dot {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
+            background-color: #ffffff;
+        }
+
+        .status-future .month-dot {
+            border-color: #cbd5e1;
+            box-shadow: none;
+        }
+
+        .status-future::before {
+            border-left: 3px dashed var(--line-color);
+            background-color: transparent;
+            width: 0;
+            left: 10px;
+        }
+
+        /* HEADER THÁNG */
+        .month-header {
+            margin-bottom: 28px;
+            background: #f8fafc;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .month-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--line-active);
+        }
+
+        .month-objective {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            max-width: 700px;
+        }
+
+        /* BADGES CHO THÁNG */
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-done {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .badge-active {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .badge-pending {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px dashed #cbd5e1;
+        }
+
+        /* FEATURE BRANCHES */
+        .feature-list {
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .feature-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(6px);
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -24px;
+            bottom: 50%;
+            width: 24px;
+            border-left: 3px solid var(--line-color);
+            border-bottom: 3px solid var(--line-color);
+            border-bottom-left-radius: 10px;
+            transition: border-color 0.5s ease;
+        }
+
+        .status-past .feature-item::before {
+            border-color: var(--line-active);
+        }
+
+        .status-future .feature-item::before {
+            border-left-style: dashed;
+            border-bottom-style: dashed;
+        }
+
+        .feature-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            min-width: 100px;
+            text-align: center;
+            color: var(--text-white);
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tag-data {
+            background: var(--tag-data);
+        }
+
+        .tag-growth {
+            background: var(--tag-growth);
+        }
+
+        .tag-tool {
+            background: var(--tag-tool);
+        }
+
+        .tag-sys {
+            background: var(--tag-sys);
+        }
+
+        .feature-content {
+            flex: 1;
+            padding-top: 2px;
+        }
+
+        .feature-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .feature-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            line-height: 1.5;
+        }
+
+        /* TASK STATUS LABELS (Sinh ra bởi JS) */
+        .task-status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .task-done {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .task-progress {
+            background: #fef08a;
+            color: #a16207;
+            border: 1px solid #fde047;
+        }
+
+        .task-pending {
+            background: #f1f5f9;
+            color: #94a3b8;
+            border: 1px solid #e2e8f0;
+        }
+
+        .quarter-section:last-child .month-node:last-child::before {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .roadmap-container {
+                padding: 30px 20px;
+            }
+
+            .feature-item {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .feature-tag {
+                margin-top: 0;
+                width: fit-content;
+            }
+
+            .month-node {
+                padding-bottom: 30px;
+            }
+
+            .feature-title-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="roadmap-header">
+        <h1>Omni-Growth Master Plan</h1>
+        <p>Kiến trúc Lộ trình Chiến lược: Tự động hóa Vận hành & Khai thác Dữ liệu nhằm thúc đẩy tăng trưởng nội bộ năm
+            2026.</p>
+
+        <!-- Progress Metric -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-title">Tiến độ Release 2026</div>
+                <div class="progress-stats" id="progress-text">0% (0/0)</div>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="roadmap-container">
+
+        <!-- QUARTER 1 -->
+        <div class="quarter-section">
+            <div class="quarter-title">Q1 — Nền tảng & Kiểm soát toàn diện</div>
+
+            <!-- THÁNG 2 -->
+            <!-- Chú ý thuộc tính data-month (số tháng) -->
+            <div class="month-node" data-month="2">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 2 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Khởi tạo không gian làm việc tập trung và chuẩn hóa hệ thống báo cáo
+                        lõi.</div>
+                </div>
+                <div class="feature-list">
+                    <!-- Chú ý thuộc tính data-status="done|progress|pending" -->
+                    <div class="feature-item" data-status="done">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Omni Growth Playbook
+                                    2026</span></div>
+                            <div class="feature-desc">Đóng gói tài liệu, quy chuẩn hóa kiến thức vận hành và chiến lược
+                                tăng trưởng O2O.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="done">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Omni Growth Workspace</span>
+                            </div>
+                            <div class="feature-desc">Thiết lập không gian làm việc tập trung, số hóa toàn bộ các luồng
+                                thao tác hàng ngày.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="done">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Clienteling Monthly
+                                    Report</span></div>
+                            <div class="feature-desc">Chuẩn hóa form mẫu và công cụ tự động cho báo cáo vận hành định kỳ
+                                hằng tháng.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="done">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">CDP Data Campaign Tool</span>
+                            </div>
+                            <div class="feature-desc">Thử nghiệm trích xuất dữ liệu tự phục vụ (Self-serve) cho các
+                                chiến dịch.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 3 -->
+            <div class="month-node" data-month="3">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 3 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Đo lường tập trung KHC và cấu trúc hóa hệ thống dữ liệu báo cáo Quý.
+                    </div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="done">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">KHC Overview Dashboard</span>
+                            </div>
+                            <div class="feature-desc">Trực quan hóa và đo lường tổng thể hiệu quả của các tuyến hành
+                                động trên tập Khách hàng cũ.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="progress">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Q1 Report & Campaign
+                                    Detail</span></div>
+                            <div class="feature-desc">Tổng kết và phát hành báo cáo chuyên sâu Quý 1 kèm công cụ soi
+                                hiệu suất chiến dịch.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="progress">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Report Builder &
+                                    Manager</span></div>
+                            <div class="feature-desc">Công cụ giúp nội bộ tùy biến và lắp ráp các module báo cáo linh
+                                hoạt không cần hard-code.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUARTER 2 -->
+        <div class="quarter-section">
+            <div class="quarter-title">Q2 — Tự động hóa & Đẩy mạnh chuyển đổi</div>
+
+            <!-- THÁNG 4 -->
+            <div class="month-node" data-month="4">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 4 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Tự động hóa báo cáo và thúc đẩy giá trị vòng đời qua các kịch bản bán
+                        chéo.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Usecase "Buy X - Buy
+                                    Y"</span></div>
+                            <div class="feature-desc">Khởi chạy kịch bản tự động gợi ý mua chéo (Cross-sell) nhằm tối ưu
+                                giá trị đơn hàng.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Auto KHC Performance</span>
+                            </div>
+                            <div class="feature-desc">Setup luồng tự động hóa gửi báo cáo đóng góp hiệu quả từ các tuyến
+                                action hàng tuần.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">UAV Report & Tracking
+                                    Tool</span></div>
+                            <div class="feature-desc">Phát hành báo cáo UAV và ra mắt Mini tool đo lường tỷ lệ hàng bán
+                                trả lại.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 5 -->
+            <div class="month-node" data-month="5">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 5 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Thiết lập tiêu chuẩn vận hành số và luồng nuôi dưỡng khách hàng tiềm
+                        năng.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">UAV Playbook (Tiêu
+                                    chuẩn)</span></div>
+                            <div class="feature-desc">Đóng gói tài liệu hướng dẫn tối ưu vận hành cho các nền tảng mới
+                                (FMB, ZMB, GMB).</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Monthly Report V2</span>
+                            </div>
+                            <div class="feature-desc">Nâng cấp hệ thống tracking bao phủ toàn bộ các chương trình hiện
+                                hành đang triển khai.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Digital Lead Nurturing</span>
+                            </div>
+                            <div class="feature-desc">Xây dựng luồng tự động nuôi dưỡng data tiềm năng (Lead) đổ về từ
+                                dự án UAV.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 6 -->
+            <div class="month-node" data-month="6">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 6 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Đo lường chuyển đổi O2O và chốt sổ dữ liệu H1.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">O2O Web Conversion</span>
+                            </div>
+                            <div class="feature-desc">Đo lường hành vi chuyển đổi liền mạch từ luồng tin nhắn O2O sang
+                                tương tác trên Website.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Launch CIS Tool</span></div>
+                            <div class="feature-desc">Công cụ quét và định danh hành vi khách hàng trên fanpage đối thủ
+                                phục vụ Retargeting.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUARTER 3 -->
+        <div class="quarter-section">
+            <div class="quarter-title">Q3 — Tối ưu Trải nghiệm & Đối soát Tài chính</div>
+
+            <!-- THÁNG 7 -->
+            <div class="month-node" data-month="7">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 7 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Số hóa hành trình khách hàng đa điểm chạm và cá nhân hóa trải nghiệm
+                        đầu tiên.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">CJM360 Dashboard (Phase
+                                    1)</span></div>
+                            <div class="feature-desc">Lên sóng hệ thống Bản đồ Hành trình Khách hàng 360 độ tập trung
+                                vào các điểm chạm số.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Usecase: "First
+                                    Experience"</span></div>
+                            <div class="feature-desc">Khởi chạy kịch bản Clienteling thiết kế riêng cho trải nghiệm mua
+                                hàng lần đầu tiên.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Quarterly Report (Q2)</span>
+                            </div>
+                            <div class="feature-desc">Phát hành báo cáo Quý 2 và rà soát, đánh giá toàn diện hiệu quả
+                                nửa đầu năm (H1 Review).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 8 -->
+            <div class="month-node" data-month="8">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 8 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Lắng nghe thị trường và tối ưu hóa các điểm chạm hiện tại.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Social Listening Tool</span>
+                            </div>
+                            <div class="feature-desc">Công cụ cào và lọc từ khóa trên mạng xã hội để team nắm bắt nhanh
+                                xu hướng và phản hồi.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 9 -->
+            <div class="month-node" data-month="9">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 9 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Đối soát dòng tiền chiến dịch và chốt sổ dữ liệu Quý 3.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-tool">Mini Tool</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">ZNS Budget
+                                    Reconciliation</span></div>
+                            <div class="feature-desc">Công cụ đối soát dòng tiền thông minh, tính toán chi phí tự động
+                                dựa trên template.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Optimize CJM360 (Phase
+                                    2)</span></div>
+                            <div class="feature-desc">Bổ sung và căn chỉnh các luồng dữ liệu offline vào bản đồ hành
+                                trình 360 độ.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Quarterly Report (Q3)</span>
+                            </div>
+                            <div class="feature-desc">Phát hành báo cáo tổng kết Quý 3, làm cơ sở dữ liệu để planning
+                                cho mùa cao điểm cuối năm.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUARTER 4 -->
+        <div class="quarter-section">
+            <div class="quarter-title">Q4 — Mega Campaign & Tổng Kết</div>
+
+            <!-- THÁNG 10 -->
+            <div class="month-node" data-month="10">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 10 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Tập trung xây dựng tài nguyên nội dung và kho kịch bản chuẩn bị cho
+                        Mega Sale.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">O2O Asset Library</span>
+                            </div>
+                            <div class="feature-desc">Ra mắt thư viện lưu trữ các kịch bản và Template ZNS có tỷ lệ
+                                chuyển đổi cao nhất giúp tái sử dụng nhanh chóng.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 11 -->
+            <div class="month-node" data-month="11">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 11 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Đảm bảo tính ổn định tuyệt đối của hệ thống và dồn toàn lực vận hành
+                        trực tiếp.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-sys">System</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">System Freeze &
+                                    Execution</span></div>
+                            <div class="feature-desc">Đóng băng cập nhật tính năng mới. Tập trung đảm bảo độ ổn định và
+                                trực tiếp vận hành chiến dịch cao điểm.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THÁNG 12 -->
+            <div class="month-node" data-month="12">
+                <div class="month-dot"></div>
+                <div class="month-header">
+                    <div class="month-name">Tháng 12 <span class="badge dynamic-badge"></span></div>
+                    <div class="month-objective">Đo lường thành quả tăng trưởng năm và vinh danh hành trình gắn kết cùng
+                        thương hiệu.</div>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-growth">Growth</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Activation: Nhìn lại 2026
+                                    cùng PNJ</span></div>
+                            <div class="feature-desc">Chiến dịch tương tác cá nhân hóa, vinh danh hành trình 1 năm mua
+                                sắm của khách hàng với thương hiệu.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item" data-status="pending">
+                        <div class="feature-tag tag-data">Data</div>
+                        <div class="feature-content">
+                            <div class="feature-title-wrapper"><span class="feature-title">Year-End Performance</span>
+                            </div>
+                            <div class="feature-desc">Phát hành báo cáo chốt năm, đánh giá mức độ hoàn thành KPI và quy
+                                hoạch Roadmap 2027.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCRIPT XỬ LÝ LOGIC TRACKING & RENDER TỰ ĐỘNG -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. TÍNH TOÁN THỜI GIAN THỰC TẾ
+            // Dùng tháng hệ thống thực tế (getmonth() trả từ 0-11, nên phải + 1)
+            // LƯU Ý: Để demo, bạn có thể sửa const currentMonth = 4 để xem hệ thống auto nhảy sang tháng 4 nhé.
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth() + 1;
+
+            const monthNodes = document.querySelectorAll('.month-node');
+
+            monthNodes.forEach(node => {
+                const nodeMonth = parseInt(node.getAttribute('data-month'));
+                const badge = node.querySelector('.dynamic-badge');
+
+                // Xóa các class cũ
+                node.classList.remove('status-past', 'status-active', 'status-future');
+
+                // So sánh tháng và gán UI
+                if (nodeMonth < currentMonth) {
+                    node.classList.add('status-past');
+                    badge.className = 'badge badge-done';
+                    badge.textContent = 'Hoàn thành';
+                } else if (nodeMonth === currentMonth) {
+                    node.classList.add('status-active');
+                    badge.className = 'badge badge-active';
+                    badge.innerHTML = '<i class="fa-solid fa-bolt"></i> Hiện tại';
+                } else {
+                    node.classList.add('status-future');
+                    badge.className = 'badge badge-pending';
+                    badge.textContent = 'Kế hoạch';
+                }
+            });
+
+            // 2. RENDER LABEL STATUS CHO TỪNG TASK
+            const features = document.querySelectorAll('.feature-item');
+            let doneCount = 0;
+            const totalCount = features.length;
+
+            features.forEach(feature => {
+                const status = feature.getAttribute('data-status');
+                const titleWrapper = feature.querySelector('.feature-title-wrapper');
+
+                // Tạo thẻ span chứa label
+                const statusSpan = document.createElement('span');
+
+                if (status === 'done') {
+                    statusSpan.className = 'task-status task-done';
+                    statusSpan.innerHTML = '<i class="fa-solid fa-check"></i> Done';
+                    doneCount++; // Đếm số task đã xong
+                } else if (status === 'progress') {
+                    statusSpan.className = 'task-status task-progress';
+                    statusSpan.innerHTML = '<i class="fa-solid fa-spinner fa-spin-pulse"></i> In Progress';
+                } else {
+                    statusSpan.className = 'task-status task-pending';
+                    statusSpan.textContent = 'Not Yet';
+                }
+
+                // Gắn label vào kế bên Tiêu đề
+                titleWrapper.appendChild(statusSpan);
+            });
+
+            // 3. TÍNH TOÁN % TIẾN ĐỘ RELEASE (METRIC)
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+
+            // Tính phần trăm và làm tròn
+            const percent = Math.round((doneCount / totalCount) * 100);
+
+            // Hiệu ứng chạy thanh bar
+            setTimeout(() => {
+                progressFill.style.width = percent + '%';
+                progressText.innerHTML = `<span style="color:#1e40af">${percent}%</span> (${doneCount}/${totalCount} Module)`;
+            }, 300); // Delay nhẹ để có animation
+
+        });
+    </script>
+</body>
+
+</html>
