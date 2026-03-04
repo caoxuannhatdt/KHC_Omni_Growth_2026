@@ -227,6 +227,12 @@
             text-transform: uppercase;
             text-align: center;
         }
+
+        /* Exporting Mode Styles */
+        #report-container.exporting-mode {
+            min-width: 1440px !important;
+            background-color: #f8fafc;
+        }
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
@@ -851,6 +857,7 @@
 
         <script>
             Chart.register(ChartDataLabels);
+            Chart.defaults.animation = false; // Tắt animation để html2canvas chụp không bị mất draw lines/labels
 
             // Gauge
             const pctCompleted = 12.8;
@@ -964,15 +971,23 @@
             btn.style.opacity = '0.7';
             btn.style.pointerEvents = 'none';
 
+            await document.fonts.ready;
+
+            const container = document.getElementById('report-container');
+            container.classList.add('exporting-mode');
+
             window.scrollTo(0, 0);
             await new Promise(r => setTimeout(r, 100));
 
             try {
-                const canvas = await html2canvas(document.getElementById('report-container'), {
-                    scale: 2,
+                const canvas = await html2canvas(container, {
+                    scale: 3,
                     useCORS: true,
                     allowTaint: false,
-                    backgroundColor: '#F8FAFC'
+                    backgroundColor: '#F8FAFC',
+                    windowWidth: 1920,
+                    windowHeight: document.documentElement.scrollHeight,
+                    imageTimeout: 15000
                 });
 
                 const link = document.createElement('a');
@@ -983,6 +998,7 @@
                 console.error('Lỗi khi tải ảnh:', err);
                 alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại!');
             } finally {
+                container.classList.remove('exporting-mode');
                 btn.innerHTML = originalHtml;
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
