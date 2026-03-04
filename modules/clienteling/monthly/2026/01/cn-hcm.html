@@ -263,16 +263,30 @@
             gap: 24px !important;
         }
 
-        /* Fix lỗi cắt chữ và làm to chữ */
+        /* 1. Xử lý tên chương trình bị che/cắt */
+        .ppt-export-mode .detail-card .truncate {
+            white-space: normal !important;
+            width: auto !important;
+            max-width: 70% !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+        }
+
+        .ppt-export-mode .detail-card>.flex.justify-between {
+            align-items: flex-start !important;
+            margin-bottom: 12px !important;
+        }
+
+        /* 2. Xử lý nhãn số liệu quá to gây rớt dòng */
         .ppt-export-mode .card-metrics-grid {
-            gap: 12px !important;
+            gap: 4px !important;
         }
 
         .ppt-export-mode .mini-metric label {
-            white-space: normal !important;
-            font-size: 13px !important;
-            line-height: 1.3 !important;
-            margin-bottom: 6px !important;
+            white-space: nowrap !important;
+            font-size: 10px !important;
+            letter-spacing: -0.2px !important;
+            margin-bottom: 4px !important;
         }
 
         .ppt-export-mode .mini-metric span {
