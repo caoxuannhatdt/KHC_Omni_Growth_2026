@@ -287,6 +287,35 @@
         .ppt-export-mode .cm-val {
             font-size: 18px !important;
         }
+
+        /* Mở khóa chiều cao cho cột, cho phép cột dãn thoải mái theo nội dung */
+        .ppt-export-mode .cjm-col {
+            height: auto !important;
+            min-height: 100% !important;
+            overflow: visible !important;
+            /* Hủy lệnh cắt xén phần thừa */
+        }
+
+        .ppt-export-mode .col-body {
+            height: auto !important;
+            overflow: visible !important;
+            gap: 12px !important;
+            /* Tăng khoảng cách giữa các card cho thoáng */
+        }
+
+        /* Cấm bóp xẹp (shrink) các card chi tiết */
+        .ppt-export-mode .detail-card {
+            height: auto !important;
+            flex-shrink: 0 !important;
+            /* Quan trọng: Không cho phép trình duyệt ép lùn card */
+            padding: 12px !important;
+            /* Tăng padding của card lên một chút để chữ không dính sát viền */
+        }
+
+        /* Fix nhẹ cho phần Header để nó cân đối hơn với chiều ngang mới */
+        .ppt-export-mode .card-glass.mb-6 {
+            margin-bottom: 24px !important;
+        }
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
