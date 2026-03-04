@@ -332,6 +332,101 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* PPT Export Mode Styles */
+        .ppt-export-mode {
+            width: 2560px !important;
+            padding: 40px !important;
+            background: #F8FAFC;
+        }
+
+        /* Ép cấu trúc dàn ngang 70% - 30% */
+        .ppt-export-mode .export-layout-wrapper {
+            flex-direction: row !important;
+            align-items: flex-start !important;
+        }
+
+        .ppt-export-mode .export-main-content {
+            width: 75% !important;
+        }
+
+        .ppt-export-mode .export-side-charts {
+            width: 25% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 24px !important;
+            margin-top: 56px !important;
+        }
+
+        .ppt-export-mode .export-side-charts>div.grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 24px !important;
+        }
+
+        /* 1. Xử lý tên chương trình bị che/cắt */
+        .ppt-export-mode .detail-card .text-\[10px\] {
+            white-space: normal !important;
+            width: auto !important;
+            max-width: 70% !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+        }
+
+        .ppt-export-mode .detail-card>.flex.justify-between {
+            align-items: flex-start !important;
+            margin-bottom: 12px !important;
+        }
+
+        /* 2. Xử lý nhãn số liệu quá to gây rớt dòng */
+        .ppt-export-mode .card-metrics-grid {
+            gap: 4px !important;
+        }
+
+        .ppt-export-mode .mini-metric label {
+            white-space: nowrap !important;
+            font-size: 10px !important;
+            letter-spacing: -0.2px !important;
+            margin-bottom: 4px !important;
+        }
+
+        .ppt-export-mode .mini-metric span {
+            font-size: 16px !important;
+        }
+
+        .ppt-export-mode .cm-lbl {
+            white-space: normal !important;
+            font-size: 12px !important;
+        }
+
+        .ppt-export-mode .cm-val {
+            font-size: 18px !important;
+        }
+
+        /* Mở khóa chiều cao cho cột, cho phép cột dãn thoải mái theo nội dung */
+        .ppt-export-mode .cjm-col {
+            height: auto !important;
+            min-height: 100% !important;
+            overflow: visible !important;
+        }
+
+        .ppt-export-mode .col-body {
+            height: auto !important;
+            overflow: visible !important;
+            gap: 12px !important;
+        }
+
+        /* Cấm bóp xẹp (shrink) các card chi tiết */
+        .ppt-export-mode .detail-card {
+            height: auto !important;
+            flex-shrink: 0 !important;
+            padding: 12px !important;
+        }
+
+        /* Fix nhẹ cho phần Header để nó cân đối hơn với chiều ngang mới */
+        .ppt-export-mode .card-glass.mb-6 {
+            margin-bottom: 24px !important;
+        }
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
@@ -464,381 +559,417 @@
         </div>
 
         <!-- SECTION 2: CJM HORIZONTAL COLUMNS -->
-        <div class="flex justify-between items-end mb-6">
-            <h2 class="text-xl font-bold text-slate-800 flex items-center">
-                <span class="w-1.5 h-8 bg-indigo-600 rounded-full mr-3"></span>
-                Quản trị toàn trình khách hàng tháng 1 & Kế hoạch tháng 2
-            </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 items-start">
-
-            <!-- COL 1: POST PURCHASE -->
-            <div class="cjm-col">
-                <div class="col-header">
-                    <div class="col-title">1. Post Purchase / Aftersales: Service</div>
-                    <p class="col-goal">Kích hoạt nhanh lần mua tiếp theo</p>
+        <div class="export-layout-wrapper flex flex-col gap-6 w-full">
+            <div class="export-main-content w-full">
+                <div class="flex justify-between items-end mb-6">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center">
+                        <span class="w-1.5 h-8 bg-indigo-600 rounded-full mr-3"></span>
+                        Quản trị toàn trình khách hàng tháng 1 & Kế hoạch tháng 2
+                    </h2>
                 </div>
-                <!-- Metrics: GD 1179 (Lowest -> Red), CR 4.21% (Highest -> Green) -->
-                <div class="col-metrics">
-                    <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span class="cm-val">~28.0k</span></div>
-                    <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
-                            class="cm-val val-min">1,179</span>
-                    </div>
-                    <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">72.7 Tỷ</span></div>
-                    <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span class="cm-val val-max">~4.21%</span>
-                    </div>
-                </div>
-                <div class="col-body">
-                    <div class="month-header">Tháng 1</div>
-                    <!-- Cards -->
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Aftersales: Đánh bóng</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>9,248</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>778</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>65.6 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>8.41%</span></div>
-                        </div>
-                    </div>
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Aftersales: Nước Xi</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>18,758</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>401</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>7.1 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>2.14%</span></div>
-                        </div>
-                    </div>
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Rating 4-5 Sao</span>
-                            <div class="flex items-center"><span class="team-badge team-cs">Omni-CS</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>TBU</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>TBU</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>TBU</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>TBU</span></div>
-                        </div>
-                    </div>
 
-                    <!-- Future -->
-                    <div class="timeline-split">
-                        <span class="timeline-label">Kế hoạch T2</span>
-                        <div class="detail-card bg-slate-50">
-                            <div class="flex justify-between items-center mb-1"><span
-                                    class="text-[10px] font-bold text-slate-700">Rating 4-5 Sao</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="detail-card bg-slate-50 mt-2">
-                            <div class="flex justify-between items-center mb-1"><span
-                                    class="text-[10px] font-bold text-slate-700">Aftersales: Đánh bóng</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 items-start">
 
-            <!-- COL 2: OCCASION -->
-            <div class="cjm-col">
-                <div class="col-header">
-                    <div class="col-title">2. Occasion</div>
-                    <p class="col-goal">Tạo nhu cầu mua tự nhiên</p>
-                </div>
-                <!-- Aggregated: GD 3,486, CR 3.50% -->
-                <div class="col-metrics">
-                    <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span class="cm-val">99,627</span></div>
-                    <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
-                            class="cm-val val-highlight">3,486</span></div>
-                    <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">163.6 Tỷ</span></div>
-                    <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span class="cm-val">3.50%</span></div>
-                </div>
-                <div class="col-body">
-                    <div class="month-header">Tháng 1</div>
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Xuân 2026</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
+                    <!-- COL 1: POST PURCHASE -->
+                    <div class="cjm-col">
+                        <div class="col-header">
+                            <div class="col-title">1. Post Purchase / Aftersales: Service</div>
+                            <p class="col-goal">Kích hoạt nhanh lần mua tiếp theo</p>
                         </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>99,627</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>3,486</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>163.6 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.50%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-split">
-                        <span class="timeline-label">Kế hoạch T2</span>
-                        <div class="detail-card bg-slate-50">
-                            <div class="flex justify-between items-center mb-1"><span
-                                    class="text-[10px] font-bold text-slate-700">Valentine</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="detail-card bg-slate-50 mt-2">
-                            <div class="flex justify-between items-center mb-1"><span
-                                    class="text-[10px] font-bold text-slate-700">Ngày Thần Tài</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COL 3: LOYALTY -->
-            <div class="cjm-col">
-                <div class="col-header">
-                    <div class="col-title">3. Loyalty Value</div>
-                    <p class="col-goal">Nuôi dưỡng khách hàng giá trị</p>
-                </div>
-                <!-- Aggregated: GD 11,485 (Highest -> Green), CR 3.89% -->
-                <div class="col-metrics">
-                    <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span class="cm-val">295,310</span>
-                    </div>
-                    <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
-                            class="cm-val val-max">11,485</span>
-                    </div>
-                    <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">507.9 Tỷ</span></div>
-                    <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span class="cm-val">3.89%</span></div>
-                </div>
-                <div class="col-body">
-                    <div class="month-header">Tháng 1</div>
-                    <!-- Sorted -->
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Sinh nhật KH T01</span>
-                            <div class="flex items-center"><span class="team-badge team-cx">Omni-CX</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>220,269</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>7,147</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>259.1 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.24%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Champions (RFM)</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>13,289</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>1,622</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>68 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>12.21%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Retention Cận VIP</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>30,155</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>829</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>40.1 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>2.75%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Welcome New Rank</span>
-                            <div class="flex items-center"><span class="team-badge team-cx">Omni-CX</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>4,639</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>796</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>63.6 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>17.16%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Top Online</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>13,447</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>632</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>35.4 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>4.70%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">No Cash</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>13,511</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>459</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>41.7 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.40%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-split">
-                        <span class="timeline-label">Kế hoạch T2</span>
-                        <div class="detail-card bg-slate-50">
-                            <div class="flex justify-between items-center"><span
-                                    class="text-[10px] font-bold text-slate-700">Sinh nhật KH T02</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="detail-card bg-slate-50 mt-2">
-                            <div class="flex justify-between items-center"><span
-                                    class="text-[10px] font-bold text-slate-700">Retention Cận VIP</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="detail-card bg-slate-50 mt-2">
-                            <div class="flex justify-between items-center"><span
-                                    class="text-[10px] font-bold text-slate-700">Retention AWO
-                                    (Champions...)</span><span class="status-badge status-processing">PROCESSING</span>
+                        <!-- Metrics: GD 1179 (Lowest -> Red), CR 4.21% (Highest -> Green) -->
+                        <div class="col-metrics">
+                            <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span
+                                    class="cm-val">~28.0k</span></div>
+                            <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
+                                    class="cm-val val-min">1,179</span>
+                            </div>
+                            <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">72.7
+                                    Tỷ</span></div>
+                            <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span
+                                    class="cm-val val-max">~4.21%</span>
                             </div>
                         </div>
-                        <div class="detail-card bg-slate-50 mt-2">
-                            <div class="flex justify-between items-center"><span
-                                    class="text-[10px] font-bold text-slate-700">Welcome New Rank</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
+                        <div class="col-body">
+                            <div class="month-header">Tháng 1</div>
+                            <!-- Cards -->
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Aftersales: Đánh bóng</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>9,248</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>778</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>65.6 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>8.41%</span></div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Aftersales: Nước Xi</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>18,758</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>401</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>7.1 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>2.14%</span></div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Rating 4-5 Sao</span>
+                                    <div class="flex items-center"><span class="team-badge team-cs">Omni-CS</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>TBU</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>TBU</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>TBU</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>TBU</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Future -->
+                            <div class="timeline-split">
+                                <span class="timeline-label">Kế hoạch T2</span>
+                                <div class="detail-card bg-slate-50">
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="text-[10px] font-bold text-slate-700">Rating 4-5 Sao</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="detail-card bg-slate-50 mt-2">
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="text-[10px] font-bold text-slate-700">Aftersales: Đánh
+                                            bóng</span><span class="status-badge status-processing">PROCESSING</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- COL 2: OCCASION -->
+                    <div class="cjm-col">
+                        <div class="col-header">
+                            <div class="col-title">2. Occasion</div>
+                            <p class="col-goal">Tạo nhu cầu mua tự nhiên</p>
+                        </div>
+                        <!-- Aggregated: GD 3,486, CR 3.50% -->
+                        <div class="col-metrics">
+                            <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span
+                                    class="cm-val">99,627</span></div>
+                            <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
+                                    class="cm-val val-highlight">3,486</span></div>
+                            <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">163.6
+                                    Tỷ</span></div>
+                            <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span class="cm-val">3.50%</span>
+                            </div>
+                        </div>
+                        <div class="col-body">
+                            <div class="month-header">Tháng 1</div>
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Xuân 2026</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>99,627</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>3,486</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>163.6 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.50%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-split">
+                                <span class="timeline-label">Kế hoạch T2</span>
+                                <div class="detail-card bg-slate-50">
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="text-[10px] font-bold text-slate-700">Valentine</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="detail-card bg-slate-50 mt-2">
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="text-[10px] font-bold text-slate-700">Ngày Thần Tài</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COL 3: LOYALTY -->
+                    <div class="cjm-col">
+                        <div class="col-header">
+                            <div class="col-title">3. Loyalty Value</div>
+                            <p class="col-goal">Nuôi dưỡng khách hàng giá trị</p>
+                        </div>
+                        <!-- Aggregated: GD 11,485 (Highest -> Green), CR 3.89% -->
+                        <div class="col-metrics">
+                            <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span
+                                    class="cm-val">295,310</span>
+                            </div>
+                            <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
+                                    class="cm-val val-max">11,485</span>
+                            </div>
+                            <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">507.9
+                                    Tỷ</span></div>
+                            <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span class="cm-val">3.89%</span>
+                            </div>
+                        </div>
+                        <div class="col-body">
+                            <div class="month-header">Tháng 1</div>
+                            <!-- Sorted -->
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Sinh nhật KH T01</span>
+                                    <div class="flex items-center"><span class="team-badge team-cx">Omni-CX</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>220,269</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>7,147</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>259.1 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.24%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Champions (RFM)</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>13,289</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>1,622</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>68 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>12.21%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Retention Cận VIP</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>30,155</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>829</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>40.1 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>2.75%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Welcome New Rank</span>
+                                    <div class="flex items-center"><span class="team-badge team-cx">Omni-CX</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>4,639</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>796</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>63.6 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>17.16%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Top Online</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>13,447</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>632</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>35.4 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>4.70%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">No Cash</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>13,511</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>459</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>41.7 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.40%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-split">
+                                <span class="timeline-label">Kế hoạch T2</span>
+                                <div class="detail-card bg-slate-50">
+                                    <div class="flex justify-between items-center"><span
+                                            class="text-[10px] font-bold text-slate-700">Sinh nhật KH T02</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="detail-card bg-slate-50 mt-2">
+                                    <div class="flex justify-between items-center"><span
+                                            class="text-[10px] font-bold text-slate-700">Retention Cận VIP</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="detail-card bg-slate-50 mt-2">
+                                    <div class="flex justify-between items-center"><span
+                                            class="text-[10px] font-bold text-slate-700">Retention AWO
+                                            (Champions...)</span><span
+                                            class="status-badge status-processing">PROCESSING</span>
+                                    </div>
+                                </div>
+                                <div class="detail-card bg-slate-50 mt-2">
+                                    <div class="flex justify-between items-center"><span
+                                            class="text-[10px] font-bold text-slate-700">Welcome New Rank</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COL 4 -->
+                    <div class="cjm-col">
+                        <div class="col-header">
+                            <div class="col-title">4. Activation & Win-Back</div>
+                            <p class="col-goal">Mở rộng tệp chuyển đổi</p>
+                        </div>
+                        <!-- Aggregated: CR 3.07% (Lowest -> Red) -->
+                        <div class="col-metrics">
+                            <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span
+                                    class="cm-val">217,533</span>
+                            </div>
+                            <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span
+                                    class="cm-val">6,670</span></div>
+                            <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">189.5
+                                    Tỷ</span></div>
+                            <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span
+                                    class="cm-val val-min">3.07%</span>
+                            </div>
+                        </div>
+                        <div class="col-body">
+                            <div class="month-header">Tháng 1</div>
+                            <!-- Sorted -->
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Warning To Churn</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-done">DONE</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>117,589</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>3,718</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>110.3 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.16%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Tương tác Digital</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>63,179</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>2,348</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>52.9 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.72%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">At Risk & Can't Lose</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-done">DONE</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>28,312</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>539</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>21.5 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>1.90%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="detail-card">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-[10px] font-bold text-slate-800">Churn (>365 ngày chưa giao
+                                        dịch)</span>
+                                    <div class="flex items-center"><span
+                                            class="team-badge team-growth">Omni-Growth</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                                <div class="card-metrics-grid">
+                                    <div class="mini-metric"><label>SL Chăm sóc</label><span>8,453</span></div>
+                                    <div class="mini-metric"><label>SL Giao dịch</label><span>65</span></div>
+                                    <div class="mini-metric"><label>Doanh thu</label><span>4.8 Tỷ</span></div>
+                                    <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.72%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-split">
+                                <span class="timeline-label">Kế hoạch T2</span>
+                                <div class="detail-card bg-slate-50">
+                                    <div class="flex justify-between items-center"><span
+                                            class="text-[10px] font-bold text-slate-700">Churn (>365 ngày chưa giao
+                                            dịch)</span><span class="status-badge status-processing">PROCESSING</span>
+                                    </div>
+                                </div>
+                                <div class="detail-card bg-slate-50 mt-2">
+                                    <div class="flex justify-between items-center"><span
+                                            class="text-[10px] font-bold text-slate-700">Tương tác Digital</span><span
+                                            class="status-badge status-processing">PROCESSING</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- COL 4 -->
-            <div class="cjm-col">
-                <div class="col-header">
-                    <div class="col-title">4. Activation & Win-Back</div>
-                    <p class="col-goal">Mở rộng tệp chuyển đổi</p>
-                </div>
-                <!-- Aggregated: CR 3.07% (Lowest -> Red) -->
-                <div class="col-metrics">
-                    <div class="cm-item"><span class="cm-lbl">SL Chăm sóc</span><span class="cm-val">217,533</span>
-                    </div>
-                    <div class="cm-item"><span class="cm-lbl">SL Giao dịch</span><span class="cm-val">6,670</span></div>
-                    <div class="cm-item"><span class="cm-lbl">Doanh thu</span><span class="cm-val">189.5 Tỷ</span></div>
-                    <div class="cm-item"><span class="cm-lbl">Tỷ lệ CR</span><span class="cm-val val-min">3.07%</span>
-                    </div>
-                </div>
-                <div class="col-body">
-                    <div class="month-header">Tháng 1</div>
-                    <!-- Sorted -->
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Warning To Churn</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-done">DONE</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>117,589</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>3,718</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>110.3 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.16%</span></div>
+            <div class="export-side-charts w-full">
+                <!-- SECTION 3: DEEP-DIVE ANALYSIS CHARTS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+                    <!-- CHART 1: CONTRIBUTION STACKED BAR -->
+                    <div class="card-glass p-6">
+                        <h3 class="text-slate-700 text-xs font-bold uppercase mb-4">Đóng góp SLKHC giao dịch trong tháng
+                            1</h3>
+                        <div class="h-64 relative">
+                            <canvas id="contributionStackChart"></canvas>
                         </div>
                     </div>
 
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Tương tác Digital</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
+                    <!-- CHART 2: BRANCH CR VS NORM -->
+                    <div class="card-glass p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-slate-700 text-xs font-bold uppercase">Hiệu quả Chuyển đổi (CR%) theo Chi
+                                nhánh</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="w-4 h-0.5 bg-indigo-600 border-t border-dashed border-indigo-600"></span>
+                                <span class="text-[10px] text-slate-500 font-medium">Trung bình (Norm)</span>
+                            </div>
                         </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>63,179</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>2,348</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>52.9 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.72%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">At Risk & Can't Lose</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-done">DONE</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>28,312</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>539</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>21.5 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>1.90%</span></div>
+                        <div class="h-64">
+                            <canvas id="branchCRChart"></canvas>
                         </div>
                     </div>
-
-                    <div class="detail-card">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800">Churn (>365 ngày chưa giao dịch)</span>
-                            <div class="flex items-center"><span class="team-badge team-growth">Omni-Growth</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="card-metrics-grid">
-                            <div class="mini-metric"><label>SL Chăm sóc</label><span>8,453</span></div>
-                            <div class="mini-metric"><label>SL Giao dịch</label><span>65</span></div>
-                            <div class="mini-metric"><label>Doanh thu</label><span>4.8 Tỷ</span></div>
-                            <div class="mini-metric"><label>Tỷ lệ CR</label><span>3.72%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-split">
-                        <span class="timeline-label">Kế hoạch T2</span>
-                        <div class="detail-card bg-slate-50">
-                            <div class="flex justify-between items-center"><span
-                                    class="text-[10px] font-bold text-slate-700">Churn (>365 ngày chưa giao
-                                    dịch)</span><span class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                        <div class="detail-card bg-slate-50 mt-2">
-                            <div class="flex justify-between items-center"><span
-                                    class="text-[10px] font-bold text-slate-700">Tương tác Digital</span><span
-                                    class="status-badge status-processing">PROCESSING</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- SECTION 3: DEEP-DIVE ANALYSIS CHARTS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-
-            <!-- CHART 1: CONTRIBUTION STACKED BAR -->
-            <div class="card-glass p-6">
-                <h3 class="text-slate-700 text-xs font-bold uppercase mb-4">Đóng góp SLKHC giao dịch trong tháng 1</h3>
-                <div class="h-64 relative">
-                    <canvas id="contributionStackChart"></canvas>
-                </div>
-            </div>
-
-            <!-- CHART 2: BRANCH CR VS NORM -->
-            <div class="card-glass p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-slate-700 text-xs font-bold uppercase">Hiệu quả Chuyển đổi (CR%) theo Chi nhánh</h3>
-                    <div class="flex items-center gap-2">
-                        <span class="w-4 h-0.5 bg-indigo-600 border-t border-dashed border-indigo-600"></span>
-                        <span class="text-[10px] text-slate-500 font-medium">Trung bình (Norm)</span>
-                    </div>
-                </div>
-                <div class="h-64">
-                    <canvas id="branchCRChart"></canvas>
                 </div>
             </div>
         </div>
@@ -1015,69 +1146,76 @@
 
     <script>
         async function downloadAsImage() {
-            const btn = document.getElementById('download-btn');
+            const btn = document.getElementById('download-btn') || document.querySelector('.btn-download');
             if (!btn) return;
-            const label = btn.querySelector('.btn-label');
-            const originalLabel = label.textContent;
-            btn.classList.add('loading');
-            btn.disabled = true;
-            label.textContent = 'Đang xử lý...';
-            window.scrollTo(0, 0);
-            await new Promise(r => setTimeout(r, 100));
-            try {
-                const target = document.getElementById('report-container');
-                const canvas = await html2canvas(target, {
-                    scale: 2, useCORS: true, allowTaint: false, backgroundColor: '#f8fafc',
-                    onclone: (clonedDoc) => {
-                        const dlBtn = clonedDoc.getElementById('download-btn');
-                        if (dlBtn) dlBtn.style.display = 'none';
-                    }
-                });
-                const link = document.createElement('a');
-                link.download = 'Bao-Cao-Omni-Growth.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch (err) {
-                console.error('Lỗi tạo ảnh:', err);
-                alert('Đã có lỗi xảy ra. Vui lòng thử lại.');
-            } finally {
-                btn.classList.remove('loading');
-                btn.disabled = false;
-                label.textContent = originalLabel;
+
+            let originalLabel = "";
+            let labelElement = null;
+            let originalHtml = "";
+
+            if (btn.id === 'download-btn') {
+                labelElement = btn.querySelector('.btn-label') || btn; // fallback
+                originalLabel = labelElement ? labelElement.textContent : btn.textContent;
+                btn.classList.add('loading');
+                btn.disabled = true;
+                if (labelElement) labelElement.textContent = 'Đang xử lý...';
+            } else {
+                originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+                btn.style.opacity = '0.7';
+                btn.style.pointerEvents = 'none';
             }
-        }
-    </script>
-    <script>
-        async function downloadAsImage() {
-            const btn = document.querySelector('.btn-download');
-            if (!btn) return;
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-            btn.style.opacity = '0.7';
-            btn.style.pointerEvents = 'none';
+
+            // Tạm dừng animation của Chart để đảm bảo vẽ hoàn tất
+            Chart.defaults.animation = false;
+            for (let id in Chart.instances) {
+                Chart.instances[id].update();
+            }
+
+            // Đợi toàn bộ font tải xong
+            await document.fonts.ready;
+
+            const container = document.getElementById('report-container');
+            container.classList.add('ppt-export-mode'); // Kích hoạt CSS ngang 16:9
 
             window.scrollTo(0, 0);
-            await new Promise(r => setTimeout(r, 100));
+            await new Promise(r => setTimeout(r, 400)); // Đợi render dài ra xíu
 
             try {
-                const canvas = await html2canvas(document.getElementById('report-container'), {
-                    scale: 2,
+                const canvas = await html2canvas(container, {
+                    scale: 3,
                     useCORS: true,
                     allowTaint: false,
-                    backgroundColor: '#F8FAFC'
+                    backgroundColor: '#F8FAFC',
+                    windowWidth: 2560,
+                    windowHeight: container.scrollHeight + 100, // Đề phòng dính tràn footer
+                    imageTimeout: 15000,
+                    onclone: (clonedDoc) => {
+                        const dlBtn = clonedDoc.getElementById('download-btn');
+                        if (dlBtn) dlBtn.style.display = 'none'; // Ẩn nút tải trên ảnh
+                    }
                 });
 
                 const link = document.createElement('a');
-                link.download = 'PNJ-Bao-Cao-Omni.png';
+                link.download = 'PNJ-Bao-Cao-Tong-Quan-Omni.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             } catch (err) {
                 console.error('Lỗi khi tải ảnh:', err);
                 alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại!');
             } finally {
-                btn.innerHTML = originalHtml;
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
+                container.classList.remove('ppt-export-mode');
+
+                // Khôi phục nút
+                if (btn.id === 'download-btn') {
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    if (labelElement) labelElement.textContent = originalLabel;
+                } else {
+                    btn.innerHTML = originalHtml;
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                }
             }
         }
     </script>
