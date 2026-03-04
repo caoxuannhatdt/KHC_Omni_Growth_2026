@@ -8,7 +8,6 @@
     <link rel="icon" href="/Icon.png" type="image/png">
     <meta property="og:title" content="Omni-Growth Workspace">
     <meta property="og:image" content="https://omni-growth-2026.vercel.app/Logo.png">
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -228,65 +227,8 @@
             text-transform: uppercase;
             text-align: center;
         }
-
-        /* Download Button Styles */
-        #download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #002d72, #1e40af);
-            color: #fff;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 8px 18px;
-            border-radius: 999px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(0, 45, 114, 0.25);
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.01em;
-        }
-
-        #download-btn:hover {
-            background: linear-gradient(135deg, #1e40af, #2563eb);
-            box-shadow: 0 6px 20px rgba(0, 45, 114, 0.35);
-            transform: translateY(-1px);
-        }
-
-        #download-btn.loading {
-            opacity: 0.75;
-            cursor: wait;
-        }
-
-        #download-btn .spinner {
-            display: none;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin-slow 0.7s linear infinite;
-        }
-
-        #download-btn.loading .spinner {
-            display: inline-block;
-        }
-
-        #download-btn.loading .btn-icon {
-            display: none;
-        }
-
-        @keyframes spin-slow {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
     </style>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 
 <body class="bg-slate-100 selection:bg-blue-200 selection:text-blue-900">
@@ -313,13 +255,6 @@
                     <p class="text-slate-500 text-sm mt-1">Theo dõi hiệu quả toàn trình & Tác động tăng trưởng (Growth
                         Impact)</p>
                 </div>
-            </div>
-            <div class="mt-4 md:mt-0">
-                <button id="download-btn" onclick="downloadAsImage()">
-                    <span class="spinner"></span>
-                    <i class="fas fa-download btn-icon"></i>
-                    <span class="btn-label">Tải xuống</span>
-                </button>
             </div>
         </div>
 
@@ -1021,39 +956,38 @@
 
     <script>
         async function downloadAsImage() {
-            const btn = document.getElementById('download-btn');
+            const btn = document.querySelector('.btn-download');
             if (!btn) return;
-            const label = btn.querySelector('.btn-label');
-            const originalLabel = label.textContent;
-            btn.classList.add('loading');
-            btn.disabled = true;
-            label.textContent = 'Đang xử lý...';
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+
             window.scrollTo(0, 0);
             await new Promise(r => setTimeout(r, 100));
+
             try {
-                const target = document.getElementById('report-container');
-                const canvas = await html2canvas(target, {
-                    scale: 2, useCORS: true, allowTaint: false, backgroundColor: '#f8fafc',
-                    onclone: (clonedDoc) => {
-                        const dlBtn = clonedDoc.getElementById('download-btn');
-                        if (dlBtn) dlBtn.style.display = 'none';
-                    }
+                const canvas = await html2canvas(document.getElementById('report-container'), {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: '#F8FAFC'
                 });
+
                 const link = document.createElement('a');
-                link.download = 'Bao-Cao-Omni-Growth.png';
+                link.download = 'PNJ-Bao-Cao-Omni.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             } catch (err) {
-                console.error('Lỗi tạo ảnh:', err);
-                alert('Đã có lỗi xảy ra. Vui lòng thử lại.');
+                console.error('Lỗi khi tải ảnh:', err);
+                alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại!');
             } finally {
-                btn.classList.remove('loading');
-                btn.disabled = false;
-                label.textContent = originalLabel;
+                btn.innerHTML = originalHtml;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
             }
         }
     </script>
-
 </body>
 
 </html>
