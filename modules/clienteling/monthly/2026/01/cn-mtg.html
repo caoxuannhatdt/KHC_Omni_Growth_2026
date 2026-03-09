@@ -1093,6 +1093,54 @@
         </script>
     </div>
 
+    <script>
+        async function downloadAsImage() {
+            const btn = document.querySelector('.btn-download');
+            if (!btn) return;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+
+            Chart.defaults.animation = false;
+            for (let id in Chart.instances) {
+                Chart.instances[id].update();
+            }
+
+            await document.fonts.ready;
+
+            const container = document.getElementById('report-container');
+            container.classList.add('ppt-export-mode');
+
+            window.scrollTo(0, 0);
+            await new Promise(r => setTimeout(r, 300));
+
+            try {
+                const canvas = await html2canvas(container, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: '#F8FAFC',
+                    windowWidth: 2560,
+                    windowHeight: document.documentElement.scrollHeight,
+                    imageTimeout: 15000
+                });
+
+                const link = document.createElement('a');
+                link.download = 'PNJ-Bao-Cao-Omni.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (err) {
+                console.error('Lỗi khi tải ảnh:', err);
+                alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại!');
+            } finally {
+                container.classList.remove('ppt-export-mode');
+                btn.innerHTML = originalHtml;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+    </script>
 </body>
 
 </html>
