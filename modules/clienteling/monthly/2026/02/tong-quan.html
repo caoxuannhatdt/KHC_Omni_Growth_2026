@@ -909,7 +909,7 @@
             // Stacked Chart
             new Chart(document.getElementById('contributionStackChart'), {
                 type: 'bar',
-                data: { labels: [["H\u1ed3 Ch\u00ed Minh", "(-4.88% SSCK)"], ["Mi\u1ec1n B\u1eafc", "(+7.2% SSCK)"], ["\u0110\u00f4ng Nam B\u1ed9", "(+3.84% SSCK)"], ["Mi\u1ec1n T\u00e2y", "(+16.58% SSCK)"], ["Mi\u1ec1n Trung", "(+7.12% SSCK)"], ["T\u00e2y Nguy\u00ean", "(+5.52% SSCK)"]], datasets: [{ label: 'KHC', data: [11126.0, 5291.0, 4046.0, 3748.0, 3535.0, 2779.0], backgroundColor: '#F97316', stack: '0' }, { label: 'Other', data: [29319.0, 19379.0, 11558.0, 13742.0, 10191.0, 8066.0], backgroundColor: '#CBD5E1', stack: '0' }] },
+                data: { labels: [["H\u1ed3 Ch\u00ed Minh", "(-4.88% SSCK)"], ["Mi\u1ec1n B\u1eafc", "(+7.2% SSCK)"], ["\u0110\u00f4ng Nam B\u1ed9", "(+3.84% SSCK)"], ["Mi\u1ec1n T\u00e2y", "(+16.58% SSCK)"], ["Mi\u1ec1n Trung", "(+7.12% SSCK)"], ["T\u00e2y Nguy\u00ean", "(+5.52% SSCK)"]], datasets: [{ label: 'KHC', data: [12736.0, 6021.0, 4678.0, 4352.0, 4004.0, 3175.0], backgroundColor: '#F97316', stack: '0' }, { label: 'Other', data: [27707.0, 18649.0, 10925.0, 13138.0, 9722.0, 7670.0], backgroundColor: '#CBD5E1', stack: '0' }] },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
@@ -947,7 +947,7 @@
             // CR Chart
             // [LOGIC MỚI] Tính toán Max Y-axis + 2% Buffer
             const crLabels = ["Mi\u1ec1n T\u00e2y", "H\u1ed3 Ch\u00ed Minh", "\u0110\u00f4ng Nam B\u1ed9", "T\u00e2y Nguy\u00ean", "Mi\u1ec1n Trung", "Mi\u1ec1n B\u1eafc"];
-            const crValues = [6.47, 6.279999999999999, 6.18, 5.92, 5.52, 4.38];
+            const crValues = [6.81, 6.58, 6.50, 6.27, 5.82, 4.66];
             const normVal = 5.63;
             const maxCrVal = Math.max(...crValues);
             const yAxisMax = Math.ceil(maxCrVal + 2); // Buffer 2% và làm tròn lên số nguyên
