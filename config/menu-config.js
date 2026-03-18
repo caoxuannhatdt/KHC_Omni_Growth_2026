@@ -82,7 +82,7 @@ export const workspaceMenu = [
                 groupName: 'Explore',
                 features: [
                     // Các link trong Explore sẽ được render phẳng ra ngoài nhờ logic JS
-                    { name: 'CIS – Đánh Chặn Rời Bỏ', url: '/modules/updating.html', status: 'research' },
+                    { name: 'CIS', url: '/modules/updating.html', status: 'research' },
                     { name: 'CRM Automation', url: '/modules/innovation/crm/crmauto.html', status: 'active' }
                 ]
             },
