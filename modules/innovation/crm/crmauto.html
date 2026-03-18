@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNJ O2O Action Center & Automation Map</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        
+        /* === STYLE FROM CRMAUTO === */
+        
+        
+
+        #section-crm {
+            background-color: #f8fafc;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Task card active state */
+        .task-active {
+            border-color: #003B71;
+            background-color: #f0f7ff;
+        }
+
+        /* ── DASHBOARD MINI ── */
+        .dash-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dash-ring {
+            position: relative;
+            width: 36px;
+            height: 36px;
+        }
+        .dash-ring svg {
+            transform: rotate(-90deg);
+        }
+        .dash-ring .ring-bg  { fill: none; stroke: #e2e8f0; stroke-width: 3.5; }
+        .dash-ring .ring-val { fill: none; stroke-width: 3.5; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease; }
+
+        /* ── NOTIFICATION SLIDE-DOWN ── */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-24px) scaleY(0.85); }
+            to   { opacity: 1; transform: translateY(0)    scaleY(1); }
+        }
+        .notif-new {
+            animation: slideDown 0.4s cubic-bezier(.22,1,.36,1) forwards;
+        }
+        .notif-pulse-border { border-color: #4ade80 !important; }
+
+        /* ── CARE STATUS FILTER ── */
+        .filter-chip {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 10px; border-radius: 999px;
+            font-size: 10px; font-weight: 700; cursor: pointer;
+            border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b;
+            transition: background .15s, border-color .15s, color .15s;
+            white-space: nowrap; user-select: none;
+        }
+        .filter-chip:hover { background:#f1f5f9; border-color:#cbd5e1; }
+        .filter-chip.fc-active { border-color: #003B71; background: #003B71; color: #fff; }
+        .filter-chip.fc-active.fc-chua { border-color:#dc2626; background:#dc2626; color:#fff; }
+        .filter-chip.fc-active.fc-dang  { border-color:#d97706; background:#d97706; color:#fff; }
+        .filter-chip.fc-active.fc-da    { border-color:#16a34a; background:#16a34a; color:#fff; }
+
+        /* care status badge on card */
+        .cs-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            padding: 2px 8px; border-radius: 999px; font-size: 9px; font-weight: 800;
+            cursor: pointer; transition: opacity .15s;
+            border: 1px solid transparent; white-space: nowrap;
+        }
+        .cs-badge:hover { opacity: 0.75; }
+        .cs-chua { background:#fee2e2; color:#dc2626; border-color:#fca5a5; }
+        .cs-dang  { background:#fef3c7; color:#92400e; border-color:#fcd34d; }
+        .cs-da    { background:#dcfce7; color:#15803d; border-color:#86efac; }
+
+        /* ── SMART REPLY CHIPS ── */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 13px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #bfdbfe;
+            background: #eff6ff;
+            color: #1d4ed8;
+            transition: background .15s, border-color .15s, transform .1s;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .chip:hover  { background: #dbeafe; border-color: #93c5fd; transform: translateY(-1px); }
+        .chip:active { transform: scale(0.96); }
+        .chip.active { background: #003B71; border-color: #003B71; color: #fff; }
+
+        /* typewriter cursor blink */
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .typing-cursor::after {
+            content: '|';
+            animation: blink .7s step-end infinite;
+            color: #1d4ed8;
+            font-weight: 300;
+        }
+
+        /* progress bar dashboard */
+        .prog-bar { height:5px; border-radius:99px; overflow:hidden; background:#e2e8f0; }
+        .prog-fill { height:100%; border-radius:99px; transition: width 1.4s ease; }
+    
+        
+        /* === STYLE FROM AUTOMATION === */
+        
+        #section-automation {
+            background-color: #f4f7f6;
+        }
+
+        .table-container {
+            max-height: calc(100vh - 120px);
+            overflow: auto;
+        }
+
+        .sticky-col {
+            position: sticky;
+            left: 0;
+            background: #fff;
+            z-index: 20;
+            border-right: 2px solid #e2e8f0;
+            box-shadow: 4px 0 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .sticky-corner {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 40;
+            background: #f8fafc;
+            border-right: 2px solid #e2e8f0;
+        }
+
+        .card-enter {
+            animation: fadeInAuto 0.4s ease-out;
+        }
+
+        @keyframes fadeInAuto {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .badge-post {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-occ {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-loy {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-act {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+    
+    </style>
+</head>
+<body class="bg-slate-100 selection:bg-blue-200 selection:text-blue-900 overflow-x-hidden">
+    <!-- Tích hợp Navigation chung -->
+    <div id="global-nav"></div>
+    <script src="/components/layout.js"></script>
+    
+    <!-- SECTION 1: AUTOMATION -->
+    <section id="section-automation" class="text-slate-800 flex flex-col w-full relative z-10 mb-[-2rem]">
+        
+
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex-shrink-0 shadow-sm z-50">
+        <div class="flex justify-between items-center max-w-[1800px] mx-auto">
+            <div>
+                <h1 class="text-2xl font-extrabold text-blue-900 tracking-tight flex items-center gap-2">
+                    <svg class="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    PNJ AUTOMATION MAP
+                </h1>
+            </div>
+
+            <div class="bg-slate-100 p-1.5 rounded-lg border border-slate-200 flex gap-1 shadow-inner">
+                <span
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wider py-2 px-3 flex items-center">Health
+                    Status:</span>
+                <button onclick="setRFM('active')" id="btn-active"
+                    class="rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 bg-white text-emerald-700 shadow shadow-emerald-100 border border-emerald-200 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> NOT CHURN
+                </button>
+                <button onclick="setRFM('risk')" id="btn-risk"
+                    class="rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 text-slate-500 hover:text-amber-700 hover:bg-amber-50 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> WARNING TO CHURN
+                </button>
+                <button onclick="setRFM('inactive')" id="btn-inactive"
+                    class="rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 text-slate-500 hover:text-rose-700 hover:bg-rose-50 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> CHURNED
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 table-container p-6">
+        <div class="max-w-[1800px] mx-auto bg-white rounded-xl shadow-md border border-slate-200">
+            <div class="min-w-[1600px]">
+
+                <!-- X-Axis Header -->
+                <div
+                    class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] bg-slate-50 border-b-2 border-slate-300 text-sm font-bold text-slate-700 sticky-header">
+                    <div class="p-4 sticky-corner flex items-center justify-center uppercase tracking-wider text-xs">
+
+                    </div>
+                    <!-- Time-based -->
+                    <div class="p-4 border-r border-slate-200 bg-blue-50/50">
+                        <span class="text-xs px-2 py-0.5 rounded-full badge-post uppercase mb-1 inline-block">1.
+                            Post Purchase</span><br>
+                        T + 1 Ngày<br><span class="text-xs font-normal text-slate-500">Kích hoạt & Aftersales</span>
+                    </div>
+                    <div class="p-4 border-r border-slate-200 bg-indigo-50/50">
+                        <span class="text-xs px-2 py-0.5 rounded-full badge-post uppercase mb-1 inline-block">2.
+                            Nurture & Warranty</span><br>
+                        T + 3T / 6T<br><span class="text-xs font-normal text-slate-500">Hook O2O Bảo hành</span>
+                    </div>
+                    <div class="p-4 border-r border-slate-200 bg-rose-50/50">
+                        <span class="text-xs px-2 py-0.5 rounded-full badge-act uppercase mb-1 inline-block">4.
+                            Activation/Win-back</span><br>
+                        T + 12 Tháng<br><span class="text-xs font-normal text-slate-500">Churn > 365d</span>
+                    </div>
+
+                    <!-- Event-based -->
+                    <div class="p-4 border-r border-slate-200 bg-amber-50/50 shadow-inner">
+                        <span class="text-xs px-2 py-0.5 rounded-full badge-occ uppercase mb-1 inline-block">2.
+                            Occasion Event</span><br>
+                        Sự kiện<br><span class="text-xs font-normal text-slate-500">Sinh nhật
+                            Khách
+                            hàng / Aniversary </span>
+                    </div>
+                    <div class="p-4 bg-emerald-50/50 shadow-inner">
+                        <span class="text-xs px-2 py-0.5 rounded-full badge-loy uppercase mb-1 inline-block">3.
+                            Loyalty & 4. Digital</span><br>
+                        Hành vi Thẻ & Digital<br><span class="text-xs font-normal text-slate-500">The Tier Up, Digital
+                            Footprint</span>
+                    </div>
+                </div>
+
+                <!-- ROW 1: TS VÀNG / PLATINUM / Ý -->
+                <div
+                    class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] border-b border-slate-200 group hover:bg-slate-50 transition-colors">
+                    <div
+                        class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
+                        <span class="font-bold text-sm text-yellow-700">1. TS Vàng / Platinum / Ý</span>
+                        <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
+                            <li>BH lỗi Kỹ thuật/Nước Xi: 6 tháng.</li>
+                            <li>Đánh bóng/Siêu âm: Vô thời hạn.</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 border-r border-blue-100 bg-blue-50/30">
+                        <div
+                            class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-blue-800">⭐ Rating VOC & E-Warranty</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-content list-disc pl-4 space-y-0.5">
+                                <li>Kích hoạt BHĐT & Dịch vụ Aftersales.</li>
+                                <li>Gửi link Rating VOC 1-5 sao.</li>
+                                <li>Gửi cẩm nang bảo quản Vàng.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-indigo-100 bg-indigo-50/30">
+                        <div
+                            class="bg-white border border-indigo-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-indigo-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-indigo-800">🔔 Privilege Alert: Nước Xi</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-active list-disc pl-4 space-y-0.5">
+                                <li>Đặc quyền nước xi miễn phí 6 tháng đã sẵn sàng.</li>
+                                <li>Cố vấn trang sức mời ghé cửa hàng chăm sóc.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-risk hidden list-disc pl-4 space-y-0.5">
+                                <li>Tặng E-voucher khi ghé bảo dưỡng hoặc trải nghiệm sản phẩm mới.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-inactive hidden list-disc pl-4 space-y-0.5">
+                                <li>Bảo lưu thông báo bảo dưỡng khi khách quan tâm trở lại.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-rose-100 bg-rose-50/20">
+                        <div
+                            class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-rose-800">💎 Quyền lợi đánh bóng</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-active list-disc pl-4 space-y-0.5">
+                                <li>Hệ thống reset cycle sau mua mới.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-risk hidden list-disc pl-4 space-y-0.5">
+                                <li>Gợi ý quyền lợi đánh bóng trọn đời.</li>
+                                <li>Tư vấn Thu cũ đổi mới nâng tầm phong cách.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-inactive hidden list-disc pl-4 space-y-0.5">
+                                <li>Tri ân bằng Voucher đặc biệt.</li>
+                                <li>Trade-in trợ giá 10% để đánh thức nhu cầu.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-amber-100 bg-amber-50/30">
+                        <div
+                            class="bg-white border border-amber-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-amber-400 absolute left-0 top-0"></div>
+                            <span class="text-sm font-bold text-amber-800">🎂 Sinh nhật Khách Hàng</span>
+                            <ul class="text-xs text-slate-500 mt-1 dyn-active list-disc pl-4 space-y-0.5">
+                                <li>Gửi lời chúc tinh tế & tặng E-voucher tri ân.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-500 mt-1 dyn-risk hidden list-disc pl-4 space-y-0.5">
+                                <li>Gửi lời chúc tinh tế & tặng E-voucher tri ân.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-500 mt-1 dyn-inactive hidden list-disc pl-4 space-y-0.5">
+                                <li>Gửi lời chúc chân thành, không kèm thông điệp bán hàng.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-emerald-50/30">
+                        <div
+                            class="bg-white border border-emerald-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-emerald-400 absolute left-0 top-0"></div>
+                            <span class="text-sm font-bold text-emerald-800">👑 Leo Rank & Đặc quyền VIP</span>
+                            <ul class="text-xs text-slate-500 mt-1 list-disc pl-4 space-y-0.5">
+                                <li><strong>Cận VIP / Level Up:</strong> Cập nhật điểm / Chúc mừng thăng hạng.</li>
+                                <li><strong>Giỏ hàng:</strong> Gợi ý dùng đặc quyền VIP hoàn tất mua sắm.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 2: TS BẠC / CHARM / DISNEY -->
+                <div
+                    class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] border-b border-slate-200 group hover:bg-slate-50 transition-colors">
+                    <div
+                        class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
+                        <span class="font-bold text-sm text-slate-600">2. TS Bạc / Charm</span>
+                        <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
+                            <li>BH Kỹ thuật/Nước xi: 3 tháng.</li>
+                            <li>VIP: BH nước xi miễn phí 12 tháng.</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 border-r border-blue-100 bg-blue-50/30">
+                        <div
+                            class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-blue-800">⭐ Rating VOC & Aftersales Bạc</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-content list-disc pl-4 space-y-0.5">
+                                <li>Gửi khảo sát VOC.</li>
+                                <li>Tư vấn bảo quản Bạc qua Dịch vụ Aftersales.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-indigo-100 bg-indigo-50/30">
+                        <div
+                            class="bg-white border border-indigo-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-indigo-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-indigo-800">🔔 Service Notice: Nước Xi Bạc</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-active list-disc pl-4 space-y-0.5">
+                                <li>Khách VIP: Đặc quyền nước xi Bạc gia hạn đến 12 tháng.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-risk hidden list-disc pl-4 space-y-0.5">
+                                <li>Đến kỳ bảo dưỡng nước xi Bạc 3T. Mời ghé cửa hàng O2O.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-inactive hidden list-disc pl-4 space-y-0.5">
+                                <li>Tinh tế bảo lưu, tránh làm phiền.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-rose-100 bg-rose-50/20">
+                        <div
+                            class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-rose-800">✨ Silver Shine Reminder</span>
+                            <ul class="text-xs text-slate-600 mt-2 list-disc pl-4 space-y-0.5">
+                                <li>Tự động nhắc lịch vệ sinh định kỳ 3-6T (O2O Hook).</li>
+                                <li>Duy trì độ sáng bóng & gắn kết khách hàng.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-amber-100 bg-amber-50/30">
+                        <div
+                            class="bg-white border border-amber-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-amber-400 absolute left-0 top-0"></div>
+                            <span class="text-sm font-bold text-amber-800">🧩 Charm Collection Completion</span>
+                            <ul class="text-xs text-slate-500 mt-1 list-disc pl-4 space-y-0.5">
+                                <li>Dựa trên chủ đề Charm đã mua, gợi ý mẫu mới hoàn thiện BST.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-emerald-50/30">
+                        <div
+                            class="bg-white border border-emerald-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-emerald-400 absolute left-0 top-0"></div>
+                            <span class="text-sm font-bold text-emerald-800">💳 Silver Friendcard</span>
+                            <ul class="text-xs text-slate-500 mt-1 list-disc pl-4 space-y-0.5">
+                                <li>Nhắc ưu đãi đặc quyền (chiết khấu >100k) chưa sử dụng.</li>
+                                <li>Sẵn sàng trải nghiệm sản phẩm mới.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 3: NHẪN CƯỚI -->
+                <div
+                    class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] border-b border-slate-200 group hover:bg-slate-50 transition-colors">
+                    <div
+                        class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
+                        <span class="font-bold text-sm text-pink-700">3. Nhẫn Cưới </span>
+                        <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
+                            <li>Đánh bóng, xi, làm mới: Miễn phí trọn đời.</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 border-r border-blue-100 bg-blue-50/30">
+                        <div
+                            class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-blue-800">⭐ Rating VOC & Khắc Tên</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-content list-disc pl-4 space-y-0.5">
+                                <li>Gửi khảo sát chất lượng dịch vụ.</li>
+                                <li>Gợi ý đặc quyền khắc tên nhẫn miễn phí (nếu chưa trải nghiệm).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-indigo-100 bg-indigo-50/30 flex items-center justify-center">
+                        <span class="text-xs text-slate-500 italic">Duy trì cập nhật cột mốc. Không gửi thông điệp làm
+                            phiền.</span>
+                    </div>
+                    <div class="p-3 border-r border-rose-100 bg-rose-50/20">
+                        <div
+                            class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-rose-800">💍 Marriage Milestone Celebration</span>
+                            <ul class="text-xs text-slate-600 mt-2 list-disc pl-4 space-y-0.5">
+                                <li>Kỷ niệm 5/10 năm: Tư vấn thu đổi nhẫn cưới kỷ niệm.</li>
+                                <li>Nâng cấp lên Kim cương / TS cao cấp.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-amber-100 bg-amber-50/30">
+                        <div
+                            class="bg-white border border-amber-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-amber-400 absolute left-0 top-0"></div>
+                            <span class="text-sm font-bold text-amber-800">🥂 Wedding Anniversary</span>
+                            <ul class="text-xs text-slate-500 mt-1 dyn-active list-disc pl-4 space-y-0.5">
+                                <li>Gợi ý tinh tế mẫu trang sức ý nghĩa dành tặng bạn đời.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-500 mt-1 dyn-risk hidden list-disc pl-4 space-y-0.5">
+                                <li>Mời làm mới nhẫn cưới (miễn phí).</li>
+                                <li>Voucher trải nghiệm BST mới.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-500 mt-1 dyn-inactive hidden list-disc pl-4 space-y-0.5">
+                                <li>Gửi thông điệp chúc phúc chân thành, hình thái cố vấn tận tâm.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-emerald-50/30">
+                        <div
+                            class="bg-white border border-emerald-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-emerald-400 absolute left-0 top-0"></div>
+                            <span class="text-sm font-bold text-emerald-800">✈️ Thăng Hạng & Đặc Quyền Mới</span>
+                            <ul class="text-xs text-slate-500 mt-1 list-disc pl-4 space-y-0.5">
+                                <li>Thông báo hạng VIP đã đạt.</li>
+                                <li>Tư vấn dòng TS cao cấp với ưu đãi cho dịp trăng mật.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 4: VÀNG MIẾNG (THE MASTERPIECE CONVERSION) -->
+                <div class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] group hover:bg-slate-50 transition-colors">
+                    <div
+                        class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
+                        <span class="font-bold text-sm text-amber-600">4. Vàng Miếng / Nhẫn Trơn</span>
+                        <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
+                            <li>Hành vi: Tích lũy, An toàn.</li>
+                            <li><strong class="text-indigo-600">Mục tiêu: Convert -> Trang Sức</strong></li>
+                        </ul>
+                    </div>
+                    <div class="p-3 border-r border-blue-100 bg-blue-50/30">
+                        <div
+                            class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-blue-800">⭐ Rating VOC & Onboard Tích Lũy</span>
+                            <ul class="text-xs text-slate-600 mt-2 dyn-content list-disc pl-4 space-y-0.5">
+                                <li>Khảo sát trải nghiệm giao dịch.</li>
+                                <li>Mời Follow OA nhận bản tin thị trường định kỳ.</li>
+                                <li>ZNS tự động khi có biến động giá.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-3 border-r border-indigo-100 bg-indigo-50/30 flex items-center justify-center">
+                        <span class="text-xs text-slate-500 italic">Duy trì cập nhật bản tin Giá Vàng từ Cố vấn Tài
+                            chính.</span>
+                    </div>
+                    <div class="p-3 border-r border-rose-100 bg-rose-50/20">
+                        <div
+                            class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
+                            <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
+                            <span class="font-bold text-sm text-rose-800">🧧 Tri ân Tích Lũy Định Kỳ</span>
+                            <ul class="text-xs text-slate-600 mt-2 list-disc pl-4 space-y-0.5">
+                                <li>Cảm ơn khách đã chọn PNJ để tích lũy an toàn.</li>
+                                <li>Nhắc trải nghiệm thêm dịp Lễ Thần Tài sắp tới.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- THE CONVERSION ENGINE -->
+                    <div class="col-span-2 p-3 bg-emerald-50/30 shadow-inner border-l border-emerald-100">
+                        <div
+                            class="bg-white border border-emerald-300 p-4 rounded-lg h-full flex flex-col justify-center relative overflow-hidden">
+                            <div
+                                class="absolute right-0 top-0 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-bl-lg uppercase tracking-wider">
+                                Conversion Engine</div>
+                            <span class="font-bold text-sm text-emerald-900 mb-2 mt-2">💎 TƯ VẤN QUYỀN LỢI & NÂNG TẦM
+                                PHONG CÁCH</span>
+
+                            <ul class="text-xs text-slate-700 mt-2 dyn-active dyn-risk list-disc pl-4 space-y-1">
+                                <li><strong class="text-emerald-700">Trigger 1 – Sinh Nhật:</strong> Trải nghiệm thiết
+                                    kế TS mới để tôn vinh vẻ đẹp (Voucher 10%).</li>
+                                <li><strong class="text-emerald-700">Trigger 2 – Đa Dạng Danh Mục:</strong> Dành một
+                                    phần tích lũy nâng tầm với TS Kim cương / 22-24K.</li>
+                                <li><strong class="text-emerald-700">Trigger 3 – Leo Rank:</strong> Điểm chạm mốc VIP –
+                                    khám phá đặc quyền giới hạn cho tín đồ Trang sức.</li>
+                            </ul>
+                            <ul class="text-xs text-slate-500 mt-2 dyn-inactive hidden list-disc pl-4 space-y-0.5">
+                                <li>Chỉ gửi thông báo tri ân đặc biệt hoặc tin tức thị trường ưu tú.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function setRFM(status) {
+            document.querySelectorAll('.rfm-btn').forEach(btn => {
+                btn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 text-slate-500 bg-transparent flex items-center gap-2 hover:bg-slate-200";
+            });
+
+            let activeBtn = document.getElementById('btn-' + status);
+            if (status === 'active') {
+                activeBtn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 bg-white text-emerald-700 shadow shadow-emerald-100 border border-emerald-200 flex items-center gap-2 ring-2 ring-emerald-500/20";
+            } else if (status === 'risk') {
+                activeBtn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 bg-white text-amber-700 shadow shadow-amber-100 border border-amber-200 flex items-center gap-2 ring-2 ring-amber-500/20";
+            } else {
+                activeBtn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-sm transition-all duration-200 bg-white text-rose-700 shadow shadow-rose-100 border border-rose-200 flex items-center gap-2 ring-2 ring-rose-500/20";
+            }
+
+            document.querySelectorAll('.dyn-active, .dyn-risk, .dyn-inactive').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('card-enter');
+            });
+
+            document.querySelectorAll('.dyn-' + status).forEach(el => {
+                el.classList.remove('hidden');
+                void el.offsetWidth; // trigger reflow
+                el.classList.add('card-enter');
+            });
+        }
+
+        // Init
+        setRFM('active');
+    </script>
+
+    </section>
+
+    <!-- SECTION 2: CRMAUTO -->
+    <section id="section-crm" class="p-4 md:p-8 w-full min-h-screen relative z-0">
+        
+
+    <div class="max-w-6xl mx-auto p-8 bg-slate-50 rounded-[2.5rem] border border-slate-200 shadow-lg font-sans">
+
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-black text-[#003B71] uppercase italic tracking-tight">mPOS CRM</h2>
+            <p class="text-slate-500 font-medium mt-2">Interactive Demo: Luồng xử lý CRM tư vấn viên</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- ═══════════════════════════════════════ PHONE COLUMN ═══ -->
+            <div class="w-full lg:w-[380px] h-[750px] flex-shrink-0 bg-slate-200 rounded-[3.5rem] p-2.5 shadow-2xl ring-1 ring-slate-300/50 relative flex flex-col">
+
+                <!-- Notch -->
+                <div class="absolute top-4 left-1/2 transform -translate-x-1/2 w-[120px] h-8 bg-black rounded-[20px] z-50 shadow-inner flex items-center justify-end px-3">
+                    <div class="w-2 h-2 bg-slate-800 rounded-full"></div>
+                </div>
+
+                <div class="bg-white rounded-[3rem] flex-1 flex flex-col overflow-hidden relative border border-slate-100/50">
+
+                    <!-- Header -->
+                    <div class="bg-[#003B71] p-6 pt-14 text-white flex justify-between items-center shadow-md z-10 flex-shrink-0">
+                        <div>
+                            <h3 class="text-base font-black italic tracking-wide">PNJ mPOS</h3>
+                            <p class="text-[10px] text-[#C5A25D] font-bold uppercase tracking-widest mt-1">Việc cần làm hôm nay</p>
+                        </div>
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                            <span class="text-xs font-bold" id="taskCountBadge">4</span>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="flex border-b border-slate-100 bg-slate-50 text-[11px] font-bold text-slate-500 uppercase flex-shrink-0" id="mposTabs">
+                        <button class="flex-1 py-3 text-[#003B71] border-b-2 border-[#003B71]" onclick="setTab('all', this)">MPOS Task</button>
+                        <button class="flex-1 py-3 hover:bg-slate-100 transition" onclick="setTab('occasion', this)">Sinh nhật / Dịp</button>
+                        <button class="flex-1 py-3 hover:bg-slate-100 transition" onclick="setTab('vip', this)">VIP Alert</button>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="p-4 pb-2 border-b border-slate-100 bg-white flex-shrink-0">
+                        <div class="relative mb-2.5">
+                            <input type="text" id="searchInput" onkeyup="filterTasks()"
+                                placeholder="Tìm kiếm SĐT khách hàng..."
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#003B71]/20 focus:border-[#003B71] transition-all placeholder:text-slate-400">
+                            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <!-- Care-status filter chips -->
+                        <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" id="careFilterBar">
+                            <button class="filter-chip fc-active" data-care="all"    onclick="setCareFilter('all',this)">Tất cả</button>
+                            <button class="filter-chip fc-chua"   data-care="chua"   onclick="setCareFilter('chua',this)">Not Yet</button>
+                            <button class="filter-chip fc-dang"   data-care="dang"   onclick="setCareFilter('dang',this)">Processing</button>
+                            <button class="filter-chip fc-da"     data-care="da"     onclick="setCareFilter('da',this)">Done</button>
+                        </div>
+                    </div>
+
+                    <!-- Task List -->
+                    <div class="flex-1 overflow-y-auto p-4 pb-6 space-y-3 bg-slate-50 no-scrollbar" id="taskList"></div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════ MAIN CONTENT AREA ═══ -->
+            <div class="flex-1 flex flex-col gap-6 relative overflow-hidden" id="mainContentArea">
+
+                <!-- ════════ ① DASHBOARD MINI ════════ -->
+                <div class="bg-white rounded-[1.5rem] border border-slate-200 shadow-sm px-5 py-4 flex items-center gap-5 flex-wrap" id="dashboardMini">
+
+                    <!-- Label -->
+                    <div class="flex-1 min-w-[160px]">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Trạng thái hôm nay</p>
+                        <p class="text-[13px] font-bold text-slate-700">TVV: <span class="text-[#003B71]">Linh</span> &nbsp;·&nbsp; Ca sáng</p>
+                    </div>
+
+                    <!-- Stat 1: Follow-up -->
+                    <div class="dash-stat">
+                        <div class="dash-ring">
+                            <svg viewBox="0 0 36 36" width="36" height="36">
+                                <circle class="ring-bg" cx="18" cy="18" r="15.9"/>
+                                <circle class="ring-val" id="ringFollowup" cx="18" cy="18" r="15.9"
+                                        stroke="#003B71"
+                                        stroke-dasharray="100"
+                                        stroke-dashoffset="70"/>
+                            </svg>
+                            <span class="absolute inset-0 flex items-center justify-center text-[9px] font-black text-[#003B71]">30%</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-black text-slate-700 leading-none">Mục tiêu Follow-up</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5 font-medium">3 / 10 khách</p>
+                            <div class="prog-bar w-28 mt-1.5">
+                                <div class="prog-fill bg-[#003B71]" id="progFollowup" style="width:30%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="w-px h-10 bg-slate-100 hidden sm:block"></div>
+
+                    <!-- Stat 2: Response rate -->
+                    <div class="dash-stat">
+                        <div class="dash-ring">
+                            <svg viewBox="0 0 36 36" width="36" height="36">
+                                <circle class="ring-bg" cx="18" cy="18" r="15.9"/>
+                                <circle class="ring-val" id="ringResponse" cx="18" cy="18" r="15.9"
+                                        stroke="#16a34a"
+                                        stroke-dasharray="100"
+                                        stroke-dashoffset="70"/>
+                            </svg>
+                            <span class="absolute inset-0 flex items-center justify-center text-[9px] font-black text-green-700">30%</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-black text-slate-700 leading-none">Tỉ lệ khách phản hồi</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5 font-medium">3 / 10 đã phản hồi</p>
+                            <div class="prog-bar w-28 mt-1.5">
+                                <div class="prog-fill bg-green-500" id="progResponse" style="width:30%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live dot -->
+                    <div class="ml-auto flex items-center gap-1.5 text-[10px] font-bold text-green-600">
+                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block"></span>
+                        Live
+                    </div>
+                </div>
+                <!-- END DASHBOARD MINI -->
+
+                <!-- ════════ Task Detail View ════════ -->
+                <div id="taskDetailView" class="flex flex-col gap-6 flex-1 fade-in">
+
+                    <!-- Context Card -->
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold" id="detailIcon">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight" id="detailTitle">Chi tiết nhiệm vụ</h3>
+                                <p class="text-xs text-slate-500 font-medium" id="detailSubtitle">Phân loại: ...</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-4">
+                            <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2">Bối cảnh từ hệ thống (Support Center)</p>
+                            <ul class="text-sm text-slate-700 space-y-2 font-medium" id="detailContext"></ul>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Lịch sử tương tác (Touchpoints)</p>
+                            <ul class="text-sm text-slate-700 space-y-3 font-medium border-l-[3px] border-slate-200 ml-2 pl-4" id="detailFootprint"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Script Card -->
+                    <div class="bg-white p-6 rounded-[2rem] border-t-4 border-[#C5A25D] shadow-sm flex-1 flex flex-col">
+                        <h3 class="font-black text-slate-800 text-base uppercase tracking-tight mb-4">Kịch bản tư vấn đề xuất (Zalo 1-1)</h3>
+
+                        <div class="bg-[#E5F2FF] p-5 rounded-2xl rounded-tl-none relative border border-blue-100 mb-6 flex-1">
+                            <p class="text-sm text-slate-800 leading-relaxed font-medium" id="detailScript"></p>
+                        </div>
+
+                        <div class="flex gap-4 mt-auto">
+                            <button onclick="openZaloChat()"
+                                class="flex-1 bg-[#003B71] text-white py-4 rounded-xl font-black uppercase text-xs tracking-wider flex items-center justify-center gap-2 hover:bg-blue-900 transition shadow-lg shadow-blue-900/20">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 5.92 2 10.76c0 2.76 1.5 5.22 3.84 6.75-.24 1.13-.8 2.65-.87 2.85-.14.38.3.67.62.45 1.05-.72 3.03-2.14 4.07-2.92.76.12 1.55.19 2.34.19 5.52 0 10-3.92 10-8.76S17.52 2 12 2z" />
+                                </svg>
+                                Gửi Zalo 1-1 ngay
+                            </button>
+                            <button class="px-6 bg-slate-100 text-slate-400 rounded-xl font-bold uppercase text-xs hover:bg-slate-200 transition">
+                                Bỏ qua
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════════ ② ZALO CHAT VIEW ════════ -->
+                <div id="zaloChatView"
+                    class="hidden absolute inset-0 bg-white rounded-[2rem] border border-slate-200 shadow-xl flex flex-col fade-in z-30">
+
+                    <!-- Zalo header -->
+                    <div class="bg-[#0068FF] p-4 text-white flex items-center gap-3 rounded-t-[2rem]">
+                        <button onclick="closeZaloChat()" class="p-1 hover:bg-blue-600 rounded-full transition">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="w-10 h-10 bg-white rounded-full p-0.5">
+                            <img src="https://ui-avatars.com/api/?name=KH&background=E5F2FF&color=0068FF" alt="Avatar"
+                                class="w-full h-full rounded-full" id="chatAvatar">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-sm tracking-wide" id="chatName">Tên Khách Hàng</h3>
+                            <p class="text-[10px] opacity-80">Vừa mới truy cập</p>
+                        </div>
+                        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <!-- Chat bubble area -->
+                    <div class="flex-1 bg-[#E2E9F1] p-4 overflow-y-auto flex flex-col gap-4">
+                        <div class="text-center">
+                            <span class="bg-black/10 text-slate-500 text-[10px] px-3 py-1 rounded-full font-medium">Hôm nay 10:30</span>
+                        </div>
+
+                        <div class="flex justify-end fade-in">
+                            <div class="bg-[#E5F2FF] border border-blue-200 text-slate-800 p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-sm">
+                                <p class="text-sm font-medium whitespace-pre-line" id="chatBubbleScript"></p>
+                                <p class="text-[9px] text-blue-400 text-right mt-1">Đã gửi</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ════ ③ SMART REPLY CHIPS ════ -->
+                    <div class="px-3 pt-2.5 pb-1 bg-white border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar" id="smartReplyBar">
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest flex-shrink-0 mr-1">Gợi ý:</span>
+
+                        <button class="chip" id="chip-bst" onclick="applySmartReply('bst', this)">
+                            🛍️ Gửi BST Mới
+                        </button>
+                        <button class="chip" id="chip-chuc" onclick="applySmartReply('chuc', this)">
+                            🎉 Chúc mừng
+                        </button>
+                        <button class="chip" id="chip-lamsach" onclick="applySmartReply('lamsach', this)">
+                            ✨ Mời ghé làm sạch
+                        </button>
+                    </div>
+
+                    <!-- Input bar -->
+                    <div class="p-3 bg-white border-t border-slate-200 flex items-center gap-2 rounded-b-[2rem]">
+                        <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                        <div class="flex-1 bg-slate-100 rounded-full h-10 px-4 flex items-center">
+                            <span class="text-slate-400 text-sm">Nhập tin nhắn...</span>
+                        </div>
+                        <button class="w-10 h-10 bg-[#0068FF] rounded-full flex items-center justify-center text-white shadow-md">
+                            <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--
+    Safelist cho Tailwind CSS (do dùng nội suy string `bg-${color}-50`):
+    bg-indigo-50 text-indigo-700 border-l-indigo-500
+    bg-pink-50 text-pink-700 border-l-pink-500
+    bg-emerald-50 text-emerald-700 border-l-emerald-500
+    bg-rose-50 text-rose-700 border-l-rose-500
+    bg-lime-50 text-lime-700 border-l-lime-500
+    -->
+
+    <script>
+        // ══════════════════════════════════════════════════
+        // 1. DATA
+        // ══════════════════════════════════════════════════
+        const tasksData = [
+            {
+                id: "task-1",
+                tag: "T+6 Tháng", colorClass: "indigo", time: "10:30 AM", isHot: false,
+                name: "Chị Hoàng Oanh", phone: "0901234567", tier: "Kết Nối", tierClass: "slate",
+                careStatus: "chua",
+                shortDesc: "Sắp hết hạn quyền lợi làm sạch/nước xi miễn phí.",
+                context: [
+                    "Khách hàng mua Vòng tay Vàng Ý cách đây gần 6 tháng.",
+                    "Hệ thống ghi nhận khách chưa sử dụng dịch vụ làm sạch/xi mới lần nào.",
+                    "Chỉ cần tích lũy thêm 5M để thăng hạng VIP 1.",
+                    "<strong class='text-indigo-600'>Đề xuất mPOS:</strong> Nhắn tin nhắc quyền lợi xi mới miễn phí, kết hợp gửi BST Style by PNJ mới nhất để up-sell."
+                ],
+                footprint: [
+                    "15/09/2025: Mua Vòng tay Vàng Ý tại PNJ Hai Bà Trưng",
+                    "16/09/2025: Đánh giá quá trình mua hàng 5 sao (Zalo ZNS)",
+                    "20/10/2025: Click xem Zalo Article về 'Xu hướng Trang sức Thu Đông'"
+                ],
+                script: "Dạ em chào [Tên Khách Hàng], em là Linh - Tư vấn viên PNJ đây ạ.\n\nChiếc vòng tay Vàng Ý chị mua đợt trước dùng vẫn ưng ý và sáng bóng chứ ạ? Hệ thống bên em báo quyền lợi xi mới miễn phí 6 tháng của chị sắp hết hạn. Hôm nào tiện chị ghé PNJ đọc SĐT để tụi em làm mới trang sức lại cho mình miễn phí nha chị!\n\nTiện thể tụi em vừa về BST dây chuyền mới cực kỳ hợp với chiếc vòng của chị, và hiện chị chỉ cần tích lũy thêm một chút là lên hạng VIP 1 để nhận nhiều quyền lợi hơn. Chị ghé em thử thoải mái nhé."
+            },
+            {
+                id: "task-2",
+                tag: "Anniversary", colorClass: "pink", time: "Hôm qua", isHot: true,
+                name: "Anh Minh Tuấn", phone: "0912121212", tier: "VIP 3", tierClass: "indigo",
+                careStatus: "dang",
+                shortDesc: "Kỷ niệm 5 năm ngày cưới. Hạng VIP 3.",
+                context: [
+                    "Khách hàng mua Cặp nhẫn cưới cách đây đúng 5 năm.",
+                    "Hệ thống HO <strong class='text-[#003B71]'>đã gửi thiệp chúc mừng tự động</strong> qua Zalo OA.",
+                    "<strong class='text-pink-600'>Đề xuất mPOS:</strong> TVV chủ động mời khách ra cửa hàng làm mới nhẫn miễn phí và gợi ý quà tặng Kỷ niệm xứng tầm."
+                ],
+                footprint: [
+                    "16/03/2021: Mua Cặp nhẫn cưới Kim Cương cao cấp",
+                    "Hôm qua: Hệ thống tự động gửi thiệp chúc mừng kỷ niệm qua Zalo OA",
+                    "Sáng nay: Khách đã xem (Seen) tin nhắn Zalo và thả tim"
+                ],
+                script: "Dạ em chào [Tên Khách Hàng], em là Linh - Cố vấn trang sức tại PNJ Flagship đây ạ.\n\nHôm nay là kỷ niệm 5 năm ngày cưới của anh chị, em xin đại diện PNJ gửi lời chúc mừng hạnh phúc nhất đến gia đình mình! Nhẫn cưới mình đeo 5 năm rồi, anh xem hôm nào tiện ghé showroom em hỗ trợ đánh bóng và làm mới hoàn toàn miễn phí nhé.\n\nSắp tới anh có dự định tặng món quà bất ngờ nào cho chị không ạ? Đợt này đang có BST Kim Cương rất hợp làm quà kỷ niệm, đặc biệt anh đang là khách thẻ hạng VIP 3 nên sẽ có quyền lợi trợ giá riêng biệt. Em gửi anh vài mẫu tinh tế tham khảo nhé!"
+            },
+            {
+                id: "task-3",
+                tag: "Cross-sell", colorClass: "emerald", time: "08:00 AM", isHot: false,
+                name: "Cô Bích Thủy", phone: "0987654321", tier: "VIP 2", tierClass: "amber",
+                careStatus: "da",
+                shortDesc: "Giao dịch bán Vàng miếng. VIP 2 (LTV > 100M).",
+                context: [
+                    "Khách hàng vừa thực hiện giao dịch BÁN vàng miếng tại quầy sáng nay.",
+                    "Thuộc nhóm khách hàng đầu tư, có dòng tiền mặt nhàn rỗi lớn sau khi chốt lời.",
+                    "<strong class='text-emerald-600'>Đề xuất mPOS:</strong> Tư vấn chuyển đổi một phần lợi nhuận sang Trang sức Kim Cương hoặc Vàng Mỹ Nghệ để đa dạng hóa tài sản."
+                ],
+                footprint: [
+                    "08:00 Sáng nay: Bán 5 lượng Vàng miếng SJC",
+                    "Tháng trước: Mua Lắc tay Vàng 24K làm quà tặng",
+                    "05/2025: Thăng hạng thẻ VIP 2"
+                ],
+                script: "Dạ cháu chào [Tên Khách Hàng], cháu là Linh bên PNJ ạ.\n\nSáng nay cô vừa giao dịch bên cháu xong. PNJ vô cùng cảm ơn cô luôn tin tưởng chọn mua bán, tích lũy tại cửa hàng ạ! Đợt này giá vàng đang biến động tốt, nếu cô đang có ngân sách nhàn rỗi sau khi chốt lời, cháu mời cô tham khảo dòng Kim Cương viên tinh khiết hoặc Trang sức 24K thiết kế mới bên cháu nhé.\n\nVừa giữ được giá trị tài sản mang tính kế thừa, vừa là món thiết kế đẳng cấp khi đi tiệc. Cô là khách VIP 2 nên sẽ hưởng quyền lợi ưu tiên, cô xem qua vài hình ảnh cháu gửi thử nhé!"
+            },
+            {
+                id: "task-4",
+                tag: "Campaign 8/3", colorClass: "rose", time: "Vừa xong", isHot: true,
+                name: "Chị Phương Trinh", phone: "0933333333", tier: "VIP 1", tierClass: "amber",
+                careStatus: "dang",
+                shortDesc: "HO vừa bắn Code ưu đãi 8/3 qua Zalo OA.",
+                context: [
+                    "Nằm trong tệp khách hàng VIP 1 nhận ưu đãi đặc quyền chiến dịch 8/3.",
+                    "Hệ thống HO đã gửi thành công mã [Mã_Ưu_Đãi] qua Zalo OA lúc 09:00 AM.",
+                    "<strong class='text-rose-600'>Đề xuất mPOS:</strong> TVV follow-up nhắc khách check Zalo, báo khách mã này áp dụng được cho BST mới và chốt cuộc hẹn ghé cửa hàng."
+                ],
+                footprint: [
+                    "09:00 Hôm nay: Nhận mã [Mã_Ưu_Đãi] qua Zalo OA (Campaign 8/3)",
+                    "14/02/2026: Mua Mặt dây chuyền Kim cương",
+                    "Tuần trước: Thêm 2 sản phẩm vào Giỏ hàng trên Website PNJ"
+                ],
+                script: "Dạ em chào [Tên Khách Hàng], em Linh PNJ đây ạ.\n\nSáng nay hệ thống PNJ vừa gửi tặng riêng thẻ VIP 1 của chị một mã ưu đãi 500.000đ nhân dịp 8/3 qua Zalo OA, chị kiểm tra tin nhắn xem nhận được chưa nhé!\n\nTiện thể em báo chị tin vui là mã ưu đãi này áp dụng cộng dồn được cho cả BST mới nhất vừa trình làng tại cửa hàng. Em thấy tuần trước chị có đang quan tâm tham khảo vài mẫu trên web, chị có muốn em quay video thực tế gửi chị ngắm trước, ưng mẫu nào em giữ lại cho chị cuối tuần ghé thử không ạ?"
+            }
+        ];
+
+        let currentActiveTask = null;
+        let filteredTasks = [...tasksData];
+        let notifTaskCounter = 10;       // counter for auto-generated notif tasks
+        let typingTimeout = null;        // for typewriter effect
+        let activeCareFilter = 'all';    // current care-status filter
+        let activeTab = 'all';           // current category tab
+        const MAX_NOTIF_TASKS = 3;       // max auto-gen tasks kept in list at once
+        let notifTaskIds = [];           // ids of currently active auto-gen tasks
+
+        // ══════════════════════════════════════════════════
+        // SMART REPLY DATA
+        // ══════════════════════════════════════════════════
+        const smartReplies = {
+            bst: {
+                label: "🛍️ Gửi BST Mới",
+                text: "Dạ em chào chị! 🌸 Bên PNJ vừa ra mắt BST trang sức xuân mới cực kỳ tinh tế ạ. Em thấy phong cách của chị rất hợp với dòng này, cho em gửi chị xem một vài mẫu nổi bật nhé!\n\n✨ BST \"Style by PNJ\" mùa mới gồm:\n– Dây chuyền Vàng 18K đính đá Opal\n– Nhẫn hoa anh đào Kim cương nhỏ\n– Lắc tay phong cách minimalist\n\nChị xem thử nhé, ưng mẫu nào em giữ hàng cho chị luôn ạ! 😊"
+            },
+            chuc: {
+                label: "🎉 Chúc mừng",
+                text: "Dạ em kính chúc chị và gia đình thật nhiều sức khỏe, hạnh phúc và niềm vui ạ! 🥂🌺\n\nĐây là lời chúc chân thành nhất từ em và toàn thể đội ngũ PNJ gửi đến chị. Chị luôn là khách hàng đặc biệt mà tụi em trân trọng nhất!\n\nHôm nay chị có thời gian ghé cửa hàng để em tặng chị một món quà nhỏ kỷ niệm không ạ? 🎁"
+            },
+            lamsach: {
+                label: "✨ Mời ghé làm sạch",
+                text: "Dạ em chào chị! Tụi em muốn nhắc chị một điều nhỏ xíu nè 😊\n\nTrang sức đeo lâu thường bị mờ và mất đi độ sáng bóng ban đầu. PNJ đang có dịch vụ làm sạch & xi mới trang sức HOÀN TOÀN MIỄN PHÍ cho khách hàng thân thiết nhé ạ! ✨\n\nChị chỉ cần ghé cửa hàng, đưa SĐT cho nhân viên là được phục vụ ngay. Chiếc trang sức sẽ sáng như mới trong vòng 20 phút thôi ạ! Chị lịch ghé ngày nào cho em giữ slot nhé 🌸"
+            }
+        };
+
+        // ══════════════════════════════════════════════════
+        // 2. RENDER TASK LIST
+        // ══════════════════════════════════════════════════
+        function renderTaskList() {
+            const listContainer = document.getElementById('taskList');
+            listContainer.innerHTML = '';
+
+            if (filteredTasks.length === 0) {
+                listContainer.innerHTML = '<div class="text-center text-slate-400 text-sm mt-10">Không tìm thấy khách hàng nào.</div>';
+                return;
+            }
+
+            filteredTasks.forEach((task) => {
+                const isHotBadge = task.isHot
+                    ? `<span class="absolute top-3 right-3 bg-red-100 text-red-600 text-[9px] font-black px-2 py-1 rounded-md animate-pulse">Hot</span>`
+                    : '';
+
+                const tierColor = task.tierClass === 'slate' ? 'bg-slate-100 text-slate-600' :
+                    task.tierClass === 'amber' ? 'bg-amber-100 text-amber-700' :
+                    'bg-[#003B71]/10 text-[#003B71]';
+
+                const notifClass = task._isNew ? 'notif-new notif-pulse-border' : '';
+
+                // care-status badge (cycles on click)
+                const cs = task.careStatus || 'chua';
+                const csBadgeClass = cs === 'chua' ? 'cs-badge cs-chua' : cs === 'dang' ? 'cs-badge cs-dang' : 'cs-badge cs-da';
+                const csText = cs === 'chua' ? 'Not Yet' : cs === 'dang' ? 'Processing' : 'Done';
+
+                const taskHTML = `
+                    <div id="card-${task.id}" onclick="selectTaskById('${task.id}')"
+                         class="bg-white border text-left border-slate-200 border-l-4 border-l-${task.colorClass}-500 rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition relative group ${notifClass}">
+                        ${isHotBadge}
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[9px] font-black bg-${task.colorClass}-50 text-${task.colorClass}-700 px-2 py-1 rounded-full uppercase tracking-wider">${task.tag}</span>
+                            <span class="text-[10px] text-slate-400 font-medium ${task.isHot ? 'mr-14' : ''}">${task.time}</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="font-bold text-slate-800 text-sm">${task.name}</h4>
+                            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${tierColor}">${task.tier}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 font-medium mb-2 flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            ${task.phone}
+                        </p>
+                        <div class="flex items-center justify-between mt-1">
+                            <p class="text-xs text-slate-500 line-clamp-1 leading-relaxed flex-1 mr-2">${task.shortDesc}</p>
+                            <span class="${csBadgeClass}" onclick="toggleCareStatus('${task.id}', event)" title="Click để đổi trạng thái">${csText}</span>
+                        </div>
+                    </div>
+                `;
+                listContainer.insertAdjacentHTML('beforeend', taskHTML);
+            });
+
+            // Re-apply active class
+            if (currentActiveTask) {
+                const activeCard = document.getElementById(`card-${currentActiveTask.id}`);
+                if (activeCard) activeCard.classList.add('task-active');
+            }
+
+            // Update badge count
+            document.getElementById('taskCountBadge').textContent = tasksData.length;
+        }
+
+        // ══════════════════════════════════════════════════
+        // CARE-STATUS FILTER
+        // ══════════════════════════════════════════════════
+        function setCareFilter(val, chipEl) {
+            activeCareFilter = val;
+            document.querySelectorAll('#careFilterBar .filter-chip').forEach(c => {
+                c.classList.remove('fc-active');
+            });
+            chipEl.classList.add('fc-active');
+            filterTasks();
+        }
+
+        function toggleCareStatus(taskId, event) {
+            event.stopPropagation(); // don't open task detail
+            const task = tasksData.find(t => t.id === taskId);
+            if (!task) return;
+            const cycle = { chua: 'dang', dang: 'da', da: 'chua' };
+            task.careStatus = cycle[task.careStatus] || 'chua';
+            filterTasks();
+            // If the toggled task is currently open, refresh subtitle
+            if (currentActiveTask && currentActiveTask.id === taskId) {
+                document.getElementById('detailSubtitle').innerText =
+                    `Phân loại: ${task.tag} - Hạng thẻ: ${task.tier} - SĐT: ${task.phone} - ${careLabel(task.careStatus)}`;
+            }
+        }
+
+        function careLabel(cs) {
+            return cs === 'chua' ? 'Not Yet' : cs === 'dang' ? 'Processing' : 'Done';
+        }
+
+        // ══════════════════════════════════════════════════
+        // TABS + SEARCH + FILTER
+        // ══════════════════════════════════════════════════
+        function setTab(tabName, btnEl) {
+            activeTab = tabName;
+            const tabs = document.querySelectorAll('#mposTabs button');
+            tabs.forEach(btn => {
+                btn.classList.remove('text-[#003B71]', 'border-b-2', 'border-[#003B71]');
+                btn.classList.add('hover:bg-slate-100');
+            });
+            btnEl.classList.remove('hover:bg-slate-100');
+            btnEl.classList.add('text-[#003B71]', 'border-b-2', 'border-[#003B71]');
+            filterTasks();
+        }
+
+        function filterTasks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            filteredTasks = tasksData.filter(task => {
+                const matchSearch = task.phone.includes(searchTerm) || task.name.toLowerCase().includes(searchTerm);
+                const matchCare   = activeCareFilter === 'all' || task.careStatus === activeCareFilter;
+                
+                let matchTab = true;
+                const tag = task.tag.toLowerCase();
+                const tier = task.tier.toLowerCase();
+                if (activeTab === 'occasion') {
+                    matchTab = tag.includes('anniversary') || tag.includes('sinh nhật') || tag.includes('campaign') || tag.includes('ưu đãi') || tag.includes('dịp');
+                } else if (activeTab === 'vip') {
+                    matchTab = tag.includes('vip') || tier.includes('vip');
+                }
+
+                return matchSearch && matchCare && matchTab;
+            });
+            renderTaskList();
+        }
+
+        function replaceVariables(text, task) {
+            let res = text.replace(/\[Tên Khách Hàng\]/g, task.name);
+            res = res.replace(/\[Mã_Ưu_Đãi\]/g, "VOUCHER500");
+            return res;
+        }
+
+        // ══════════════════════════════════════════════════
+        // 3. SELECT TASK
+        // ══════════════════════════════════════════════════
+        function selectTaskById(taskId) {
+            const task = tasksData.find(t => t.id === taskId);
+            if (!task) return;
+            currentActiveTask = task;
+
+            tasksData.forEach(t => {
+                const el = document.getElementById(`card-${t.id}`);
+                if (el) el.classList.remove('task-active');
+            });
+            const activeCard = document.getElementById(`card-${task.id}`);
+            if (activeCard) activeCard.classList.add('task-active');
+
+            document.getElementById('detailTitle').innerText = `Chi tiết nhiệm vụ: ${task.name}`;
+            document.getElementById('detailSubtitle').innerText = `Phân loại: ${task.tag} - Hạng thẻ: ${task.tier} - SĐT: ${task.phone}`;
+
+            const contextList = document.getElementById('detailContext');
+            contextList.innerHTML = task.context.map(c => `<li>• ${replaceVariables(c, task)}</li>`).join('');
+
+            const footprintList = document.getElementById('detailFootprint');
+            footprintList.className = "border-l-2 border-slate-200 ml-3 pl-5 space-y-4";
+            footprintList.innerHTML = task.footprint.map(f => `
+                <li class="relative text-sm text-slate-600">
+                    <div class="absolute -left-[25px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-300 border-2 border-white ring-1 ring-slate-200"></div>
+                    ${replaceVariables(f, task)}
+                </li>
+            `).join('');
+
+            const finalScript = replaceVariables(task.script, task);
+            document.getElementById('detailScript').innerHTML = finalScript.replace(/\n/g, '<br>');
+
+            closeZaloChat();
+        }
+
+        function selectTask(index) {
+            if (tasksData[index]) selectTaskById(tasksData[index].id);
+        }
+
+        // ══════════════════════════════════════════════════
+        // 4. ZALO CHAT
+        // ══════════════════════════════════════════════════
+        function openZaloChat() {
+            if (!currentActiveTask) return;
+            const finalScript = replaceVariables(currentActiveTask.script, currentActiveTask);
+            document.getElementById('chatName').innerText = currentActiveTask.name;
+            document.getElementById('chatBubbleScript').innerText = finalScript;
+            document.getElementById('chatAvatar').src = `https://ui-avatars.com/api/?name=${currentActiveTask.name.replace(/ /g, '+')}&background=E5F2FF&color=0068FF`;
+            document.getElementById('zaloChatView').classList.remove('hidden');
+            resetSmartReplyChips();
+        }
+
+        function closeZaloChat() {
+            document.getElementById('zaloChatView').classList.add('hidden');
+        }
+
+        // ══════════════════════════════════════════════════
+        // ③ SMART REPLY – TYPEWRITER EFFECT
+        // ══════════════════════════════════════════════════
+        function resetSmartReplyChips() {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        }
+
+        function applySmartReply(key, chipEl) {
+            const reply = smartReplies[key];
+            if (!reply) return;
+
+            // Highlight active chip
+            resetSmartReplyChips();
+            chipEl.classList.add('active');
+
+            const bubble = document.getElementById('chatBubbleScript');
+            bubble.classList.add('typing-cursor');
+            bubble.innerText = '';
+
+            if (typingTimeout) clearTimeout(typingTimeout);
+
+            const text = reply.text;
+            let i = 0;
+            const speed = 18; // ms per character
+
+            function typeChar() {
+                if (i < text.length) {
+                    bubble.innerText += text[i];
+                    i++;
+                    typingTimeout = setTimeout(typeChar, speed);
+                } else {
+                    bubble.classList.remove('typing-cursor');
+                }
+            }
+            typeChar();
+        }
+
+        // ══════════════════════════════════════════════════
+        // ② NOTIFICATION QUEUE – REAL-TIME SIMULATION
+        // ══════════════════════════════════════════════════
+        const notifTemplates = [
+            { tag: "🏆 Lên hạng VIP",   colorClass: "lime",   tier: "VIP 1", tierClass: "amber",  shortDesc: "Khách vừa được nâng hạng lên VIP 1 sau giao dịch mới nhất.",        script: "Dạ em chào chị, hệ thống PNJ vừa ghi nhận chị vừa được nâng hạng lên thẻ VIP 1. Chúc mừng chị nhé! Em muốn gửi chị danh sách quyền lợi mới và mời chị ghé cửa hàng để nhận thẻ VIP vật lý ạ." },
+            { tag: "💍 Gần hết hạn xi",  colorClass: "indigo", tier: "Kết Nối", tierClass: "slate", shortDesc: "Khách sắp hết hạn dịch vụ nước xi miễn phí (còn 7 ngày).",              script: "Dạ em chào chị, em Linh PNJ đây ạ. Bên em thấy quyền lợi xi mới miễn phí của chị còn hơn 1 tuần nữa là hết hạn. Chị ghé PNJ đọc SĐT để tụi em làm mới trang sức lại cho mình hoàn toàn miễn phí nhé ạ!" },
+            { tag: "🎂 Sinh nhật",        colorClass: "pink",   tier: "VIP 2", tierClass: "amber",  shortDesc: "Khách hàng có sinh nhật trong tuần này — dịp vàng để chào hàng!",     script: "Dạ em chào chị, chúc mừng sinh nhật chị sắp tới nhé! 🎂 Nhân dịp đặc biệt này, PNJ xin gửi đến chị một món quà bất ngờ. Hôm nào chị rảnh ghé cửa hàng, tụi em có phần quà nhỏ dành riêng cho chị ạ!" },
+            { tag: "🎁 Nhận ưu đãi",    colorClass: "rose",   tier: "VIP 3", tierClass: "indigo", shortDesc: "Khách vừa nhận ưu đãi chương trình Tri Ân Khách Hàng Thân Thiết 2026.", script: "Dạ em chào anh, hôm nay hệ thống PNJ vừa cấp cho anh một ưu đãi đặc biệt từ chương trình Tri Ân Khách Thân Thiết 2026. Anh kiểm tra Zalo OA giúp em nhé, mã này có giá trị đến cuối tháng và áp dụng được cho cả dòng Kim Cương cao cấp ạ!" },
+        ];
+
+        const randomNames  = ["Chị Mai Anh", "Anh Quốc Bảo", "Chị Lan Phương", "Anh Đức Minh", "Cô Ngọc Hà", "Anh Hùng Kiệt"];
+        const randomPhones = ["0977112233", "0911223344", "0966334455", "0922445566", "0944556677", "0900667788"];
+
+        function pushNotifTask() {
+            const tmpl = notifTemplates[Math.floor(Math.random() * notifTemplates.length)];
+            const name  = randomNames[Math.floor(Math.random() * randomNames.length)];
+            const phone = randomPhones[Math.floor(Math.random() * randomPhones.length)];
+            notifTaskCounter++;
+
+            const newTask = {
+                id: `notif-${notifTaskCounter}`,
+                tag: tmpl.tag,
+                colorClass: tmpl.colorClass,
+                time: "Vừa xong",
+                isHot: true,
+                name,
+                phone,
+                tier: tmpl.tier,
+                tierClass: tmpl.tierClass,
+                careStatus: "chua",
+                shortDesc: tmpl.shortDesc,
+                context: [`<strong class='text-green-600'>🔔 Cảnh báo real-time:</strong> ${tmpl.shortDesc}`],
+                footprint: [`Vừa xong: Hệ thống nhận tín hiệu mới — ${tmpl.tag}`],
+                script: tmpl.script,
+                _isNew: true
+            };
+
+            // ── CAP: nếu đã đủ MAX_NOTIF_TASKS, xoá task auto cũ nhất trước ──
+            if (notifTaskIds.length >= MAX_NOTIF_TASKS) {
+                const oldId = notifTaskIds.shift();           // lấy id cũ nhất ra
+                const oldIdx = tasksData.findIndex(t => t.id === oldId);
+                if (oldIdx !== -1) tasksData.splice(oldIdx, 1);  // xoá khỏi data
+            }
+            notifTaskIds.push(newTask.id);
+
+            // Insert at the beginning of tasksData
+            tasksData.unshift(newTask);
+            filterTasks();  // re-apply current search + care filter
+
+            // Remove highlight after animation ends
+            setTimeout(() => {
+                newTask._isNew = false;
+                const card = document.getElementById(`card-${newTask.id}`);
+                if (card) card.classList.remove('notif-new', 'notif-pulse-border');
+            }, 2500);
+
+            scheduleNextNotif();
+        }
+
+        function scheduleNextNotif() {
+            const delay = (10 + Math.random() * 5) * 1000; // 10–15 s
+            setTimeout(pushNotifTask, delay);
+        }
+
+        // ══════════════════════════════════════════════════
+        // INIT
+        // ══════════════════════════════════════════════════
+        renderTaskList();
+        selectTask(3); // mặc định mở Task 8/3
+
+        // Start notification loop after a warm-up delay
+        setTimeout(() => {
+            scheduleNextNotif();
+        }, 8000); // first notif after 8s so the demo loads comfortably
+
+    </script>
+
+    </section>
+</body>
+</html>
