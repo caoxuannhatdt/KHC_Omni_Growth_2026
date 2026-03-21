@@ -266,15 +266,26 @@
         /* 1. Xử lý tên chương trình bị che/cắt */
         .ppt-export-mode .detail-card .truncate {
             white-space: normal !important;
-            width: auto !important;
-            max-width: 70% !important;
+            width: 65% !important;
+            float: left !important;
             font-size: 15px !important;
             line-height: 1.4 !important;
         }
 
         .ppt-export-mode .detail-card>.flex.justify-between {
-            align-items: flex-start !important;
-            margin-bottom: 12px !important;
+            display: block !important;
+            margin-bottom: 16px !important;
+        }
+        
+        .ppt-export-mode .detail-card>.flex.justify-between > div {
+            float: right !important;
+            margin-top: -2px !important;
+        }
+        
+        .ppt-export-mode .detail-card>.flex.justify-between::after {
+            content: '';
+            display: table;
+            clear: both;
         }
 
         /* 2. Xử lý nhãn số liệu quá to gây rớt dòng */
