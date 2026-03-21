@@ -71,7 +71,7 @@
         }
 
         .col-title {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 800;
             text-transform: uppercase;
             margin-bottom: 4px;
@@ -79,7 +79,7 @@
         }
 
         .col-goal {
-            font-size: 9px;
+            font-size: 11px;
             font-style: italic;
             color: #64748B;
         }
@@ -102,7 +102,7 @@
         }
 
         .cm-lbl {
-            font-size: 7px;
+            font-size: 9px;
             color: #94A3B8;
             text-transform: uppercase;
             display: block;
@@ -111,7 +111,7 @@
         }
 
         .cm-val {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 700;
             color: #334155;
         }
@@ -151,19 +151,19 @@
         .mini-metric label {
             color: #94A3B8;
             font-weight: 600;
-            font-size: 7px;
+            font-size: 9px;
             text-transform: uppercase;
             margin-bottom: 2px;
             white-space: nowrap;
         }
 
         .mini-metric span {
-            font-size: 9px;
+            font-size: 11px;
             line-height: 1;
         }
 
         .status-badge {
-            font-size: 7px;
+            font-size: 9px;
             padding: 2px 6px;
             border-radius: 4px;
             font-weight: 700;
@@ -186,7 +186,7 @@
         }
 
         .team-badge {
-            font-size: 7px;
+            font-size: 9px;
             padding: 2px 5px;
             border-radius: 3px;
             font-weight: 700;
@@ -211,14 +211,14 @@
             transform: translateX(-50%);
             background: white;
             padding: 0 6px;
-            font-size: 8px;
+            font-size: 10px;
             color: #94A3B8;
             font-weight: bold;
             border: 1px solid #E2E8F0;
         }
 
         .month-header {
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 700;
             color: #64748B;
             background: #F1F5F9;
@@ -235,7 +235,7 @@
             gap: 8px;
             background: linear-gradient(135deg, #002d72, #1e40af);
             color: #fff;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
             padding: 8px 18px;
             border-radius: 999px;
@@ -318,11 +318,11 @@
         }
 
         /* 1. Xử lý tên chương trình bị che/cắt */
-        .ppt-export-mode .detail-card .text-\[10px\] {
+        .ppt-export-mode .detail-card .text-\[12px\] {
             white-space: normal !important;
             width: auto !important;
             max-width: 70% !important;
-            font-size: 13px !important;
+            font-size: 15px !important;
             line-height: 1.4 !important;
         }
 
@@ -333,7 +333,7 @@
 
         .ppt-export-mode .mc-title p {
             white-space: normal !important;
-            font-size: 14px !important;
+            font-size: 16px !important;
             line-height: 1.3 !important;
         }
 
@@ -344,22 +344,22 @@
 
         .ppt-export-mode .mini-metric label {
             white-space: nowrap !important;
-            font-size: 10px !important;
+            font-size: 12px !important;
             letter-spacing: -0.2px !important;
             margin-bottom: 4px !important;
         }
 
         .ppt-export-mode .mini-metric span {
-            font-size: 16px !important;
+            font-size: 18px !important;
         }
 
         .ppt-export-mode .cm-lbl {
             white-space: normal !important;
-            font-size: 12px !important;
+            font-size: 14px !important;
         }
 
         .ppt-export-mode .cm-val {
-            font-size: 18px !important;
+            font-size: 20px !important;
         }
 
         /* Mở khóa chiều cao cho cột, cho phép cột dãn thoải mái theo nội dung */
@@ -402,12 +402,12 @@
                 <div>
                     <div class="flex items-center gap-2 mb-1">
                         <span
-                            class="bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">Dashboard</span>
-                        <span class="text-slate-400 text-xs"><i class="far fa-calendar-alt mr-1"></i> Tháng
+                            class="bg-indigo-600 text-white text-[12px] font-bold px-2 py-1 rounded uppercase">Dashboard</span>
+                        <span class="text-slate-400 text-sm"><i class="far fa-calendar-alt mr-1"></i> Tháng
                             2/2026 (Time range: 01/02 - 28/02/2026)</span>
                     </div>
-                    <h1 class="text-2xl font-bold text-slate-800 tracking-tight uppercase">Clienteling</h1>
-                    <p class="text-slate-500 text-sm mt-1">Theo dõi hiệu quả toàn trình & Tác động tăng trưởng (Growth
+                    <h1 class="text-[26px] font-bold text-slate-800 tracking-tight uppercase">Clienteling</h1>
+                    <p class="text-slate-500 text-base mt-1">Theo dõi hiệu quả toàn trình & Tác động tăng trưởng (Growth
                         Impact)</p>
                 </div>
             </div>
@@ -415,83 +415,83 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
             <div class="card-glass p-6 lg:col-span-4 flex flex-col justify-center bg-white">
-                <h3 class="text-slate-600 text-xs font-bold uppercase mb-4 border-b pb-2">Tiến độ KHC 2026 (YTD)</h3>
+                <h3 class="text-slate-600 text-sm font-bold uppercase mb-4 border-b pb-2">Tiến độ KHC 2026 (YTD)</h3>
                 <div class="flex items-center gap-6">
                     <div class="w-1/2 relative h-32">
                         <canvas id="gaugeChart"></canvas>
                         <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-center w-full">
-                            <span class="text-3xl font-bold text-slate-800 block leading-none">28.94%</span>
-                            <span class="text-[10px] text-slate-400 uppercase font-bold mt-1 block">HOÀN THÀNH</span>
+                            <span class="text-[32px] font-bold text-slate-800 block leading-none">28.94%</span>
+                            <span class="text-[12px] text-slate-400 uppercase font-bold mt-1 block">HOÀN THÀNH</span>
                         </div>
                     </div>
                     <div class="w-1/2 space-y-4 text-right">
                         <div>
-                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Thực đạt</p>
-                            <p class="text-2xl font-bold text-slate-800 leading-none">184,739</p>
+                            <p class="text-[12px] text-slate-400 uppercase font-semibold">Thực đạt</p>
+                            <p class="text-[26px] font-bold text-slate-800 leading-none">184,739</p>
 
                             <span
-                                class="text-[10px] font-bold px-2 py-0.5 rounded mt-1 inline-block bg-red-50 text-red-500">▼
+                                class="text-[12px] font-bold px-2 py-0.5 rounded mt-1 inline-block bg-red-50 text-red-500">▼
                                 5.61% SSCK</span>
                         </div>
                         <div>
-                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Target</p>
-                            <p class="text-xl font-bold text-slate-400 leading-none">638,138</p>
+                            <p class="text-[12px] text-slate-400 uppercase font-semibold">Target</p>
+                            <p class="text-[22px] font-bold text-slate-400 leading-none">638,138</p>
 
                             <span
-                                class="text-[10px] font-bold px-2 py-0.5 rounded mt-1 inline-block bg-emerald-50 text-emerald-600">▲
+                                class="text-[12px] font-bold px-2 py-0.5 rounded mt-1 inline-block bg-emerald-50 text-emerald-600">▲
                                 11.7% SSCK</span>
                         </div>
                     </div>
                 </div>
                 <div
-                    class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 italic leading-relaxed text-center">
+                    class="mt-4 pt-3 border-t border-slate-100 text-[13px] text-slate-500 italic leading-relaxed text-center">
                     Tính đến hết 28/02/2026: Đạt 184,739 khách hàng cũ giao dịch - bằng 28.9% target năm (Tiến độ thời
                     gian: 16.2%).</div>
             </div>
 
             <div class="card-glass p-6 lg:col-span-8 flex flex-col justify-center bg-white">
                 <div class="flex justify-between items-center mb-6 pb-2 border-b">
-                    <h3 class="text-slate-600 text-xs font-bold uppercase">HIỆU QUẢ CHƯƠNG TRÌNH KHÁCH HÀNG CŨ - THÁNG
+                    <h3 class="text-slate-600 text-sm font-bold uppercase">HIỆU QUẢ CHƯƠNG TRÌNH KHÁCH HÀNG CŨ - THÁNG
                         2/2026 - CHI NHÁNH MIỀN TRUNG</h3>
                 </div>
                 <div class="grid grid-cols-3 gap-4 h-full">
 
                     <div class="metric-card-clean accent-black">
                         <div class="mc-title">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wide leading-tight">SLKH
+                            <p class="text-[12px] text-slate-500 uppercase font-bold tracking-wide leading-tight">SLKH
                                 Chăm sóc</p>
                         </div>
-                        <p class="mc-val text-2xl font-bold text-slate-800">
+                        <p class="mc-val text-[26px] font-bold text-slate-800">
                             68,830</p>
-                        <p class="text-[9px] text-slate-500 font-medium leading-tight px-1"></p>
+                        <p class="text-[11px] text-slate-500 font-medium leading-tight px-1"></p>
                     </div>
 
                     <div class="metric-card-clean accent-black">
                         <div class="mc-title">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wide leading-tight">SLKHC
+                            <p class="text-[12px] text-slate-500 uppercase font-bold tracking-wide leading-tight">SLKHC
                                 Giao dịch</p>
                         </div>
-                        <p class="mc-val text-2xl font-bold text-orange-600">
+                        <p class="mc-val text-[26px] font-bold text-orange-600">
                             4,004</p>
-                        <p class="text-[9px] text-slate-500 font-medium leading-tight px-1">Đóng góp 29.17% trên tổng số
+                        <p class="text-[11px] text-slate-500 font-medium leading-tight px-1">Đóng góp 29.17% trên tổng số
                             lượng khách hàng cũ giao dịch trong tháng 02/2026 thuộc chi nhánh Miền Trung</p>
                     </div>
 
                     <div class="metric-card-clean accent-black">
                         <div class="mc-title">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wide leading-tight">CR
+                            <p class="text-[12px] text-slate-500 uppercase font-bold tracking-wide leading-tight">CR
                                 Trung bình</p>
                         </div>
-                        <p class="mc-val text-2xl font-bold text-slate-800">
+                        <p class="mc-val text-[26px] font-bold text-slate-800">
                             5.82%</p>
-                        <p class="text-[9px] text-slate-500 font-medium leading-tight px-1"></p>
+                        <p class="text-[11px] text-slate-500 font-medium leading-tight px-1"></p>
                     </div>
 
                 </div>
             </div>
         </div>
 
-        <h2 class="text-xl font-bold text-slate-800 flex items-center mb-6">
+        <h2 class="text-[22px] font-bold text-slate-800 flex items-center mb-6">
             <span class="w-1.5 h-8 bg-indigo-600 rounded-full mr-3"></span>
             Quản trị toàn trình khách hàng tháng 2 & Kế hoạch tháng 3
         </h2>
@@ -520,7 +520,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Aftersales: Đánh Bóng">Aftersales: Đánh Bóng</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -541,7 +541,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Rating 4-5 Sao">Rating 4-5 Sao</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-CS</span>
@@ -587,7 +587,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3" title="Thần Tài 2026">Thần
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3" title="Thần Tài 2026">Thần
                                 Tài 2026</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -608,7 +608,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Valentine 2026">Valentine 2026</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -654,7 +654,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Sinh nhật KH T02">Sinh nhật KH T02</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-CX</span>
@@ -675,7 +675,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Champions (RFM)">Champions (RFM)</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -696,7 +696,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Retention Cận VIP">Retention Cận VIP</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -717,7 +717,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3" title="Top Online">Top
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3" title="Top Online">Top
                                 Online</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -738,7 +738,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Welcome New Rank">Welcome New Rank</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-CX</span>
@@ -759,7 +759,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3" title="No Cash">No
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3" title="No Cash">No
                                 Cash</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -805,7 +805,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Tương Tác Digital">Tương Tác Digital</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -826,7 +826,7 @@
 
                     <div class="detail-card">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] font-bold text-slate-800 truncate w-2/3"
+                            <span class="text-[12px] font-bold text-slate-800 truncate w-2/3"
                                 title="Churn (>365 ngày chưa giao dịch)">Churn (>365 ngày chưa giao dịch)</span>
                             <div class="flex items-center">
                                 <span class="team-badge">Omni-Growth</span>
@@ -853,15 +853,15 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="card-glass p-6">
-                <h3 class="text-slate-700 text-xs font-bold uppercase mb-4">Đóng góp SLKHC giao dịch TRONG THÁNG 2/2026
+                <h3 class="text-slate-700 text-sm font-bold uppercase mb-4">Đóng góp SLKHC giao dịch TRONG THÁNG 2/2026
                 </h3>
                 <div class="h-64 relative"><canvas id="contributionStackChart"></canvas></div>
             </div>
             <div class="card-glass p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-slate-700 text-xs font-bold uppercase">Hiệu quả Chuyển đổi (CR%) TRONG THÁNG 2/2026
+                    <h3 class="text-slate-700 text-sm font-bold uppercase">Hiệu quả Chuyển đổi (CR%) TRONG THÁNG 2/2026
                     </h3>
-                    <div class="text-[10px] text-slate-500 font-medium"><span
+                    <div class="text-[12px] text-slate-500 font-medium"><span
                             class="inline-block w-4 h-0.5 bg-indigo-600 border-t border-dashed border-indigo-600 align-middle mr-1"></span>(---
                         CR% trung bình)</div>
                 </div>
