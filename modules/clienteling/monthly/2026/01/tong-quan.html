@@ -1182,6 +1182,12 @@
             const container = document.getElementById('report-container');
             container.classList.add('ppt-export-mode'); // Kích hoạt CSS ngang 16:9
 
+            const truncateEls = container.querySelectorAll('.truncate');
+            truncateEls.forEach(el => {
+                el.classList.remove('truncate');
+                el.classList.remove('w-2/3');
+            });
+
             window.scrollTo(0, 0);
             await new Promise(r => setTimeout(r, 400)); // Đợi render dài ra xíu
 
@@ -1209,6 +1215,13 @@
                 alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại!');
             } finally {
                 container.classList.remove('ppt-export-mode');
+
+                if (typeof truncateEls !== 'undefined') {
+                    truncateEls.forEach(el => {
+                        el.classList.add('truncate');
+                        el.classList.add('w-2/3');
+                    });
+                }
 
                 // Khôi phục nút
                 if (btn.id === 'download-btn') {

@@ -1136,6 +1136,13 @@
                 alert('Đã có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại!');
             } finally {
                 container.classList.remove('ppt-export-mode');
+
+                if (typeof truncateEls !== 'undefined') {
+                    truncateEls.forEach(el => {
+                        el.classList.add('truncate');
+                        el.classList.add('w-2/3');
+                    });
+                }
                 btn.innerHTML = originalHtml;
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
