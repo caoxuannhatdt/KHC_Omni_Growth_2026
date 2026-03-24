@@ -256,99 +256,131 @@
         }
 
 
-        /* === STYLE FROM AUTOMATION === */
-
-        #section-automation {
+        /* === STYLE FROM FLOW === */
+        #section-flow {
             background-color: #f8fafc;
-            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        #automation-header,
-        #automation-main {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .table-container {
-            max-height: calc(100vh - 120px);
-            overflow: auto;
-        }
-
-        .sticky-col {
-            position: sticky;
-            left: 0;
-            background: #fff;
-            z-index: 20;
-            border-right: 2px solid #e2e8f0;
-            box-shadow: 4px 0 15px -3px rgba(0, 0, 0, 0.05);
-        }
-
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 30;
-        }
-
-        .sticky-corner {
-            position: sticky;
-            top: 0;
-            left: 0;
-            z-index: 40;
-            background: #f8fafc;
-            border-right: 2px solid #e2e8f0;
-        }
-
-        .card-enter {
-            animation: fadeInAuto 0.4s ease-out;
-        }
-
-        @keyframes fadeInAuto {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
+        .custom-scrollbar::-webkit-scrollbar {
             height: 10px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+            margin: 0 16px;
         }
 
-        ::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 6px;
+            border-radius: 8px;
+            border: 2px solid #f1f5f9;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
 
-        .badge-post {
-            background: #e0e7ff;
-            color: #3730a3;
+        /* THIẾT KẾ GRID MỞ RỘNG (11 CỘT) - TĂNG KHOẢNG THỞ */
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: 110px repeat(10, minmax(145px, 1fr));
+            grid-template-rows: repeat(4, 150px);
+            gap: 0;
+            min-width: 1550px;
+            /* Chiều ngang tổng thể rộng rãi */
         }
 
-        .badge-occ {
-            background: #dbeafe;
-            color: #1e40af;
+        .node-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 20;
+            padding: 16px 20px;
         }
 
-        .badge-loy {
-            background: #fef3c7;
-            color: #92400e;
+        /* Định dạng các khối Node cơ bản */
+        .node-rect {
+            width: 116px;
+            height: 56px;
+            border-radius: 8px;
+            border-width: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+            line-height: 1.25;
+            position: relative;
         }
 
-        .badge-act {
-            background: #fce7f3;
-            color: #9d174d;
+        .node-rect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .node-pill {
+            padding: 8px 24px;
+            border-radius: 99px;
+            border-width: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background-color: #ffffff;
+        }
+
+        .node-diamond {
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border-width: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(45deg);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .node-diamond:hover {
+            transform: rotate(45deg) scale(1.05);
+        }
+
+        .diamond-text {
+            transform: rotate(-45deg);
+            font-size: 10.5px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .node-dashed-phase {
+            border-style: dashed;
+            background-color: #f8fafc;
+            opacity: 0.8;
+        }
+
+        /* SVG Text Label - Viền chữ dày tạo khoảng đứt trên line gọn gàng */
+        .svg-label {
+            paint-order: stroke;
+            stroke: #f8fafc;
+            stroke-width: 7px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: currentColor;
         }
     </style>
 </head>
@@ -358,429 +390,400 @@
     <div id="global-nav"></div>
     <script src="/components/layout.js"></script>
 
-    <!-- SECTION 1: AUTOMATION -->
-    <section id="section-automation"
-        class="text-slate-800 flex flex-col w-full relative z-10 transition-all duration-500 ease-in-out">
+    <!-- HEADER BLOCK -->
+    <div class="w-full max-w-[1550px] mx-auto mt-6 px-4 md:px-8 relative z-20">
+        <div class="bg-white shadow-sm border border-slate-200 rounded-2xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center gap-5">
+                <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-PNJ.png" alt="PNJ Logo" class="h-14 w-auto object-contain">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="bg-indigo-600 text-white text-[12px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Innovation</span>
+                        <span class="text-slate-400 text-sm font-medium"><i class="far fa-clock mr-1"></i> Tháng 3/2026</span>
+                    </div>
+                    <h1 class="text-[26px] font-black text-slate-800 tracking-tight uppercase">CRM Automation</h1>
+                    <p class="text-slate-500 text-sm mt-1 font-medium">Sơ đồ Luồng (Flow Map) & Mô phỏng Trải nghiệm Thiết kế</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div class="flex justify-center pt-8 pb-4">
-            <button onclick="toggleAutomation()"
-                class="bg-white border border-slate-200 px-4 py-1.5 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest shadow-sm hover:bg-slate-50 transition-all flex items-center gap-2">
-                <span id="toggleText">Ẩn Automation Map</span>
-                <svg id="toggleIcon" class="w-3 h-3 transition-transform duration-300" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                </svg>
-            </button>
+    <!-- SECTION 1: FLOW LOGIC -->
+    <section id="section-flow" class="text-slate-800 w-full relative z-10 transition-all duration-500 ease-in-out pb-10">
+        <div class="text-center pt-10 mb-8 mx-auto max-w-6xl">
+            <h2 class="text-3xl font-black text-[#003B71] uppercase italic tracking-tight">CRM Automation Flow Logic</h2>
+            <p class="text-slate-500 font-medium mt-2">Sơ đồ logic và quy trình xử lý</p>
         </div>
 
-        <header id="automation-header"
-            class="bg-transparent px-6 py-4 flex-shrink-0 z-50 transition-all duration-500 overflow-hidden">
-            <div class="flex flex-col items-center justify-center max-w-[1800px] mx-auto gap-4">
-                <div class="text-center">
-                    <h2 class="text-3xl font-black text-[#003B71] uppercase italic tracking-tight">PNJ AUTOMATION MAP</h2>
-                </div>
+        <div class="max-w-6xl mx-auto bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden relative">
+            <div class="w-full custom-scrollbar" id="scroll-wrapper">
+                <div class="diagram-grid relative" id="diagram-container">
 
-                <div class="bg-slate-100 p-1.5 rounded-lg border border-slate-200 flex justify-center gap-1 shadow-inner">
-                    <span
-                        class="text-xs font-bold text-slate-500 uppercase tracking-wider py-2 px-3 flex items-center">Health
-                        Status:</span>
-                    <button onclick="setRFM('active')" id="btn-active"
-                        class="rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 bg-white text-emerald-700 shadow shadow-emerald-100 border border-emerald-200 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> NOT CHURN
-                    </button>
-                    <button onclick="setRFM('risk')" id="btn-risk"
-                        class="rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 text-slate-500 hover:text-amber-700 hover:bg-amber-50 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> WARNING TO CHURN
-                    </button>
-                    <button onclick="setRFM('inactive')" id="btn-inactive"
-                        class="rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 text-slate-500 hover:text-rose-700 hover:bg-rose-50 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> CHURNED
-                    </button>
-                </div>
-            </div>
-        </header>
+                    <!-- 1. SWIMLANE BACKGROUNDS -->
+                    <div class="bg-amber-50/40 border-b border-slate-200" style="grid-column: 1 / -1; grid-row: 1;"></div>
+                    <div class="bg-indigo-50/40 border-b border-slate-200" style="grid-column: 1 / -1; grid-row: 2;"></div>
+                    <div class="bg-fuchsia-50/40 border-b border-slate-200" style="grid-column: 1 / -1; grid-row: 3;"></div>
+                    <div class="bg-teal-50/40 border-b border-slate-200" style="grid-column: 1 / -1; grid-row: 4;"></div>
 
-        <main id="automation-main"
-            class="flex-1 table-container p-6 transition-all duration-500 overflow-hidden scale-100 opacity-100 origin-top">
-            <div class="max-w-[1800px] mx-auto bg-white rounded-xl shadow-md border border-slate-200">
-                <div class="min-w-[1600px]">
+                    <!-- 2. SWIMLANE HEADERS -->
+                    <div class="flex flex-col items-center justify-center p-3 border-r border-slate-200 bg-amber-50/80 z-20"
+                        style="grid-column: 1; grid-row: 1;">
+                        <span class="font-black text-amber-700 uppercase tracking-widest text-[13px] mb-1">CDP</span>
+                        <span class="text-[9px] font-bold text-amber-600/80 uppercase tracking-wide text-center">Hệ
+                            Thống<br>Trung Tâm</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center p-3 border-r border-slate-200 bg-indigo-50/80 z-20"
+                        style="grid-column: 1; grid-row: 2;">
+                        <span class="font-black text-indigo-700 uppercase tracking-widest text-[13px] mb-1">mPOS</span>
+                        <span class="text-[9px] font-bold text-indigo-600/80 uppercase tracking-wide text-center">Ứng
+                            Dụng<br>Bán Hàng</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center p-3 border-r border-slate-200 bg-fuchsia-50/80 z-20"
+                        style="grid-column: 1; grid-row: 3;">
+                        <span class="font-black text-fuchsia-700 uppercase tracking-widest text-[13px] mb-1">TVV</span>
+                        <span class="text-[9px] font-bold text-fuchsia-600/80 uppercase tracking-wide text-center">Tư Vấn
+                            Viên</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center p-3 border-r border-slate-200 bg-teal-50/80 z-20"
+                        style="grid-column: 1; grid-row: 4;">
+                        <span class="font-black text-teal-700 uppercase tracking-widest text-[13px] mb-1">Customer</span>
+                        <span class="text-[9px] font-bold text-teal-600/80 uppercase tracking-wide text-center">Khách
+                            Hàng</span>
+                    </div>
 
-                    <!-- X-Axis Header -->
-                    <div
-                        class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] bg-slate-50 border-b-2 border-slate-300 text-sm font-bold text-slate-700 sticky-header">
-                        <div
-                            class="p-4 sticky-corner flex items-center justify-center uppercase tracking-wider text-xs">
+                    <!-- 3. SVG LAYER (MŨI TÊN VUÔNG GÓC) -->
+                    <svg id="svg-layer" class="absolute inset-0 w-full h-full z-10 pointer-events-none"></svg>
 
-                        </div>
-                        <!-- Time-based -->
-                        <div class="p-4 border-r border-slate-200 bg-blue-50/50">
-                            <span class="text-xs px-2 py-0.5 rounded-full badge-post uppercase mb-1 inline-block">1.
-                                Post Purchase</span><br>
-                            T + 1 Ngày<br><span class="text-xs font-normal text-slate-500">Kích hoạt & Aftersales</span>
-                        </div>
-                        <div class="p-4 border-r border-slate-200 bg-indigo-50/50">
-                            <span class="text-xs px-2 py-0.5 rounded-full badge-post uppercase mb-1 inline-block">2.
-                                Nurture & Warranty</span><br>
-                            T + 3T / 6T<br><span class="text-xs font-normal text-slate-500">Hook O2O Bảo hành</span>
-                        </div>
-                        <div class="p-4 border-r border-slate-200 bg-rose-50/50">
-                            <span class="text-xs px-2 py-0.5 rounded-full badge-act uppercase mb-1 inline-block">4.
-                                Activation/Win-back</span><br>
-                            T + 12 Tháng<br><span class="text-xs font-normal text-slate-500">Churn > 365d</span>
-                        </div>
-
-                        <!-- Event-based -->
-                        <div class="p-4 border-r border-slate-200 bg-amber-50/50 shadow-inner">
-                            <span class="text-xs px-2 py-0.5 rounded-full badge-occ uppercase mb-1 inline-block">2.
-                                Occasion Event</span><br>
-                            Sự kiện<br><span class="text-xs font-normal text-slate-500">Sinh nhật
-                                Khách
-                                hàng / Aniversary </span>
-                        </div>
-                        <div class="p-4 bg-emerald-50/50 shadow-inner">
-                            <span class="text-xs px-2 py-0.5 rounded-full badge-loy uppercase mb-1 inline-block">3.
-                                Loyalty & 4. Digital</span><br>
-                            Hành vi Thẻ & Digital<br><span class="text-xs font-normal text-slate-500">The Tier Up,
-                                Digital
-                                Footprint</span>
+                    <!-- === ROW 1: CDP === -->
+                    <div class="node-wrapper" style="grid-column: 2; grid-row: 1;">
+                        <div id="start" class="node-pill border-slate-300 text-slate-500">START</div>
+                    </div>
+                    <div class="node-wrapper" style="grid-column: 3; grid-row: 1;">
+                        <div id="journey" class="node-rect border-amber-400 text-amber-800 shadow-amber-100">
+                            ACTIVE JOURNEY<br><span class="text-[9px] font-medium text-amber-600 mt-0.5">Trigger kịch
+                                bản</span>
                         </div>
                     </div>
 
-                    <!-- ROW 1: TS VÀNG / PLATINUM / Ý -->
-                    <div
-                        class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] border-b border-slate-200 group hover:bg-slate-50 transition-colors">
-                        <div
-                            class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
-                            <span class="font-bold text-sm text-yellow-700">1. TS Vàng / Platinum / Ý</span>
-                            <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
+                    <!-- Khối Sync dồn về cuối -->
+                    <div class="node-wrapper" style="grid-column: 10; grid-row: 1;">
+                        <div id="sync" class="node-rect border-amber-400 text-amber-700 node-dashed-phase shadow-none">
+                            Sync CDP<br><span class="text-[9px] font-medium text-amber-600 mt-0.5">Ghi nhận Lịch sử</span>
+                        </div>
+                    </div>
+                    <div class="node-wrapper" style="grid-column: 11; grid-row: 1;">
+                        <div id="end_sync" class="node-pill border-slate-300 text-slate-400 opacity-60">END</div>
+                    </div>
 
-                            </ul>
+                    <!-- === ROW 2: mPOS === -->
+                    <div class="node-wrapper" style="grid-column: 4; grid-row: 2;">
+                        <div id="task" class="node-rect border-indigo-400 text-indigo-800 shadow-indigo-100">
+                            Khởi tạo Task<br><span class="text-[9px] font-medium text-indigo-600 mt-0.5">App phân bổ</span>
                         </div>
-                        <div class="p-3 border-r border-blue-100 bg-blue-50/30">
-                            <div
-                                class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-blue-800">Rating VOC</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-content">Gửi khảo sát VOC. Gửi cẩm nang bảo
-                                    quản trang sức.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-indigo-100 bg-indigo-50/30">
-                            <div
-                                class="bg-white border border-indigo-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-indigo-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-indigo-800">Service Notice: Nước Xi</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-active">Đặc quyền nước xi miễn phí 6 tháng sắp
-                                    đến
-                                    hạn.</p>
-                                <p class="text-xs text-slate-600 mt-2 dyn-risk hidden">Service Notice: Tặng E-voucher
-                                    đặc
-                                    quyền khi ghé cửa hàng bảo dưỡng hoặc trải nghiệm sản phẩm mới.</p>
-                                <p class="text-xs text-slate-600 mt-2 dyn-inactive hidden">(Tính tế bảo lưu thông báo
-                                    bảo
-                                    dưỡng để ưu tiên trải nghiệm khi khách quan tâm trở lại)</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-rose-100 bg-rose-50/20">
-                            <div
-                                class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-rose-800">Quyền lợi đánh bóng</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-active"> Gợi ý quyền lợi đánh bóng trọn đời.
-                                    Tư
-                                    vấn chương trình Thu cũ đổi mới nâng tầm phong cách.</p>
-                                <p class="text-xs text-slate-600 mt-2 dyn-risk hidden">Gợi ý quyền lợi đánh bóng trọn
-                                    đời.
-                                    Tư vấn chương trình Thu cũ đổi mới nâng tầm phong cách.</p>
-                                <p class="text-xs text-slate-600 mt-2 dyn-inactive hidden">Gợi ý quyền lợi đánh bóng
-                                    trọn
-                                    đời. Tư vấn chương trình Thu cũ đổi mới nâng tầm phong cách.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-amber-100 bg-amber-50/30">
-                            <div
-                                class="bg-white border border-amber-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-amber-400 absolute left-0 top-0"></div>
-                                <span class="text-sm font-bold text-amber-800">Sinh nhật Khách Hàng</span>
-                                <p class="text-xs text-slate-500 mt-1 dyn-active">Gửi lời chúc mừng tinh tế và tặng
-                                    E-voucher tri ân.</p>
-                                <p class="text-xs text-slate-500 mt-1 dyn-risk hidden">Gửi lời chúc mừng tinh tế và tặng
-                                    E-voucher tri ân.</p>
-                                <p class="text-xs text-slate-500 mt-1 dyn-inactive hidden">Gửi lời chúc mừng chân thành,
-                                    không kèm thông điệp bán hàng.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-emerald-50/30">
-                            <div
-                                class="bg-white border border-emerald-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-emerald-400 absolute left-0 top-0"></div>
-                                <span class="text-sm font-bold text-emerald-800">Leo Rank & Đặc quyền VIP</span>
-                                <p class="text-xs text-slate-500 mt-1"><strong>Cận VIP / Level Up:</strong> Cập nhật số
-                                    điểm
-                                    / Chúc mừng thăng hạng.<br><strong>Giỏ hàng:</strong> Gợi ý sử dụng đặc quyền VIP để
-                                    hoàn tất trải nghiệm mua sắm.</p>
-                            </div>
+                    </div>
+                    <!-- Cột 5: Trục Gắn nhãn & Thông báo -->
+                    <div class="node-wrapper" style="grid-column: 5; grid-row: 2;">
+                        <div id="tag" class="node-rect border-indigo-400 text-indigo-800 shadow-indigo-100">
+                            Gắn nhãn Event<br><span class="text-[9px] font-medium text-indigo-600 mt-0.5">Phân loại &
+                                Push</span>
                         </div>
                     </div>
 
-                    <!-- ROW 2: TS BẠC / CHARM / DISNEY -->
-                    <div
-                        class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] border-b border-slate-200 group hover:bg-slate-50 transition-colors">
-                        <div
-                            class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
-                            <span class="font-bold text-sm text-slate-600">2. TS Bạc / Charm</span>
-                            <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
+                    <!-- LƯU Ý: Cột 6 BỎ TRỐNG để tạo đường thở cho text mũi tên -->
 
-                            </ul>
-                        </div>
-                        <div class="p-3 border-r border-blue-100 bg-blue-50/30">
-                            <div
-                                class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-blue-800">Rating VOC</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-content">Gửi khảo sát VOC. Tư vấn cách bảo
-                                    quản
-                                    Bạc.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-indigo-100 bg-indigo-50/30">
-                            <div
-                                class="bg-white border border-indigo-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-indigo-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-indigo-800">Service Notice: Nước Xi</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-active">Gửi thông báo đặc quyền nước xi
-                                    Bạc 3 tháng sắp đến hạn.</p>
-                                <p class="text-xs text-slate-600 mt-2 dyn-risk hidden">Service Notice: Đến kỳ bảo dưỡng
-                                    nước
-                                    xi Bạc 3 tháng.</p>
-                                <p class="text-xs text-slate-600 mt-2 dyn-inactive hidden">(Tinh tế bảo lưu thông báo để
-                                    tránh làm phiền)</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-rose-100 bg-rose-50/20">
-                            <div
-                                class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-rose-800">Silver Shine Reminder</span>
-                                <p class="text-xs text-slate-600 mt-2">Tự động nhắc lịch vệ sinh trang sức định kỳ sau
-                                    3-6
-                                    tháng (O2O Hook) để duy trì độ sáng bóng và gắn kết khách hàng.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-amber-100 bg-amber-50/30">
-                            <div
-                                class="bg-white border border-amber-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-amber-400 absolute left-0 top-0"></div>
-                                <span class="text-sm font-bold text-amber-800">Charm Collection Completion</span>
-                                <p class="text-xs text-slate-500 mt-1">Dựa trên chủ đề hạt Charm khách đã mua, tự động
-                                    gợi ý
-                                    các mẫu mới để hoàn thiện bộ sưu tập và nâng tầm phong cách.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-emerald-50/30">
-                            <div
-                                class="bg-white border border-emerald-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-emerald-400 absolute left-0 top-0"></div>
-                                <span class="text-sm font-bold text-emerald-800">Silver Friendcard</span>
-                                <p class="text-xs text-slate-500 mt-1">Nhắc ưu đãi đặc quyền (chiết khấu > 100k) chưa sử
-                                    dụng để sẵn sàng trải nghiệm sản phẩm mới.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ROW 3: NHẪN CƯỚI -->
-                    <div
-                        class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] border-b border-slate-200 group hover:bg-slate-50 transition-colors">
-                        <div
-                            class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
-                            <span class="font-bold text-sm text-pink-700">3. Nhẫn Cưới </span>
-                            <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
-
-                            </ul>
-                        </div>
-                        <div class="p-3 border-r border-blue-100 bg-blue-50/30">
-                            <div
-                                class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-blue-800">Rating VOC & Khắc Tên</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-content">Gửi khảo sát VOC. Gợi ý
-                                    thêm đặc quyền khắc tên nhẫn miễn phí (nếu chưa trải nghiệm).</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-indigo-100 bg-indigo-50/30 flex items-center justify-center">
-                            <span class="text-xs text-slate-500 italic">Duy trì cập nhật cột mốc. Không gửi thông điệp
-                                làm
-                                phiền.</span>
-                        </div>
-                        <div class="p-3 border-r border-rose-100 bg-rose-50/20">
-                            <div
-                                class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-rose-800">Marriage Milestone Celebration</span>
-                                <p class="text-xs text-slate-600 mt-2">Kỷ niệm 5 năm / 10 năm: Tư vấn thu đổi nhẫn
-                                    cưới kỷ niệm, nâng cấp lên Kim cương / TS cao cấp.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-amber-100 bg-amber-50/30">
-                            <div
-                                class="bg-white border border-amber-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-amber-400 absolute left-0 top-0"></div>
-                                <span class="text-sm font-bold text-amber-800">Wedding Anniversary</span>
-                                <p class="text-xs text-slate-500 mt-1 dyn-active">Gợi ý tinh tế những mẫu trang sức ý
-                                    nghĩa
-                                    để dành tặng người bạn đời.</p>
-                                <p class="text-xs text-slate-500 mt-1 dyn-risk hidden">Trân trọng mời đến làm mới nhẫn
-                                    cưới
-                                    (Miễn phí) và gửi tặng Voucher trải nghiệm BST mới.</p>
-                                <p class="text-xs text-slate-500 mt-1 dyn-inactive hidden">Gửi thông điệp chúc phúc chân
-                                    thành, thể hiện hình thái cố vấn tận tâm.</p>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-emerald-50/30">
-                            <div
-                                class="bg-white border border-emerald-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-emerald-400 absolute left-0 top-0"></div>
-                                <span class="text-sm font-bold text-emerald-800">Thăng Hạng & Đặc Quyền Mới</span>
-                                <p class="text-xs text-slate-500 mt-1">Thông báo hạng VIP đã đạt.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ROW 4: VÀNG MIẾNG (THE MASTERPIECE CONVERSION) -->
-                    <div
-                        class="grid grid-cols-[220px_1fr_1fr_1fr_1.5fr_1.5fr] group hover:bg-slate-50 transition-colors">
-                        <div
-                            class="p-4 bg-white border-r border-slate-200 sticky-col flex flex-col justify-center group-hover:bg-slate-50">
-                            <span class="font-bold text-sm text-amber-600">4. Vàng Miếng / Nhẫn Trơn</span>
-                            <ul class="text-xs text-slate-500 mt-2 list-disc pl-3 leading-tight space-y-1">
-
-                            </ul>
-                        </div>
-                        <div class="p-3 border-r border-blue-100 bg-blue-50/30">
-                            <div
-                                class="bg-white border border-blue-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-blue-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-blue-800">Rating VOC & Onboard tích lũy</span>
-                                <p class="text-xs text-slate-600 mt-2 dyn-content">Gửi khảo sát VOC. Mời
-                                    Follow OA nhận bản tin thị trường định kỳ. Thông báo khi có biến động giá.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="p-3 border-r border-indigo-100 bg-indigo-50/30 flex items-center justify-center">
-                            <span class="text-xs text-slate-500 italic">Duy trì cập nhật bản tin Giá Vàng từ Cố vấn Tài
-                                chính.</span>
-                        </div>
-                        <div class="p-3 border-r border-rose-100 bg-rose-50/20">
-                            <div
-                                class="bg-white border border-rose-200 p-3 rounded-lg shadow-sm h-full flex flex-col relative overflow-hidden">
-                                <div class="w-1 h-full bg-rose-400 absolute left-0 top-0"></div>
-                                <span class="font-bold text-sm text-rose-800">Tri ân Tích Lũy Định Kỳ</span>
-                                <p class="text-xs text-slate-600 mt-2">Cảm ơn khách hàng đã chọn PNJ để tích lũy an
-                                    toàn.
-                                    Nhắc nhở trải nghiệm thêm dịp Lễ Thần Tài sắp tới.</p>
-                            </div>
-                        </div>
-                        <!-- THE CONVERSION ENGINE -->
-                        <div class="col-span-2 p-3 bg-emerald-50/30 shadow-inner border-l border-emerald-100">
-                            <div
-                                class="bg-white border border-emerald-300 p-4 rounded-lg h-full flex flex-col justify-center relative overflow-hidden">
+                    <!-- Cột 7: UI Card trải dài 2 hàng -->
+                    <div class="node-wrapper" style="grid-column: 7; grid-row: 2 / span 2;">
+                        <div id="ui_card"
+                            class="bg-white border-2 border-[#003B71] rounded-xl p-3.5 shadow-xl flex flex-col gap-2.5 w-[190px] text-left relative overflow-hidden transition-transform hover:-translate-y-1">
+                            <div class="absolute top-0 left-0 w-1.5 h-full bg-[#003B71]"></div>
+                            <div class="flex items-center gap-1.5 border-b border-slate-100 pb-2 ml-1.5">
                                 <div
-                                    class="absolute right-0 top-0 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-bl-lg uppercase tracking-wider">
-                                    Conversion Engine</div>
-                                <span class="font-bold text-sm text-emerald-900 mb-2 mt-2">TƯ VẤN QUYỀN LỢI & NÂNG TẦM
-                                    PHONG
-                                    CÁCH</span>
-
-                                <div class="space-y-3 dyn-active dyn-risk">
-                                    <p class="text-xs text-slate-700"><strong class="text-emerald-700">Trigger 1 -
-                                            Loyalty
-                                        </strong>
-                                    </p>
-                                    <p class="text-xs text-slate-700"><strong class="text-emerald-700">Trigger 2 - Đa
-                                            Dạng
-                                            Danh Mục Đầu Tư</strong>
-                                    </p>
-
-                                </div>
-                                <p class="text-xs text-slate-500 mt-2 dyn-inactive hidden">Chỉ gửi thông báo tri ân đặc
-                                    biệt
-                                    hoặc tin tức thị trường ưu tú.</p>
+                                    class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[8px] font-black">
+                                    i</div>
+                                <span
+                                    class="text-[10.5px] font-black text-[#003B71] uppercase leading-tight tracking-tight">Chi
+                                    tiết nhiệm vụ</span>
                             </div>
+                            <div
+                                class="text-[10px] text-slate-600 bg-slate-50 p-2 rounded font-medium border border-slate-100/50 ml-1.5 leading-snug">
+                                1. Ngữ cảnh (Context)</div>
+                            <div
+                                class="text-[10px] text-slate-600 bg-slate-50 p-2 rounded font-medium border border-slate-100/50 ml-1.5 leading-snug">
+                                2. Lịch sử chạm (Touchpoint)</div>
+                            <div
+                                class="text-[10px] text-blue-800 bg-[#E5F2FF] p-2 rounded border border-blue-200 font-bold ml-1.5 leading-snug">
+                                3. Kịch bản đề xuất (Smart)</div>
+                        </div>
+                    </div>
+
+                    <!-- Cột 8: Trục Decision -->
+                    <div class="node-wrapper" style="grid-column: 8; grid-row: 2;">
+                        <div id="skip" class="node-rect border-slate-300 text-slate-500 !bg-slate-50 !h-11">Bỏ qua Task
+                        </div>
+                    </div>
+                    <div class="node-wrapper" style="grid-column: 9; grid-row: 2;">
+                        <div id="end_skip" class="node-pill border-slate-300 text-slate-400 opacity-60">END</div>
+                    </div>
+
+                    <!-- Cột 10: Trục Data Update -->
+                    <div class="node-wrapper" style="grid-column: 10; grid-row: 2;">
+                        <div id="mpos_db"
+                            class="node-rect border-indigo-400 text-indigo-800 shadow-indigo-100 bg-indigo-50">
+                            Lưu Database<br><span class="text-[9px] font-medium text-indigo-600 mt-0.5">Dashboard
+                                mPOS</span>
+                        </div>
+                    </div>
+
+
+                    <!-- === ROW 3: Tư Vấn Viên === -->
+                    <!-- Đã lùi Notif về đúng Cột 5, tạo trục thẳng đứng -->
+                    <div class="node-wrapper" style="grid-column: 5; grid-row: 3;">
+                        <div id="notif" class="node-rect border-fuchsia-400 text-fuchsia-800 shadow-fuchsia-100">
+                            Nhận Thông Báo<br><span class="text-[9px] font-medium text-fuchsia-600 mt-0.5">Mở App /
+                                List</span>
+                        </div>
+                    </div>
+
+                    <div class="node-wrapper" style="grid-column: 8; grid-row: 3;">
+                        <div id="reach" class="node-diamond border-fuchsia-300 text-fuchsia-800">
+                            <span class="diamond-text text-fuchsia-800">Reach<br>Khách?</span>
+                        </div>
+                    </div>
+                    <div class="node-wrapper" style="grid-column: 9; grid-row: 3;">
+                        <div id="send"
+                            class="node-rect border-fuchsia-400 text-fuchsia-800 shadow-fuchsia-200 ring-2 ring-fuchsia-100 bg-fuchsia-50">
+                            Gửi Zalo 1-1<br><span class="text-[9px] font-medium text-fuchsia-600 mt-0.5">Thao tác chăm
+                                sóc</span>
+                        </div>
+                    </div>
+
+                    <div class="node-wrapper" style="grid-column: 10; grid-row: 3;">
+                        <div id="update" class="node-rect border-fuchsia-400 text-fuchsia-800 shadow-fuchsia-100">
+                            Cập nhật mPOS<br><span class="text-[8px] font-bold text-fuchsia-600 mt-0.5 tracking-tighter">NOT
+                                YET / PROCESS / DONE</span>
+                        </div>
+                    </div>
+
+                    <!-- === ROW 4: Customer === -->
+                    <div class="node-wrapper" style="grid-column: 4; grid-row: 4;">
+                        <div id="zns" class="node-rect border-teal-400 text-teal-800 shadow-teal-100">
+                            Gửi ZNS / SMS<br><span class="text-[9px] font-medium text-teal-600 mt-0.5">Thông báo Auto</span>
+                        </div>
+                    </div>
+                    <div class="node-wrapper" style="grid-column: 9; grid-row: 4;">
+                        <div id="receive" class="node-rect border-teal-400 text-teal-800 shadow-teal-100">
+                            Khách nhận tin<br><span class="text-[9px] font-medium text-teal-600 mt-0.5">Đọc tin nhắn</span>
+                        </div>
+                    </div>
+                    <div class="node-wrapper" style="grid-column: 10; grid-row: 4;">
+                        <div id="feedback" class="node-diamond border-teal-300 text-teal-800">
+                            <span class="diamond-text text-teal-800">Phản hồi<br>Tương tác?</span>
                         </div>
                     </div>
 
                 </div>
             </div>
-
-        </main>
-
+        </div>
 
         <script>
-            function setRFM(status) {
-                document.querySelectorAll('.rfm-btn').forEach(btn => {
-                    btn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 text-slate-500 bg-transparent flex items-center gap-2 hover:bg-slate-200";
-                });
+            function drawPaths() {
+                const svg = document.getElementById('svg-layer');
+                const containerRect = document.getElementById('diagram-container').getBoundingClientRect();
 
-                let activeBtn = document.getElementById('btn-' + status);
-                if (status === 'active') {
-                    activeBtn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 bg-white text-emerald-700 shadow shadow-emerald-100 border border-emerald-200 flex items-center gap-2 ring-2 ring-emerald-500/20";
-                } else if (status === 'risk') {
-                    activeBtn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 bg-white text-amber-700 shadow shadow-amber-100 border border-amber-200 flex items-center gap-2 ring-2 ring-amber-500/20";
-                } else {
-                    activeBtn.className = "rfm-btn px-4 py-2 rounded-md font-bold text-[11px] transition-all duration-200 bg-white text-rose-700 shadow shadow-rose-100 border border-rose-200 flex items-center gap-2 ring-2 ring-rose-500/20";
+                svg.innerHTML = `
+                    <defs>
+                        <marker id="arrow-solid" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0, 9 3, 0 6" fill="#64748b" />
+                        </marker>
+                        <marker id="arrow-dashed" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0, 9 3, 0 6" fill="#94a3b8" />
+                        </marker>
+                        <marker id="arrow-amber" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0, 9 3, 0 6" fill="#d97706" />
+                        </marker>
+                        <marker id="arrow-indigo-dashed" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0, 9 3, 0 6" fill="#6366f1" />
+                        </marker>
+                    </defs>
+                `;
+
+                const connections = [
+                    { from: 'start', to: 'journey', fA: 'right', tA: 'left' },
+                    { from: 'journey', to: 'zns', fA: 'bottom', tA: 'left', dashed: true, label: 'Nhánh Auto', color: '#d97706', marker: 'arrow-amber' },
+                    { from: 'journey', to: 'task', fA: 'right', tA: 'top', label: 'Push Data', color: '#64748b' },
+                    { from: 'task', to: 'tag', fA: 'right', tA: 'left' },
+
+                    // Trục dọc 1 (Cột 5): Tagging -> Notify
+                    { from: 'tag', to: 'notif', fA: 'bottom', tA: 'top', label: 'Thông báo', color: '#64748b' },
+
+                    // Mũi tên nuôi UI Card với Cột 6 hoàn toàn rỗng để text thở
+                    { from: 'tag', to: 'ui_card', fA: 'right', tA: 'left', color: '#cbd5e1' }, // Cung cấp data ngầm
+                    { from: 'notif', to: 'ui_card', fA: 'right', tA: 'left', label: 'Mở chi tiết' },
+
+                    { from: 'ui_card', to: 'reach', fA: 'right', tA: 'left' },
+
+                    // Trục dọc 2 (Cột 8): Quyết định
+                    { from: 'reach', to: 'skip', fA: 'top', tA: 'bottom', label: 'Bỏ qua', dashed: true },
+                    { from: 'skip', to: 'end_skip', fA: 'right', tA: 'left', dashed: true },
+                    { from: 'reach', to: 'send', fA: 'right', tA: 'left', label: 'Tiếp cận' },
+
+                    // Trục ngang Customer
+                    { from: 'zns', to: 'receive', fA: 'right', tA: 'left' },
+                    { from: 'send', to: 'receive', fA: 'bottom', tA: 'top', label: 'Zalo 1-1' },
+                    { from: 'receive', to: 'feedback', fA: 'right', tA: 'left' },
+
+                    // Trục dọc 3 (Cột 10): Update Line
+                    { from: 'feedback', to: 'update', fA: 'top', tA: 'bottom', label: 'Kết quả' },
+                    { from: 'update', to: 'mpos_db', fA: 'top', tA: 'bottom', label: 'Lưu Log' },
+                    { from: 'mpos_db', to: 'sync', fA: 'top', tA: 'bottom', dashed: true, label: 'Sync (Phase 2)', color: '#6366f1', marker: 'arrow-indigo-dashed' },
+                    { from: 'sync', to: 'end_sync', fA: 'right', tA: 'left', dashed: true }
+                ];
+
+                function getAnchorPoint(rect, anchor) {
+                    switch (anchor) {
+                        case 'top': return { x: rect.left + rect.width / 2, y: rect.top };
+                        case 'bottom': return { x: rect.left + rect.width / 2, y: rect.bottom };
+                        case 'left': return { x: rect.left, y: rect.top + rect.height / 2 };
+                        case 'right': return { x: rect.right, y: rect.top + rect.height / 2 };
+                    }
                 }
 
-                document.querySelectorAll('.dyn-active, .dyn-risk, .dyn-inactive').forEach(el => {
-                    el.classList.add('hidden');
-                    el.classList.remove('card-enter');
-                });
+                connections.forEach(conn => {
+                    const el1 = document.getElementById(conn.from);
+                    const el2 = document.getElementById(conn.to);
+                    if (!el1 || !el2) return;
 
-                document.querySelectorAll('.dyn-' + status).forEach(el => {
-                    el.classList.remove('hidden');
-                    void el.offsetWidth; // trigger reflow
-                    el.classList.add('card-enter');
+                    let p1 = getAnchorPoint(el1.getBoundingClientRect(), conn.fA);
+                    let p2 = getAnchorPoint(el2.getBoundingClientRect(), conn.tA);
+
+                    // TRICK UX: Căn chỉnh mũi tên cắm vào UI Card để trục luôn ngang 100%
+                    if (conn.from === 'tag' && conn.to === 'ui_card') {
+                        const tagRect = el1.getBoundingClientRect();
+                        p2.y = tagRect.top + tagRect.height / 2; // Cắm ngang hàng trên
+                    }
+                    if (conn.from === 'notif' && conn.to === 'ui_card') {
+                        const notifRect = el1.getBoundingClientRect();
+                        p2.y = notifRect.top + notifRect.height / 2; // Cắm ngang hàng dưới
+                    }
+                    if (conn.from === 'ui_card' && conn.to === 'reach') {
+                        const reachRect = el2.getBoundingClientRect();
+                        p1.y = reachRect.top + reachRect.height / 2; // Kéo ra từ hàng dưới
+                    }
+
+                    const x1 = p1.x - containerRect.left;
+                    const y1 = p1.y - containerRect.top;
+                    const x2 = p2.x - containerRect.left;
+                    const y2 = p2.y - containerRect.top;
+
+                    // THUẬT TOÁN ORTHOGONAL ROUTING
+                    let points = [[x1, y1]];
+
+                    if (conn.fA === 'right' && conn.tA === 'left') {
+                        const midX = x1 + (x2 - x1) / 2;
+                        points.push([midX, y1], [midX, y2], [x2, y2]);
+                    } else if (conn.fA === 'bottom' && conn.tA === 'top') {
+                        const midY = y1 + (y2 - y1) / 2;
+                        points.push([x1, midY], [x2, midY], [x2, y2]);
+                    } else if (conn.fA === 'top' && conn.tA === 'bottom') {
+                        const midY = y1 - (y1 - y2) / 2;
+                        points.push([x1, midY], [x2, midY], [x2, y2]);
+                    } else if (conn.fA === 'bottom' && conn.tA === 'left') {
+                        points.push([x1, y2], [x2, y2]);
+                    } else if (conn.fA === 'right' && conn.tA === 'top') {
+                        points.push([x2, y1], [x2, y2]);
+                    } else if (conn.fA === 'top' && conn.tA === 'left') {
+                        points.push([x1, y2], [x2, y2]);
+                    } else if (conn.fA === 'right' && conn.tA === 'bottom') {
+                        points.push([x2, y1], [x2, y2]);
+                    } else {
+                        points.push([x2, y2]);
+                    }
+
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    let d = `M ${points[0][0]} ${points[0][1]}`;
+                    for (let i = 1; i < points.length; i++) {
+                        d += ` L ${points[i][0]} ${points[i][1]}`;
+                    }
+
+                    path.setAttribute('d', d);
+                    path.setAttribute('fill', 'none');
+
+                    const strokeColor = conn.color || (conn.dashed ? '#94a3b8' : '#64748b');
+                    path.setAttribute('stroke', strokeColor);
+                    path.setAttribute('stroke-width', '2.5');
+                    path.setAttribute('stroke-linejoin', 'round');
+
+                    if (conn.dashed) path.setAttribute('stroke-dasharray', '6,4');
+
+                    if (!(conn.from === 'tag' && conn.to === 'ui_card')) {
+                        const markerId = conn.marker || (conn.dashed ? 'arrow-dashed' : 'arrow-solid');
+                        path.setAttribute('marker-end', `url(#${markerId})`);
+                    }
+
+                    svg.appendChild(path);
+
+                    if (conn.label) {
+                        setTimeout(() => {
+                            let textX, textY;
+                            const pathLen = path.getTotalLength();
+                            if (pathLen > 0) {
+                                const pt = path.getPointAtLength(pathLen / 2);
+                                textX = pt.x;
+                                // Điều chỉnh text nhích nhẹ để căn giữa line chuẩn xác
+                                textY = pt.y - 6;
+                            } else {
+                                textX = x1 + (x2 - x1) / 2;
+                                textY = y1 + (y2 - y1) / 2 - 6;
+                            }
+
+                            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                            text.setAttribute('x', textX);
+                            text.setAttribute('y', textY);
+                            text.setAttribute('fill', strokeColor);
+                            text.setAttribute('font-size', '10.5');
+                            text.setAttribute('font-weight', '700');
+                            text.setAttribute('text-anchor', 'middle');
+                            text.setAttribute('class', 'svg-label');
+                            text.textContent = conn.label;
+
+                            svg.appendChild(text);
+                        }, 0);
+                    }
                 });
             }
 
-            function toggleAutomation() {
-                const header = document.getElementById('automation-header');
-                const main = document.getElementById('automation-main');
-                const text = document.getElementById('toggleText');
-                const icon = document.getElementById('toggleIcon');
-                const section = document.getElementById('section-automation');
-
-                if (main.classList.contains('hidden')) {
-                    main.classList.remove('hidden');
-                    header.classList.remove('hidden');
-                    setTimeout(() => {
-                        main.style.maxHeight = '2000px';
-                        main.style.opacity = '1';
-                        main.style.transform = 'scaleY(1)';
-                        header.style.maxHeight = '500px';
-                        header.style.opacity = '1';
-                        section.classList.remove('mb-[-4rem]');
-                    }, 10);
-                    text.textContent = 'Ẩn Automation Map';
-                    icon.style.transform = 'rotate(0deg)';
+            function updateDiagram() {
+                const wrapper = document.getElementById('scroll-wrapper');
+                const container = document.getElementById('diagram-container');
+                
+                // 1. Reset scale to calculate proper SVG paths
+                container.style.transform = 'none';
+                wrapper.style.height = 'auto';
+                
+                // 2. Clear and redraw paths
+                document.getElementById('svg-layer').innerHTML = '';
+                drawPaths();
+                
+                // 3. Apply scale if screen width is smaller than 1550px
+                const targetWidth = 1550;
+                const currentWidth = wrapper.clientWidth;
+                if (currentWidth < targetWidth && currentWidth > 0) {
+                    const scale = currentWidth / targetWidth;
+                    container.style.transform = `scale(${scale})`;
+                    container.style.transformOrigin = 'top left';
+                    // The original grid height is 4 rows of 150px = 600px
+                    // Adjust wrapper height to prevent excessive padding when scaled, +16px for breathing room
+                    wrapper.style.height = `${(600 * scale) + 16}px`;
+                    wrapper.style.overflow = 'hidden';
                 } else {
-                    main.style.maxHeight = '0';
-                    main.style.opacity = '0';
-                    main.style.transform = 'scaleY(0)';
-                    header.style.maxHeight = '0';
-                    header.style.opacity = '0';
-                    setTimeout(() => {
-                        main.classList.add('hidden');
-                        header.classList.add('hidden');
-                        section.classList.add('mb-[-4rem]');
-                    }, 500);
-                    text.textContent = 'Hiện Automation Map';
-                    icon.style.transform = 'rotate(180deg)';
+                    wrapper.style.height = 'auto';
+                    wrapper.style.overflow = 'auto';
                 }
             }
 
-            // Init
-            setRFM('active');
+            // Bind the update to load and resize events instead of static drawPaths
+            window.addEventListener('load', () => setTimeout(updateDiagram, 200));
+            window.addEventListener('resize', updateDiagram);
         </script>
-
     </section>
 
     <!-- SECTION 2: CRMAUTO -->
@@ -1500,6 +1503,13 @@
         </script>
 
     </section>
+
+    <!-- FOOTER BLOCK -->
+    <footer id="omni-footer" class="bg-slate-900 py-10 px-5 text-center w-full relative z-10 border-t-4 border-indigo-600">
+        <img src="/Logo.png" alt="PNJ" class="h-10 bg-white px-4 py-2 rounded-xl mx-auto mb-5 shadow-lg object-contain" onerror="this.src='https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-PNJ.png'">
+        <p class="text-slate-400 text-[12px] font-extrabold tracking-[0.2em] uppercase mb-2">&copy; 2026 PNJ OMNI-GROWTH TEAM.</p>
+        <p class="text-slate-500 text-[11px] font-medium">Internal &amp; Confidential — Omni-Growth Workspace 2026</p>
+    </footer>
 </body>
 
 </html>
