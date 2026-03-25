@@ -815,9 +815,8 @@
                             <button class="flex-1 py-3 text-[#003B71] border-b-2 border-[#003B71]"
                                 onclick="setTab('all', this)">MPOS Task</button>
                             <button class="flex-1 py-3 hover:bg-slate-100 transition"
-                                onclick="setTab('occasion', this)">Sinh nhật / Dịp</button>
-                            <button class="flex-1 py-3 hover:bg-slate-100 transition" onclick="setTab('vip', this)">VIP
-                                Alert</button>
+                                onclick="setTab('today', this)">Task Hôm nay</button>
+                            <button class="flex-1 py-3 hover:bg-slate-100 transition" onclick="setTab('overdue', this)">Overdue</button>
                         </div>
 
                         <!-- Search -->
@@ -1192,7 +1191,7 @@
                     return;
                 }
 
-                filteredTasks.forEach((task) => {
+                filteredTasks.forEach((task, index) => {
                     const isHotBadge = task.isHot
                         ? `<span class="absolute top-3 right-3 bg-red-100 text-red-600 text-[9px] font-black px-2 py-1 rounded-md animate-pulse">Hot</span>`
                         : '';
@@ -1217,7 +1216,7 @@
                             <span class="text-[10px] text-slate-400 font-medium ${task.isHot ? 'mr-14' : ''}">${task.time}</span>
                         </div>
                         <div class="flex items-center gap-2 mb-1">
-                            <h4 class="font-bold text-slate-800 text-sm">${task.name}</h4>
+                            <h4 class="font-bold text-slate-800 text-sm">${index + 1}. ${task.name}</h4>
                             <span class="text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${tierColor}">${task.tier}</span>
                         </div>
                         <p class="text-[10px] text-slate-400 font-medium mb-2 flex items-center gap-1">
@@ -1297,10 +1296,12 @@
                     let matchTab = true;
                     const tag = task.tag.toLowerCase();
                     const tier = task.tier.toLowerCase();
-                    if (activeTab === 'occasion') {
-                        matchTab = tag.includes('anniversary') || tag.includes('sinh nhật') || tag.includes('campaign') || tag.includes('ưu đãi') || tag.includes('dịp');
-                    } else if (activeTab === 'vip') {
-                        matchTab = tag.includes('vip') || tier.includes('vip');
+                    if (activeTab === 'today') {
+                        const t = task.time.toLowerCase();
+                        matchTab = t.includes('am') || t.includes('pm') || t.includes('vừa xong') || t.includes('hôm nay');
+                    } else if (activeTab === 'overdue') {
+                        const t = task.time.toLowerCase();
+                        matchTab = !t.includes('am') && !t.includes('pm') && !t.includes('vừa xong') && !t.includes('hôm nay');
                     }
 
                     return matchSearch && matchCare && matchTab;
